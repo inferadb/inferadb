@@ -1,18 +1,24 @@
 [submodule "server"]
 	path = server
 	url = https://github.com/inferadb/server
+	branch = main
 [submodule "management"]
 	path = management
 	url = https://github.com/inferadb/management
+	branch = main
 [submodule "dashboard"]
 	path = dashboard
 	url = https://github.com/inferadb/dashboard
+	branch = main
 [submodule "cli"]
 	path = cli
 	url = https://github.com/inferadb/cli
+	branch = main
 [submodule "docs"]
 	path = docs
 	url = https://github.com/inferadb/docs
+	branch = main
 [submodule "terraform-provider-inferadb"]
 	path = terraform-provider-inferadb
 	url = https://github.com/inferadb/terraform-provider-inferadb
+	branch = main
