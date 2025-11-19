@@ -55,3 +55,4 @@ make reset
 ## Important Notes
 
 - When working with code or resources under the `server` directory, follow the additional guidance of the `server/CLAUDE.md` file therein.
+- When working with code or resources under the `management` directory, follow the additional guidance of the `management/CLAUDE.md` file therein.
