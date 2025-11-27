@@ -9,7 +9,7 @@
 #   make server-test       - Run tests in server only
 #   make management-test   - Run tests in management only
 
-.PHONY: help setup test test-integration test-fdb check format lint audit deny run build release clean reset dev doc coverage bench fix ci
+.PHONY: help setup test test-integration integration-test test-fdb check format lint audit deny run build release clean reset dev doc coverage bench fix ci
 .PHONY: server-help server-setup server-test server-check server-format server-lint server-run server-build server-release server-clean server-reset server-dev server-doc
 .PHONY: management-help management-setup management-test management-check management-format management-lint management-run management-build management-release management-clean management-reset management-dev management-doc
 
@@ -26,14 +26,15 @@ help: ## Show available commands
 	@echo "$(COLOR_BLUE)InferaDB Meta-Repository Commands$(COLOR_RESET)"
 	@echo ""
 	@echo "$(COLOR_GREEN)Combined Commands (run on both server/ and management/):$(COLOR_RESET)"
-	@echo "  $(COLOR_BLUE)make setup$(COLOR_RESET)       - Setup development environment for both projects"
-	@echo "  $(COLOR_BLUE)make test$(COLOR_RESET)        - Run tests in both projects"
-	@echo "  $(COLOR_BLUE)make check$(COLOR_RESET)       - Run code quality checks in both projects"
-	@echo "  $(COLOR_BLUE)make format$(COLOR_RESET)      - Format code in both projects"
-	@echo "  $(COLOR_BLUE)make lint$(COLOR_RESET)        - Run linters in both projects"
-	@echo "  $(COLOR_BLUE)make build$(COLOR_RESET)       - Build both projects"
-	@echo "  $(COLOR_BLUE)make clean$(COLOR_RESET)       - Clean both projects"
-	@echo "  $(COLOR_BLUE)make ci$(COLOR_RESET)          - Run CI checks on both projects"
+	@echo "  $(COLOR_BLUE)make setup$(COLOR_RESET)            - Setup development environment for both projects"
+	@echo "  $(COLOR_BLUE)make test$(COLOR_RESET)             - Run tests in both projects"
+	@echo "  $(COLOR_BLUE)make integration-test$(COLOR_RESET) - Run end-to-end integration tests with Docker Compose"
+	@echo "  $(COLOR_BLUE)make check$(COLOR_RESET)            - Run code quality checks in both projects"
+	@echo "  $(COLOR_BLUE)make format$(COLOR_RESET)           - Format code in both projects"
+	@echo "  $(COLOR_BLUE)make lint$(COLOR_RESET)             - Run linters in both projects"
+	@echo "  $(COLOR_BLUE)make build$(COLOR_RESET)            - Build both projects"
+	@echo "  $(COLOR_BLUE)make clean$(COLOR_RESET)            - Clean both projects"
+	@echo "  $(COLOR_BLUE)make ci$(COLOR_RESET)               - Run CI checks on both projects"
 	@echo ""
 	@echo "$(COLOR_GREEN)Server-Specific Commands:$(COLOR_RESET)"
 	@echo "  $(COLOR_BLUE)make server-<command>$(COLOR_RESET)  - Run <command> in server/ only"
@@ -83,6 +84,10 @@ test-integration: ## Run integration tests in both projects
 	@echo ""
 	@echo "$(COLOR_GREEN)Management integration tests$(COLOR_RESET)"
 	@$(MAKE) -C management test-integration
+
+integration-test: ## Run end-to-end integration tests with Docker Compose
+	@echo "$(COLOR_BLUE)🧪 Running end-to-end integration tests...$(COLOR_RESET)"
+	@./scripts/integration-test.sh
 
 check: ## Run code quality checks in both projects
 	@echo "$(COLOR_BLUE)🔍 Running code quality checks...$(COLOR_RESET)"

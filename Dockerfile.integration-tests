@@ -1,0 +1,22 @@
+# Dockerfile for Integration Tests
+# Builds a test runner container that can execute E2E integration tests
+
+FROM rustlang/rust:nightly-bookworm
+
+# Install build dependencies and curl for health checks
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create workspace directory
+WORKDIR /workspace
+
+# Set environment variables
+ENV RUST_LOG=debug
+ENV RUST_BACKTRACE=1
+
+# Default command (overridden by docker-compose)
+# Tests are built and run when the container starts (source mounted via volume)
+CMD ["cargo", "test", "--test", "integration", "--manifest-path", "tests/Cargo.toml", "--", "--test-threads=1", "--nocapture"]

@@ -1,0 +1,130 @@
+# Docker Compose for End-to-End Integration Tests
+# This orchestrates both server and management API with shared FoundationDB
+# for realistic cross-service authentication testing.
+
+networks:
+  inferadb-integration:
+    driver: bridge
+
+volumes:
+  fdb-config:
+
+services:
+  # FoundationDB - Shared by both server and management
+  # Uses custom build from server's working FDB test setup
+  foundationdb:
+    build:
+      context: ./server
+      dockerfile: docker/fdb-integration-tests/Dockerfile.fdb
+    container_name: inferadb-fdb-integration
+    hostname: fdb-server
+    networks:
+      - inferadb-integration
+    ports:
+      - "4500:4500"
+    volumes:
+      - fdb-config:/var/fdb
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -x fdbserver > /dev/null && test -f /var/fdb/fdb.cluster"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  # Management API - Source of truth for authentication
+  # Accepts both user session auth and server JWT auth (dual authentication)
+  # Fetches server JWKS from http://server:8080/.well-known/jwks.json
+  management-api:
+    build:
+      context: ./management
+      dockerfile: Dockerfile.integration
+    container_name: inferadb-management-integration
+    networks:
+      - inferadb-integration
+    ports:
+      - "8081:8081"
+    environment:
+      - RUST_LOG=debug
+      - INFERA_MANAGEMENT__SERVER__PORT=8081
+      - INFERA_MANAGEMENT__SERVER__HOST=0.0.0.0
+      - INFERA_MANAGEMENT__STORAGE__BACKEND=memory
+      - INFERA_MANAGEMENT__AUTH__KEY_ENCRYPTION_SECRET=test-integration-secret-key-32bytes-long!
+      # JWT issuer and audience for vault-scoped JWTs issued to clients
+      - INFERA_MANAGEMENT__AUTH__JWT_ISSUER=http://management-api:8081
+      - INFERA_MANAGEMENT__AUTH__JWT_AUDIENCE=http://server:8080
+      # Server JWKS URL for server-to-management JWT verification
+      - SERVER_JWKS_BASE_URL=http://server:8080
+      # Expected audience in server JWTs (management API URL from server's perspective)
+      - MANAGEMENT_API_AUDIENCE=http://management-api:8081
+    depends_on:
+      foundationdb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+
+  # Server - Policy engine that validates against management API
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.integration
+    container_name: inferadb-server-integration
+    networks:
+      - inferadb-integration
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    environment:
+      - RUST_LOG=info,infera_auth::certificate_cache=debug
+      - INFERA__SERVER__PORT=8080
+      - INFERA__SERVER__HOST=0.0.0.0
+      - INFERA__STORE__BACKEND=memory
+      - INFERA__AUTH__ENABLED=true
+      - INFERA__AUTH__JWKS_BASE_URL=http://management-api:8081
+      - INFERA__AUTH__MANAGEMENT_API_URL=http://management-api:8081
+      - INFERA__AUTH__MANAGEMENT_VERIFY_VAULT_OWNERSHIP=true
+      - INFERA__AUTH__MANAGEMENT_VERIFY_ORG_STATUS=true
+      # Server identity for server-to-management authentication
+      # In development/testing, omit private key to auto-generate on startup
+      - INFERA__AUTH__SERVER_IDENTITY_KID=server-integration-test-2024
+      - INFERA__AUTH__SERVER_ID=inferadb-server-integration
+    depends_on:
+      foundationdb:
+        condition: service_healthy
+      management-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-s", "http://localhost:8080/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+
+  # Test runner - Executes integration tests against both services
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.integration-tests
+    container_name: inferadb-test-runner
+    networks:
+      - inferadb-integration
+    environment:
+      - RUST_LOG=debug
+      - MANAGEMENT_API_URL=http://management-api:8081
+      - SERVER_URL=http://server:8080
+      - SERVER_GRPC_URL=http://server:50051
+      - TEST_TIMEOUT=300
+    volumes:
+      - ./tests:/workspace/tests
+      - ./target:/workspace/target
+    depends_on:
+      server:
+        condition: service_healthy
+      management-api:
+        condition: service_healthy
+    command: cargo test --test integration --manifest-path tests/Cargo.toml -- --test-threads=1 --nocapture
+    profiles:
+      - test
