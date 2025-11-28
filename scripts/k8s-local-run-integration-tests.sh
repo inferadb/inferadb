@@ -18,7 +18,7 @@ NC='\033[0m' # No Color
 # Configuration
 CLUSTER_NAME="${CLUSTER_NAME:-inferadb-local}"
 NAMESPACE="${NAMESPACE:-inferadb}"
-COMPOSE_FILE="docker-compose.k8s-tests.yml"
+COMPOSE_FILE="docker-compose.integration.yml"
 LOG_DIR="./logs/integration"
 
 log_info() {

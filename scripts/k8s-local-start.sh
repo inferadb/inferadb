@@ -170,12 +170,32 @@ spec:
     spec:
       containers:
       - name: foundationdb
-        image: foundationdb/foundationdb:7.1.38
+        image: foundationdb/foundationdb:7.3.69
         ports:
         - containerPort: 4500
         env:
         - name: FDB_NETWORKING_MODE
-          value: host
+          value: container
+        volumeMounts:
+        - name: data
+          mountPath: /var/fdb/data
+        - name: logs
+          mountPath: /var/fdb/logs
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
+  - metadata:
+      name: logs
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
 ---
 apiVersion: v1
 kind: Service
@@ -252,7 +272,7 @@ spec:
         - name: INFERADB_MGMT__SERVER_VERIFICATION__ENABLED
           value: "true"
         - name: INFERADB_MGMT__SERVER_VERIFICATION__SERVER_JWKS_URL
-          value: "http://inferadb-server:8080/.well-known/jwks.json"
+          value: "http://inferadb-server:9090/.well-known/jwks.json"
         - name: INFERADB_MGMT__SERVER_VERIFICATION__CACHE_TTL_SECONDS
           value: "300"
         readinessProbe:
@@ -286,6 +306,15 @@ EOF
 deploy_server() {
     log_info "Deploying Server..."
 
+    # Create server identity secret if it doesn't exist
+    if ! kubectl get secret inferadb-server-identity -n "${NAMESPACE}" &>/dev/null; then
+        log_info "Creating server identity secret..."
+        kubectl create secret generic inferadb-server-identity -n "${NAMESPACE}" \
+            --from-literal=server-identity-pem="-----BEGIN PRIVATE KEY-----
+MC4CAQAwBQYDK2VwBCIEICBavKgCnA54kjkPsUVqz4K2or443E+EOQVU/yDZUWz3
+-----END PRIVATE KEY-----"
+    fi
+
     kubectl apply -f - <<EOF
 apiVersion: apps/v1
 kind: Deployment
@@ -309,6 +338,9 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 8080
+          name: public
+        - containerPort: 9090
+          name: internal
         env:
         - name: RUST_LOG
           value: "info,infera_discovery=debug,infera_auth=debug"
@@ -340,6 +372,11 @@ spec:
           value: "30"
         - name: INFERA__STORE__BACKEND
           value: "memory"
+        - name: INFERA__AUTH__SERVER_IDENTITY_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: inferadb-server-identity
+              key: server-identity.pem
         readinessProbe:
           httpGet:
             path: /health/ready
@@ -356,9 +393,13 @@ spec:
   selector:
     app: inferadb-server
   ports:
-  - port: 8080
+  - name: public
+    port: 8080
     targetPort: 8080
     nodePort: 30080
+  - name: internal
+    port: 9090
+    targetPort: 9090
   type: NodePort
 EOF
 
