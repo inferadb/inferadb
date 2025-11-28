@@ -13,7 +13,7 @@
         "fdbmonitor",
         "fdbserver",
         "fdbclient",
-        "fdbcli",
+        "fdbcli"
     ],
     "ignoreWords": [],
     "import": []

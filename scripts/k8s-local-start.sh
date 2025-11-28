@@ -85,6 +85,9 @@ nodes:
   - containerPort: 30081
     hostPort: 3000
     protocol: TCP
+  - containerPort: 30090
+    hostPort: 9090
+    protocol: TCP
 - role: worker
 - role: worker
 EOF
@@ -310,7 +313,7 @@ deploy_server() {
     if ! kubectl get secret inferadb-server-identity -n "${NAMESPACE}" &>/dev/null; then
         log_info "Creating server identity secret..."
         kubectl create secret generic inferadb-server-identity -n "${NAMESPACE}" \
-            --from-literal=server-identity-pem="-----BEGIN PRIVATE KEY-----
+            --from-literal=server-identity.pem="-----BEGIN PRIVATE KEY-----
 MC4CAQAwBQYDK2VwBCIEICBavKgCnA54kjkPsUVqz4K2or443E+EOQVU/yDZUWz3
 -----END PRIVATE KEY-----"
     fi
@@ -348,6 +351,10 @@ spec:
           value: "0.0.0.0"
         - name: INFERA__SERVER__PORT
           value: "8080"
+        - name: INFERA__SERVER__INTERNAL_HOST
+          value: "0.0.0.0"
+        - name: INFERA__SERVER__INTERNAL_PORT
+          value: "9090"
         - name: INFERA__AUTH__ENABLED
           value: "true"
         - name: INFERA__AUTH__MANAGEMENT_API_URL
@@ -400,6 +407,7 @@ spec:
   - name: internal
     port: 9090
     targetPort: 9090
+    nodePort: 30090
   type: NodePort
 EOF
 
