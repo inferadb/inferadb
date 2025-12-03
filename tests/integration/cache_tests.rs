@@ -271,7 +271,9 @@ async fn test_cache_expiration_behavior() {
 #[derive(Debug)]
 struct AuthMetrics {
     management_api_calls: u64,
+    #[allow(dead_code)]
     cache_hits: u64,
+    #[allow(dead_code)]
     cache_misses: u64,
 }
 

@@ -25,7 +25,7 @@ mod concurrency_tests;
 
 /// Generate a random Ed25519 signing key
 pub fn generate_signing_key() -> SigningKey {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     let mut bytes = [0u8; 32];
     rng.fill_bytes(&mut bytes);
     SigningKey::from_bytes(&bytes)
