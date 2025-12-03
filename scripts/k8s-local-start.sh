@@ -230,10 +230,85 @@ spec:
     targetPort: 4500
 EOF
 
-    log_info "Waiting for FoundationDB to be ready..."
+    log_info "Waiting for FoundationDB pod to be ready..."
     kubectl wait --for=condition=ready pod -l app=foundationdb -n "${NAMESPACE}" --timeout=120s
 
-    log_info "FoundationDB deployed ✓"
+    log_info "FoundationDB pod deployed ✓"
+}
+
+initialize_foundationdb() {
+    log_info "Initializing FoundationDB cluster..."
+
+    # Get the FDB pod name
+    local fdb_pod
+    fdb_pod=$(kubectl get pods -l app=foundationdb -n "${NAMESPACE}" -o jsonpath='{.items[0].metadata.name}')
+
+    if [ -z "$fdb_pod" ]; then
+        log_error "FoundationDB pod not found"
+        return 1
+    fi
+
+    # Wait for FDB server to be responsive (it takes a moment after pod is ready)
+    log_info "Waiting for FDB server to be responsive..."
+    local max_attempts=30
+    local attempt=0
+
+    while [ $attempt -lt $max_attempts ]; do
+        if kubectl exec -n "${NAMESPACE}" "$fdb_pod" -- fdbcli --exec "status minimal" 2>/dev/null | grep -q "The database is"; then
+            log_info "FDB server is responsive"
+            break
+        fi
+        attempt=$((attempt + 1))
+        sleep 2
+    done
+
+    if [ $attempt -eq $max_attempts ]; then
+        log_warn "FDB still not fully responsive, attempting configuration anyway..."
+    fi
+
+    # Check if database is already configured
+    local status
+    status=$(kubectl exec -n "${NAMESPACE}" "$fdb_pod" -- fdbcli --exec "status minimal" 2>/dev/null || true)
+
+    if echo "$status" | grep -q "The database is available"; then
+        log_info "FDB cluster already configured and available ✓"
+        return 0
+    fi
+
+    # Initialize cluster with single SSD configuration (or memory for faster tests)
+    log_info "Configuring FDB cluster (new single ssd)..."
+    if kubectl exec -n "${NAMESPACE}" "$fdb_pod" -- fdbcli --exec "configure new single ssd" 2>/dev/null; then
+        log_info "FDB cluster configured successfully"
+    else
+        # If configure fails, it might already be configured - check status
+        local recheck_status
+        recheck_status=$(kubectl exec -n "${NAMESPACE}" "$fdb_pod" -- fdbcli --exec "status minimal" 2>/dev/null || true)
+        if echo "$recheck_status" | grep -q "The database is available"; then
+            log_info "FDB cluster already configured ✓"
+        else
+            log_warn "FDB configuration may have failed, but proceeding..."
+        fi
+    fi
+
+    # Wait for cluster to become available
+    log_info "Waiting for FDB cluster to become available..."
+    local init_max_attempts=30
+    local init_attempt=0
+
+    while [ $init_attempt -lt $init_max_attempts ]; do
+        local cluster_status
+        cluster_status=$(kubectl exec -n "${NAMESPACE}" "$fdb_pod" -- fdbcli --exec "status minimal" 2>/dev/null || true)
+
+        if echo "$cluster_status" | grep -q "The database is available"; then
+            log_info "FDB cluster is available ✓"
+            return 0
+        fi
+        init_attempt=$((init_attempt + 1))
+        sleep 2
+    done
+
+    log_warn "FDB cluster availability check timed out, but proceeding..."
+    return 0
 }
 
 deploy_management() {
@@ -291,7 +366,7 @@ spec:
         - name: INFERADB_MGMT__SERVER_VERIFICATION__CACHE_TTL_SECONDS
           value: "300"
         - name: MANAGEMENT_API_AUDIENCE
-          value: "http://inferadb-management-api:9091"
+          value: "http://inferadb-management-api:3000"
         volumeMounts:
         - name: fdb-cluster-file
           mountPath: /var/fdb
@@ -389,6 +464,8 @@ spec:
           value: "true"
         - name: INFERA__AUTH__MANAGEMENT_API_URL
           value: "http://inferadb-management-api:3000"
+        - name: INFERA__AUTH__MANAGEMENT_INTERNAL_API_URL
+          value: "http://inferadb-management-api:9091"
         - name: INFERA__AUTH__JWKS_BASE_URL
           value: "http://inferadb-management-api:3000"
         - name: INFERA__AUTH__JWKS_CACHE_TTL
@@ -505,6 +582,7 @@ main() {
     create_namespace
     deploy_rbac
     deploy_foundationdb
+    initialize_foundationdb
     deploy_management
     deploy_server
 

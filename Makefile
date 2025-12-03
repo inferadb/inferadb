@@ -10,7 +10,7 @@
 #   make management-test   - Run tests in management only
 
 .PHONY: help setup test test-integration test-fdb check format lint audit deny run build release clean reset dev doc coverage bench fix ci
-.PHONY: k8s-start k8s-stop k8s-update k8s-status k8s-tests k8s-purge
+.PHONY: k8s-start k8s-stop k8s-update k8s-status k8s-test k8s-purge
 .PHONY: server-help server-setup server-test server-check server-format server-lint server-run server-build server-release server-clean server-reset server-dev server-doc
 .PHONY: management-help management-setup management-test management-check management-format management-lint management-run management-build management-release management-clean management-reset management-dev management-doc
 
@@ -42,7 +42,7 @@ help: ## Show available commands
 	@echo "  $(COLOR_BLUE)make k8s-purge$(COLOR_RESET)                    - Completely destroy local Kubernetes cluster"
 	@echo "  $(COLOR_BLUE)make k8s-update$(COLOR_RESET)                   - Update local Kubernetes cluster"
 	@echo "  $(COLOR_BLUE)make k8s-status$(COLOR_RESET)                   - Check status of local Kubernetes cluster"
-	@echo "  $(COLOR_BLUE)make k8s-tests$(COLOR_RESET)                    - Run integration tests in local Kubernetes cluster"
+	@echo "  $(COLOR_BLUE)make k8s-test$(COLOR_RESET)                     - Run integration tests in local Kubernetes cluster"
 	@echo ""
 	@echo "$(COLOR_GREEN)Server-Specific Commands:$(COLOR_RESET)"
 	@echo "  $(COLOR_BLUE)make server-<command>$(COLOR_RESET)  - Run <command> in server/ only"
@@ -57,7 +57,7 @@ help: ## Show available commands
 	@echo "  make server-test           - Run tests in server only"
 	@echo "  make management-run        - Run management API only"
 	@echo "  make k8s-start             - Start local Kubernetes cluster"
-	@echo "  make k8s-tests             - Run K8s integration tests"
+	@echo "  make k8s-test             - Run K8s integration tests"
 	@echo ""
 
 # ============================================================================
