@@ -88,6 +88,9 @@ nodes:
   - containerPort: 30090
     hostPort: 9090
     protocol: TCP
+  - containerPort: 30091
+    hostPort: 9091
+    protocol: TCP
 - role: worker
 - role: worker
 EOF
@@ -259,6 +262,9 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 3000
+          name: public
+        - containerPort: 9091
+          name: internal
         env:
         - name: RUST_LOG
           value: "info,infera_management_core=debug,infera_discovery=debug"
@@ -266,8 +272,14 @@ spec:
           value: "0.0.0.0"
         - name: INFERADB_MGMT__SERVER__HTTP_PORT
           value: "3000"
+        - name: INFERADB_MGMT__SERVER__INTERNAL_HOST
+          value: "0.0.0.0"
+        - name: INFERADB_MGMT__SERVER__INTERNAL_PORT
+          value: "9091"
         - name: INFERADB_MGMT__STORAGE__BACKEND
-          value: "memory"
+          value: "foundationdb"
+        - name: INFERADB_MGMT__STORAGE__FDB_CLUSTER_FILE
+          value: "/var/fdb/fdb.cluster"
         - name: INFERADB_MGMT__CACHE_INVALIDATION__DISCOVERY__TYPE
           value: "kubernetes"
         - name: INFERADB_MGMT__CACHE_INVALIDATION__DISCOVERY__CACHE_TTL_SECONDS
@@ -278,12 +290,25 @@ spec:
           value: "http://inferadb-server:9090/.well-known/jwks.json"
         - name: INFERADB_MGMT__SERVER_VERIFICATION__CACHE_TTL_SECONDS
           value: "300"
+        - name: MANAGEMENT_API_AUDIENCE
+          value: "http://inferadb-management-api:9091"
+        volumeMounts:
+        - name: fdb-cluster-file
+          mountPath: /var/fdb
+          readOnly: true
         readinessProbe:
           httpGet:
             path: /health
             port: 3000
           initialDelaySeconds: 5
           periodSeconds: 5
+      volumes:
+      - name: fdb-cluster-file
+        configMap:
+          name: foundationdb-cluster-file
+          items:
+          - key: fdb.cluster
+            path: fdb.cluster
 ---
 apiVersion: v1
 kind: Service
@@ -294,9 +319,14 @@ spec:
   selector:
     app: inferadb-management-api
   ports:
-  - port: 3000
+  - name: public
+    port: 3000
     targetPort: 3000
     nodePort: 30081
+  - name: internal
+    port: 9091
+    targetPort: 9091
+    nodePort: 30091
   type: NodePort
 EOF
 
@@ -378,18 +408,33 @@ spec:
         - name: INFERA__AUTH__DISCOVERY__CACHE_TTL_SECONDS
           value: "30"
         - name: INFERA__STORE__BACKEND
-          value: "memory"
+          value: "foundationdb"
+        - name: INFERA__STORE__FDB_CLUSTER_FILE
+          value: "/var/fdb/fdb.cluster"
+        - name: INFERA__STORE__CONNECTION_STRING
+          value: "foundationdb-cluster:4500"
         - name: INFERA__AUTH__SERVER_IDENTITY_PRIVATE_KEY
           valueFrom:
             secretKeyRef:
               name: inferadb-server-identity
               key: server-identity.pem
+        volumeMounts:
+        - name: fdb-cluster-file
+          mountPath: /var/fdb
+          readOnly: true
         readinessProbe:
           httpGet:
             path: /health/ready
             port: 8080
           initialDelaySeconds: 5
           periodSeconds: 5
+      volumes:
+      - name: fdb-cluster-file
+        configMap:
+          name: foundationdb-cluster-file
+          items:
+          - key: fdb.cluster
+            path: fdb.cluster
 ---
 apiVersion: v1
 kind: Service

@@ -10,9 +10,8 @@ use chrono::{Duration, Utc};
 use ed25519_dalek::{SigningKey, VerifyingKey};
 use jsonwebtoken::{encode, Algorithm, EncodingKey, Header};
 use rand::RngCore;
-use reqwest::{Client, StatusCode};
+use reqwest::Client;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 use uuid::Uuid;
 
 // Re-export test modules

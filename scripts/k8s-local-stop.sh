@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
-# Stop and completely tear down local Kubernetes cluster
+# Stop (pause) local Kubernetes cluster
 #
-# This script deletes the kind cluster and cleans up all associated resources.
-# After running this script, you'll need to run k8s-local-start.sh to recreate
-# the cluster from scratch.
+# This script stops the kind cluster's Docker container without deleting it.
+# The cluster can be restarted with k8s-local-start.sh without rebuilding.
+# To completely destroy the cluster, use k8s-local-purge.sh instead.
 #
 
 set -euo pipefail
@@ -17,7 +17,6 @@ NC='\033[0m' # No Color
 
 # Configuration
 CLUSTER_NAME="${CLUSTER_NAME:-inferadb-local}"
-NAMESPACE="${NAMESPACE:-inferadb}"
 
 log_info() {
     echo -e "${GREEN}[INFO]${NC} $1"
@@ -32,44 +31,34 @@ log_error() {
 }
 
 check_cluster_exists() {
-    if ! kind get clusters | grep -q "^${CLUSTER_NAME}$"; then
+    if ! kind get clusters 2>/dev/null | grep -q "^${CLUSTER_NAME}$"; then
         log_warn "Cluster '${CLUSTER_NAME}' does not exist. Nothing to stop."
         return 1
     fi
     return 0
 }
 
-show_cluster_info() {
-    log_info "Current cluster resources:"
-    echo ""
-    kubectl get all -n "${NAMESPACE}" 2>/dev/null || log_warn "Namespace '${NAMESPACE}' not found or empty"
-    echo ""
+get_cluster_container() {
+    # Kind creates a container named <cluster-name>-control-plane
+    echo "${CLUSTER_NAME}-control-plane"
 }
 
-delete_cluster() {
-    log_info "Deleting kind cluster '${CLUSTER_NAME}'..."
-
-    kind delete cluster --name "${CLUSTER_NAME}"
-
-    log_info "Cluster deleted ✓"
+check_container_running() {
+    local container_name
+    container_name=$(get_cluster_container)
+    if docker ps --format '{{.Names}}' | grep -q "^${container_name}$"; then
+        return 0
+    fi
+    return 1
 }
 
-cleanup_docker_images() {
-    log_info "Checking for orphaned Docker images..."
+stop_cluster() {
+    local container_name
+    container_name=$(get_cluster_container)
 
-    # Note: We don't automatically delete the images as they may be used by other clusters
-    # or the user may want to keep them for quick restarts
-
-    if docker images | grep -q "inferadb-server:local"; then
-        log_info "Found inferadb-server:local image (not deleted)"
-    fi
-
-    if docker images | grep -q "inferadb-management:local"; then
-        log_info "Found inferadb-management:local image (not deleted)"
-    fi
-
-    log_info "To remove Docker images manually, run:"
-    echo "  docker rmi inferadb-server:local inferadb-management:local"
+    log_info "Stopping kind cluster container '${container_name}'..."
+    docker stop "${container_name}"
+    log_info "Cluster stopped ✓"
 }
 
 main() {
@@ -80,27 +69,20 @@ main() {
         exit 0
     fi
 
-    # Show what's about to be deleted
-    show_cluster_info
-
-    # Ask for confirmation if running interactively
-    if [ -t 0 ]; then
-        log_warn "This will completely destroy the cluster '${CLUSTER_NAME}' and all its data."
-        read -p "Are you sure you want to continue? (y/N): " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            log_info "Cancelled by user."
-            exit 0
-        fi
+    if ! check_container_running; then
+        log_info "Cluster '${CLUSTER_NAME}' is already stopped."
+        exit 0
     fi
 
-    delete_cluster
-    cleanup_docker_images
+    stop_cluster
 
-    log_info "Teardown complete! 🎉"
+    log_info "Stop complete! 🎉"
     echo ""
-    log_info "To recreate the cluster, run:"
+    log_info "To restart the cluster, run:"
     echo "  ./scripts/k8s-local-start.sh"
+    echo ""
+    log_info "To completely destroy the cluster, run:"
+    echo "  ./scripts/k8s-local-purge.sh"
 }
 
 # Run main function

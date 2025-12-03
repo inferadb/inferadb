@@ -4,7 +4,6 @@
 
 use super::*;
 use base64::Engine;
-use reqwest::StatusCode;
 use std::collections::HashMap;
 
 #[tokio::test]
