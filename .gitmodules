@@ -10,6 +10,10 @@
 	path = dashboard
 	url = https://github.com/inferadb/dashboard
 	branch = main
+[submodule "tests"]
+	path = tests
+	url = https://github.com/inferadb/tests
+	branch = main
 [submodule "cli"]
 	path = cli
 	url = https://github.com/inferadb/cli
