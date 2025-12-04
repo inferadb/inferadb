@@ -449,45 +449,45 @@ spec:
         env:
         - name: RUST_LOG
           value: "info,infera_discovery=debug,infera_auth=debug"
-        - name: INFERA__SERVER__HOST
+        - name: INFERADB__SERVER__HOST
           value: "0.0.0.0"
-        - name: INFERA__SERVER__PORT
+        - name: INFERADB__SERVER__PORT
           value: "8080"
-        - name: INFERA__SERVER__INTERNAL_HOST
+        - name: INFERADB__SERVER__INTERNAL_HOST
           value: "0.0.0.0"
-        - name: INFERA__SERVER__INTERNAL_PORT
+        - name: INFERADB__SERVER__INTERNAL_PORT
           value: "9090"
-        - name: INFERA__AUTH__ENABLED
+        - name: INFERADB__AUTH__ENABLED
           value: "true"
-        - name: INFERA__AUTH__MANAGEMENT_API_URL
+        - name: INFERADB__AUTH__MANAGEMENT_API_URL
           value: "http://inferadb-management-api:3000"
-        - name: INFERA__AUTH__MANAGEMENT_INTERNAL_API_URL
+        - name: INFERADB__AUTH__MANAGEMENT_INTERNAL_API_URL
           value: "http://inferadb-management-api:9091"
-        - name: INFERA__AUTH__JWKS_BASE_URL
+        - name: INFERADB__AUTH__JWKS_BASE_URL
           value: "http://inferadb-management-api:3000"
-        - name: INFERA__AUTH__JWKS_CACHE_TTL
+        - name: INFERADB__AUTH__JWKS_CACHE_TTL
           value: "300"
-        - name: INFERA__AUTH__MANAGEMENT_CACHE_TTL_SECONDS
+        - name: INFERADB__AUTH__MANAGEMENT_CACHE_TTL_SECONDS
           value: "300"
-        - name: INFERA__AUTH__CERT_CACHE_TTL_SECONDS
+        - name: INFERADB__AUTH__CERT_CACHE_TTL_SECONDS
           value: "900"
-        - name: INFERA__AUTH__MANAGEMENT_VERIFY_VAULT_OWNERSHIP
+        - name: INFERADB__AUTH__MANAGEMENT_VERIFY_VAULT_OWNERSHIP
           value: "true"
-        - name: INFERA__AUTH__MANAGEMENT_VERIFY_ORG_STATUS
+        - name: INFERADB__AUTH__MANAGEMENT_VERIFY_ORG_STATUS
           value: "true"
-        - name: INFERA__AUTH__DISCOVERY__MODE__TYPE
+        - name: INFERADB__AUTH__DISCOVERY__MODE__TYPE
           value: "kubernetes"
         - name: KUBERNETES_NAMESPACE
           value: "${NAMESPACE}"
-        - name: INFERA__AUTH__DISCOVERY__CACHE_TTL_SECONDS
+        - name: INFERADB__AUTH__DISCOVERY__CACHE_TTL_SECONDS
           value: "30"
-        - name: INFERA__STORE__BACKEND
+        - name: INFERADB__STORE__BACKEND
           value: "foundationdb"
-        - name: INFERA__STORE__FDB_CLUSTER_FILE
+        - name: INFERADB__STORE__FDB_CLUSTER_FILE
           value: "/var/fdb/fdb.cluster"
-        - name: INFERA__STORE__CONNECTION_STRING
+        - name: INFERADB__STORE__CONNECTION_STRING
           value: "foundationdb-cluster:4500"
-        - name: INFERA__AUTH__SERVER_IDENTITY_PRIVATE_KEY
+        - name: INFERADB__AUTH__SERVER_IDENTITY_PRIVATE_KEY
           valueFrom:
             secretKeyRef:
               name: inferadb-server-identity
