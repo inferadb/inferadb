@@ -1,255 +1,102 @@
 # InferaDB
 
-**The distributed inference engine for authorization, designed for fine-grained, low-latency environments.**
+**Inference-driven authorization database for fine-grained access control.**
 
-InferaDB provides relationship-based access control (ReBAC) through a graph-based policy engine that evaluates authorization decisions in microseconds. Think Zanzibar-inspired access control with native policy language support, multi-tenancy, and API-first design.
+InferaDB models authorization as a graph of relationships and logical inferences—not static roles or attributes. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/), it delivers sub-millisecond decisions with strong consistency across distributed, multi-tenant deployments.
 
----
+## Why InferaDB
 
-## What's Inside
+- **Relationship-Based Access Control (ReBAC)** — Model complex hierarchies, group memberships, and resource ownership as traversable graphs
+- **Declarative Policy Language (IPL)** — Define permissions with composable, version-controlled policies that are testable before deployment
+- **Microsecond Latency** — Co-located computation with FoundationDB-backed storage for consistent, low-latency decisions at scale
+- **Multi-Tenant by Design** — Isolated policy namespaces, per-tenant encryption, and auditable decision logs
+- **Extensible via WASM** — Embed custom logic (compliance rules, risk scoring, contextual checks) in sandboxed, deterministic modules
 
-This is a **meta-repository** that orchestrates all InferaDB components via git submodules:
+## Components
 
-| Component                                                  | Description                                                            |
-| ---------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [server/](server/)                                         | Core policy engine - IPL parsing, graph traversal, decision evaluation |
-| [management/](management/)                                 | Management API - Tenant orchestration, RBAC, audit logs                |
-| [dashboard/](dashboard/)                                   | Web console for policy design, simulation, observability               |
-| [cli/](cli/)                                               | Developer tooling for schemas, policies, modules                       |
-| [docs/](docs/)                                             | Technical specifications, whitepapers, and deployment guides           |
-| [terraform-provider-inferadb/](terraform-provider-inferadb/) | Infrastructure as code for InferaDB deployment                         |
-| [tests/](tests/)                                           | E2E integration tests and Kubernetes scripts                           |
-
----
+| Directory                                                    | Purpose                                     |
+| ------------------------------------------------------------ | ------------------------------------------- |
+| [server/](server/)                                           | Policy engine (IPL parser, graph traversal) |
+| [management/](management/)                                   | Control plane (tenants, RBAC, audit)        |
+| [tests/](tests/)                                             | E2E integration tests, K8s scripts          |
+| [docs/](docs/)                                               | Specifications and deployment guides        |
+| [dashboard/](dashboard/)                                     | Web console (planned)                       |
+| [cli/](cli/)                                                 | Developer CLI (planned)                     |
+| [terraform-provider-inferadb/](terraform-provider-inferadb/) | IaC provider (planned)                      |
 
 ## Quick Start
 
-### Prerequisites
-
-- **Make** - Build orchestration
-- **[Mise](https://mise.jdx.dev/)** (optional) - Tool version management
-- **Rust** 1.91+ - If not using Mise
-
-### 1. Clone with Submodules
+**Prerequisites:** Make, Rust 1.91+ (or [Mise](https://mise.jdx.dev/) for version management)
 
 ```bash
 git clone https://github.com/inferadb/inferadb
 cd inferadb
 git submodule init && git submodule update --remote
+make setup                          # Install tools, fetch dependencies
+make test                           # Run all tests
+make server-dev                     # Start server with auto-reload
 ```
 
-### 2. Setup Development Environment
+## Commands
+
+Run `make help` for full list. Pattern: `make <component>-<command>` (e.g., `make server-test`).
+
+| Command      | Purpose                    |
+| ------------ | -------------------------- |
+| `make build` | Build (debug)              |
+| `make check` | Format, lint, audit        |
+| `make clean` | Clean build artifacts      |
+| `make ci`    | Full CI pipeline locally   |
+
+### Kubernetes Environment
+
+| Command           | Purpose                           |
+| ----------------- | --------------------------------- |
+| `make k8s-start`  | Start local K8s environment       |
+| `make k8s-stop`   | Stop environment (preserves data) |
+| `make k8s-status` | Check deployment health           |
+| `make k8s-purge`  | Remove all resources and data     |
+
+### Test Execution
+
+| Command         | Purpose                          | Requires    |
+| --------------- | -------------------------------- | ----------- |
+| `make test`     | Unit tests (server + management) | Nothing     |
+| `make test-fdb` | FDB integration tests            | Docker      |
+| `make test-e2e` | E2E tests in K8s                 | K8s running |
+
+### Component-Specific
 
 ```bash
-make setup  # Installs tools, downloads dependencies
+make server-dev       # Start server with auto-reload
+make management-dev   # Start management API with auto-reload
 ```
 
-This runs setup for both `server/` and `management/` components.
-
-### 3. Run Tests
-
-```bash
-# Test both projects
-make test
-
-# Or test individually
-make server-test
-make management-test
-```
-
-### 4. Start Development Server
-
-```bash
-# Start server in watch mode
-make server-dev
-
-# Or start management API
-make management-dev
-```
-
----
-
-## Available Commands
-
-The root Makefile delegates to component-specific Makefiles. All commands support both **combined** (run on all projects) and **component-specific** execution.
-
-### Combined Commands (Server + Management)
-
-```bash
-make test      # Run tests in both projects
-make build     # Build both projects (debug)
-make check     # Run all quality checks (format, lint, audit)
-make clean     # Clean build artifacts
-```
-
-### Server-Specific Commands
-
-```bash
-make server-test          # Run server tests
-make server-dev           # Start with auto-reload
-make server-build         # Build debug binary
-make server-release       # Build optimized release
-make server-test-fdb      # Run FoundationDB tests
-```
-
-### Management-Specific Commands
-
-```bash
-make management-test      # Run management tests
-make management-dev       # Start with auto-reload
-make management-build     # Build debug binary
-make management-release   # Build optimized release
-```
-
-### Meta-Repository Commands
-
-```bash
-make help          # Show all available commands
-make setup         # One-time development setup
-make reset         # Full reset (clean all artifacts)
-```
-
-For detailed command information:
-
-```bash
-make help              # Root commands
-make -C server help    # Server commands
-make -C management help # Management commands
-```
-
----
-
-## Architecture Overview
+## Architecture
 
 ```mermaid
-graph TD
-    A[InferaDB Meta-Repository] --> B[server/ - Policy Engine]
-    A --> C[management/ - API & Control Plane]
-    A --> D[dashboard/ - Web UI]
-    A --> E[cli/ - Developer Tools]
-    A --> F[docs/ - Documentation]
-    A --> G[terraform-provider-inferadb/ - IaC]
-    A --> H[tests/ - E2E Tests]
-
+graph LR
+    A[InferaDB] --> B[server/]
+    A --> C[management/]
+    A --> D[tests/]
     B --> B1[IPL Parser]
-    B --> B2[Graph Traversal]
-    B --> B3[Decision Evaluation]
-
-    C --> C1[Tenant Management]
-    C --> C2[RBAC & Auth]
-    C --> C3[Audit Logs]
-
-    D --> D1[Policy Designer & Simulator]
-
-    E --> E1[Schema/Policy Management]
-
-    F --> F1[Whitepapers & Deployment]
-
-    G --> G1[Infrastructure Automation]
-
-    H --> H1[K8s Integration Tests]
-
-    style A fill:#4A90E2,stroke:#2E5C8A,color:#fff
-    style B fill:#50C878,stroke:#2E7D4E,color:#fff
-    style C fill:#50C878,stroke:#2E7D4E,color:#fff
-    style D fill:#FFB84D,stroke:#CC8A3D,color:#fff
-    style E fill:#FFB84D,stroke:#CC8A3D,color:#fff
-    style F fill:#9B59B6,stroke:#6C3A7C,color:#fff
-    style G fill:#FFB84D,stroke:#CC8A3D,color:#fff
+    B --> B2[Graph Engine]
+    C --> C1[Tenants/RBAC]
+    C --> C2[Audit Logs]
+    D --> D1[K8s E2E Tests]
 ```
 
-**Color Legend**: 🟦 Meta-Repo · 🟩 Production-Ready · 🟧 In Development · 🟪 Documentation
-
-### Core Technologies
-
-- **Server**: Rust, FoundationDB, gRPC
-- **Management**: Rust, Axum, PostgreSQL/FoundationDB
-- **Dashboard**: TanStack Start, Hono, React (planned)
-- **CLI**: Rust, Clap (planned)
-
----
-
-## Development Workflow
-
-### Working on a Specific Component
-
-Each submodule has its own detailed README:
-
-- [Server Development Guide](server/README.md) - Policy engine internals
-- [Management API Guide](management/README.md) - API architecture
-- [E2E Integration Tests](tests/) - Kubernetes-based integration tests
-
-### Running Integration Tests
-
-```bash
-# FoundationDB integration tests (requires Docker)
-make server-test-fdb
-make management-test-fdb
-```
-
-### Code Quality
-
-```bash
-make check         # Run all checks (format, lint, audit)
-make format        # Format code (rustfmt, prettier, taplo)
-make lint          # Run clippy
-make audit         # Security audit
-```
-
-### Documentation
-
-```bash
-make doc           # Generate and open Rust docs
-```
-
----
-
-## Project Status
-
-### ✅ Production-Ready Components
-
-**Server** - Core policy engine with full IPL support, graph-based relationship traversal, and microsecond-latency decision evaluation. Battle-tested with comprehensive test coverage.
-
-**Management** - Production-grade API for tenant orchestration, user management, RBAC, and audit logging. Includes secure authentication (Ed25519, Argon2id), multi-tenancy isolation, and complete audit trail.
-
-### 🚧 In Development
-
-**Dashboard** - Web-based policy designer and simulator with real-time testing capabilities.
-
-**CLI** - Command-line tools for local development, schema validation, and policy testing.
-
-**Terraform Provider** - Infrastructure as code for automated InferaDB deployment.
-
----
+**Tech Stack:** Server (Rust, FoundationDB, gRPC) · Management (Rust, Axum, FoundationDB) · Tests (Rust, Kubernetes)
 
 ## Resources
 
-- **Documentation**: [docs/](docs/) - Technical specifications and deployment guides
-- **Server Docs**: [server/docs/](server/docs/) - Comprehensive API and architecture reference
-- **Management Docs**: [management/docs/](management/docs/) - Management API documentation
-- **Contributing**: See individual component READMEs for contribution guidelines
-- **Security**: Report vulnerabilities via GitHub Security Advisories
-
----
+| Resource                                     | Description                 |
+| -------------------------------------------- | --------------------------- |
+| [server/README.md](server/README.md)         | Policy engine development   |
+| [management/README.md](management/README.md) | Management API architecture |
+| [tests/README.md](tests/README.md)           | Integration test guide      |
+| [docs/](docs/)                               | Specifications, deployment  |
 
 ## License
 
-This meta-repository orchestrates multiple independent projects, each with its own licensing:
-
-- **Server**: See [server/LICENSE](server/LICENSE)
-- **Management**: See [management/LICENSE](management/LICENSE)
-- **Dashboard**: See [dashboard/LICENSE](dashboard/LICENSE) (when available)
-- **CLI**: See [cli/LICENSE](cli/LICENSE) (when available)
-
-Please review each component's license individually.
-
----
-
-## Need Help?
-
-1. **Getting Started Issues**: Check component-specific READMEs ([server/](server/), [management/](management/))
-2. **E2E Testing**: See [tests/](tests/) for integration test examples
-3. **API Documentation**: Run `make doc` to view generated Rust documentation
-4. **Questions**: Open a discussion on GitHub
-
-For component-specific questions, refer to the respective submodule repositories.
+Each component has its own license. See [server/LICENSE](server/LICENSE), [management/LICENSE](management/LICENSE), [tests/LICENSE](tests/LICENSE).

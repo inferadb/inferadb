@@ -9,10 +9,10 @@
 #   make server-test       - Run tests in server only
 #   make management-test   - Run tests in management only
 
-.PHONY: help setup test test-integration test-fdb check format lint audit deny run build release clean reset dev doc coverage bench fix ci
-.PHONY: k8s-start k8s-stop k8s-update k8s-status k8s-test k8s-purge
+.PHONY: help setup test test-fdb check format lint audit deny run build release clean reset dev doc coverage bench fix ci
 .PHONY: server-help server-setup server-test server-check server-format server-lint server-run server-build server-release server-clean server-reset server-dev server-doc
 .PHONY: management-help management-setup management-test management-check management-format management-lint management-run management-build management-release management-clean management-reset management-dev management-doc
+.PHONY: k8s-start k8s-stop k8s-status k8s-update k8s-purge test-e2e
 
 # Default target - show help
 .DEFAULT_GOAL := help
@@ -36,14 +36,6 @@ help: ## Show available commands
 	@echo "  $(COLOR_BLUE)make clean$(COLOR_RESET)            - Clean both projects"
 	@echo "  $(COLOR_BLUE)make ci$(COLOR_RESET)               - Run CI checks on both projects"
 	@echo ""
-	@echo "$(COLOR_GREEN)Kubernetes Commands:$(COLOR_RESET)"
-	@echo "  $(COLOR_BLUE)make k8s-start$(COLOR_RESET)                    - Start local Kubernetes cluster"
-	@echo "  $(COLOR_BLUE)make k8s-stop$(COLOR_RESET)                     - Stop local Kubernetes cluster (can be restarted)"
-	@echo "  $(COLOR_BLUE)make k8s-purge$(COLOR_RESET)                    - Completely destroy local Kubernetes cluster"
-	@echo "  $(COLOR_BLUE)make k8s-update$(COLOR_RESET)                   - Update local Kubernetes cluster"
-	@echo "  $(COLOR_BLUE)make k8s-status$(COLOR_RESET)                   - Check status of local Kubernetes cluster"
-	@echo "  $(COLOR_BLUE)make k8s-test$(COLOR_RESET)                     - Run integration tests in local Kubernetes cluster"
-	@echo ""
 	@echo "$(COLOR_GREEN)Server-Specific Commands:$(COLOR_RESET)"
 	@echo "  $(COLOR_BLUE)make server-<command>$(COLOR_RESET)  - Run <command> in server/ only"
 	@echo "  $(COLOR_BLUE)make server-help$(COLOR_RESET)       - Show server-specific help"
@@ -52,12 +44,17 @@ help: ## Show available commands
 	@echo "  $(COLOR_BLUE)make management-<command>$(COLOR_RESET)  - Run <command> in management/ only"
 	@echo "  $(COLOR_BLUE)make management-help$(COLOR_RESET)       - Show management-specific help"
 	@echo ""
+	@echo "$(COLOR_GREEN)Kubernetes Environment:$(COLOR_RESET)"
+	@echo "  $(COLOR_BLUE)make k8s-start$(COLOR_RESET)         - Start local K8s environment"
+	@echo "  $(COLOR_BLUE)make k8s-stop$(COLOR_RESET)          - Stop K8s environment"
+	@echo "  $(COLOR_BLUE)make k8s-status$(COLOR_RESET)        - Check K8s environment health"
+	@echo "  $(COLOR_BLUE)make k8s-purge$(COLOR_RESET)         - Remove all K8s resources"
+	@echo ""
 	@echo "$(COLOR_YELLOW)Examples:$(COLOR_RESET)"
-	@echo "  make test                  - Run tests in both projects"
-	@echo "  make server-test           - Run tests in server only"
-	@echo "  make management-run        - Run management API only"
-	@echo "  make k8s-start             - Start local Kubernetes cluster"
-	@echo "  make k8s-test             - Run K8s integration tests"
+	@echo "  make test                  - Run unit tests in both projects"
+	@echo "  make test-fdb              - Run FDB integration tests (requires Docker)"
+	@echo "  make test-e2e              - Run E2E tests in K8s"
+	@echo "  make k8s-start             - Start local K8s environment"
 	@echo ""
 
 # ============================================================================
@@ -86,55 +83,16 @@ test: ## Run tests in both projects
 	@echo ""
 	@echo "$(COLOR_GREEN)✅ All tests passed!$(COLOR_RESET)"
 
-test-integration: ## Run integration tests in both projects
-	@echo "$(COLOR_BLUE)🧪 Running integration tests...$(COLOR_RESET)"
+test-fdb: ## Run FDB integration tests in both projects (requires Docker)
+	@echo "$(COLOR_BLUE)🧪 Running FDB integration tests...$(COLOR_RESET)"
 	@echo ""
-	@echo "$(COLOR_GREEN)Server integration tests$(COLOR_RESET)"
-	@$(MAKE) -C server test-integration
+	@echo "$(COLOR_GREEN)Server FDB tests$(COLOR_RESET)"
+	@$(MAKE) -C server test-fdb
 	@echo ""
-	@echo "$(COLOR_GREEN)Management integration tests$(COLOR_RESET)"
-	@$(MAKE) -C management test-integration
-
-k8s-start: ## Start local Kubernetes cluster
-	@echo "$(COLOR_BLUE)🚀 Starting local Kubernetes cluster...$(COLOR_RESET)"
+	@echo "$(COLOR_GREEN)Management FDB tests$(COLOR_RESET)"
+	@$(MAKE) -C management test-fdb
 	@echo ""
-	@echo "$(COLOR_GREEN)Starting local Kubernetes cluster$(COLOR_RESET)"
-	@./tests/scripts/k8s-local-start.sh
-	@echo ""
-	@echo "$(COLOR_GREEN)✅ Local Kubernetes cluster started!$(COLOR_RESET)"
-
-k8s-stop: ## Stop local Kubernetes cluster (can be restarted)
-	@echo "$(COLOR_BLUE)🛑 Stopping local Kubernetes cluster...$(COLOR_RESET)"
-	@echo ""
-	@./tests/scripts/k8s-local-stop.sh
-	@echo ""
-	@echo "$(COLOR_GREEN)✅ Local Kubernetes cluster stopped!$(COLOR_RESET)"
-
-k8s-purge: ## Completely destroy local Kubernetes cluster
-	@echo "$(COLOR_BLUE)🗑️  Purging local Kubernetes cluster...$(COLOR_RESET)"
-	@echo ""
-	@./tests/scripts/k8s-local-purge.sh
-	@echo ""
-	@echo "$(COLOR_GREEN)✅ Local Kubernetes cluster purged!$(COLOR_RESET)"
-
-k8s-update: ## Update local Kubernetes cluster
-	@echo "$(COLOR_BLUE)🔄 Updating local Kubernetes cluster...$(COLOR_RESET)"
-	@echo ""
-	@echo "$(COLOR_GREEN)Updating local Kubernetes cluster$(COLOR_RESET)"
-	@./tests/scripts/k8s-local-update.sh
-	@echo ""
-	@echo "$(COLOR_GREEN)✅ Local Kubernetes cluster updated!$(COLOR_RESET)"
-
-k8s-test: ## Run integration tests in local Kubernetes cluster
-	@echo "$(COLOR_BLUE)🧪 Running integration tests in local Kubernetes cluster...$(COLOR_RESET)"
-	@echo ""
-	@echo "$(COLOR_GREEN)Running integration tests in local Kubernetes cluster$(COLOR_RESET)"
-	@./tests/scripts/k8s-local-run-integration-tests.sh
-	@echo ""
-	@echo "$(COLOR_GREEN)✅ Integration tests in local Kubernetes cluster passed!$(COLOR_RESET)"
-
-k8s-status: ## Check status of local Kubernetes cluster
-	@./tests/scripts/k8s-local-status.sh
+	@echo "$(COLOR_GREEN)✅ All FDB tests passed!$(COLOR_RESET)"
 
 check: ## Run code quality checks in both projects
 	@echo "$(COLOR_BLUE)🔍 Running code quality checks...$(COLOR_RESET)"
@@ -297,3 +255,29 @@ management-reset: ## Reset management
 
 management-doc: ## Generate management documentation
 	@$(MAKE) -C management doc
+
+# ============================================================================
+# Kubernetes Environment
+# ============================================================================
+
+k8s-start: ## Start local K8s environment
+	@$(MAKE) -C tests start
+
+k8s-stop: ## Stop K8s environment
+	@$(MAKE) -C tests stop
+
+k8s-status: ## Check K8s environment health
+	@$(MAKE) -C tests status
+
+k8s-update: ## Rebuild and redeploy K8s images
+	@$(MAKE) -C tests update
+
+k8s-purge: ## Remove all K8s resources and data
+	@$(MAKE) -C tests purge
+
+# ============================================================================
+# E2E Tests
+# ============================================================================
+
+test-e2e: ## Run E2E integration tests in K8s
+	@$(MAKE) -C tests test
