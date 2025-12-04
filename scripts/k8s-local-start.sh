@@ -318,17 +318,17 @@ deploy_management() {
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: inferadb-management-api
+  name: inferadb-management
   namespace: ${NAMESPACE}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: inferadb-management-api
+      app: inferadb-management
   template:
     metadata:
       labels:
-        app: inferadb-management-api
+        app: inferadb-management
     spec:
       serviceAccountName: inferadb-management
       containers:
@@ -363,7 +363,7 @@ spec:
         - name: INFERADB_MGMT__SERVER_VERIFICATION__CACHE_TTL_SECONDS
           value: "300"
         - name: MANAGEMENT_API_AUDIENCE
-          value: "http://inferadb-management-api:3000"
+          value: "http://inferadb-management:3000"
         volumeMounts:
         - name: fdb-cluster-file
           mountPath: /var/fdb
@@ -385,11 +385,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: inferadb-management-api
+  name: inferadb-management
   namespace: ${NAMESPACE}
 spec:
   selector:
-    app: inferadb-management-api
+    app: inferadb-management
   ports:
   - name: public
     port: 3000
@@ -403,7 +403,7 @@ spec:
 EOF
 
     log_info "Waiting for Management API to be ready..."
-    kubectl wait --for=condition=available deployment/inferadb-management-api -n "${NAMESPACE}" --timeout=120s
+    kubectl wait --for=condition=available deployment/inferadb-management -n "${NAMESPACE}" --timeout=120s
 
     log_info "Management API deployed ✓"
 }
@@ -460,11 +460,11 @@ spec:
         - name: INFERADB__AUTH__ENABLED
           value: "true"
         - name: INFERADB__AUTH__MANAGEMENT_API_URL
-          value: "http://inferadb-management-api:3000"
+          value: "http://inferadb-management:3000"
         - name: INFERADB__AUTH__MANAGEMENT_INTERNAL_API_URL
-          value: "http://inferadb-management-api:9091"
+          value: "http://inferadb-management:9091"
         - name: INFERADB__AUTH__JWKS_BASE_URL
-          value: "http://inferadb-management-api:3000"
+          value: "http://inferadb-management:3000"
         - name: INFERADB__AUTH__JWKS_CACHE_TTL
           value: "300"
         - name: INFERADB__AUTH__MANAGEMENT_CACHE_TTL_SECONDS
@@ -554,10 +554,10 @@ show_status() {
     echo "  kubectl logs -f deployment/inferadb-server -n ${NAMESPACE} | grep -i discovery"
     echo ""
     echo "  # Watch management logs"
-    echo "  kubectl logs -f deployment/inferadb-management-api -n ${NAMESPACE} | grep -i discovery"
+    echo "  kubectl logs -f deployment/inferadb-management -n ${NAMESPACE} | grep -i discovery"
     echo ""
     echo "  # Scale management and watch server discover new endpoints"
-    echo "  kubectl scale deployment/inferadb-management-api --replicas=4 -n ${NAMESPACE}"
+    echo "  kubectl scale deployment/inferadb-management --replicas=4 -n ${NAMESPACE}"
     echo ""
     echo "  # Update deployment with new changes"
     echo "  ./scripts/k8s-local-update.sh"

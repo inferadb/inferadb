@@ -80,9 +80,9 @@ restart_deployments() {
     log_info "Restarting deployments to use new images..."
 
     # Restart management API
-    kubectl rollout restart deployment/inferadb-management-api -n "${NAMESPACE}"
+    kubectl rollout restart deployment/inferadb-management -n "${NAMESPACE}"
     log_info "Waiting for Management API rollout..."
-    kubectl rollout status deployment/inferadb-management-api -n "${NAMESPACE}" --timeout=120s
+    kubectl rollout status deployment/inferadb-management -n "${NAMESPACE}" --timeout=120s
 
     # Restart server
     kubectl rollout restart deployment/inferadb-server -n "${NAMESPACE}"
@@ -103,7 +103,7 @@ show_status() {
     echo ""
 
     log_info "Recent Management API Logs:"
-    kubectl logs deployment/inferadb-management-api -n "${NAMESPACE}" --tail=10
+    kubectl logs deployment/inferadb-management -n "${NAMESPACE}" --tail=10
 }
 
 main() {
