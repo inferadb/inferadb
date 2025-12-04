@@ -26,7 +26,7 @@ InferaDB models authorization as a graph of relationships and logical inferences
 
 ## Quick Start
 
-**Prerequisites:** Make, Rust 1.78+ (or [Mise](https://mise.jdx.dev/) for version management)
+**Prerequisites:** Make, Rust 1.85+ (or [Mise](https://mise.jdx.dev/) for version management)
 
 ```bash
 git clone https://github.com/inferadb/inferadb
