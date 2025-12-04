@@ -4,11 +4,12 @@ This repository is organized into submodules, each with its own license.
 
 ## Component Licenses
 
-| Component                                                           | License                     | SPDX Identifier |
-| ------------------------------------------------------------------- | --------------------------- | --------------- |
-| [server/](server/LICENSE.md)                                        | Business Source License 1.1 | `BUSL-1.1`      |
-| [management/](management/LICENSE.md)                                | Business Source License 1.1 | `BUSL-1.1`      |
-| [terraform-provider-inferadb/](terraform-provider-inferadb/LICENSE) | Apache License 2.0          | `Apache-2.0`    |
+| Component                                                                              | License                     | SPDX Identifier |
+| -------------------------------------------------------------------------------------- | --------------------------- | --------------- |
+| [server](https://github.com/inferadb/server)                                           | Business Source License 1.1 | `BUSL-1.1`      |
+| [management](https://github.com/inferadb/management)                                   | Business Source License 1.1 | `BUSL-1.1`      |
+| [terraform-provider-inferadb](https://github.com/inferadb/terraform-provider-inferadb) | Apache License 2.0          | `Apache-2.0`    |
+| [tests](https://github.com/inferadb/tests)                                             | Apache License 2.0          | `Apache-2.0`    |
 
 ## Summary
 
@@ -23,10 +24,10 @@ The core InferaDB components (`server/` and `management/`) are licensed under th
 
 For commercial licensing inquiries, contact [inferadb.com](https://inferadb.com)
 
-### Terraform Provider (Apache-2.0)
+### Terraform Provider & Integration Tests (Apache-2.0)
 
-The Terraform provider (`terraform-provider-inferadb/`) is licensed under the
-[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0):
+The Terraform provider (`terraform-provider-inferadb/`) and integration tests (`tests/`)
+are licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0):
 
 - **Free** for any use, including commercial
 - **Permissive** open-source license
