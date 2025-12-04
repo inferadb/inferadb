@@ -36,7 +36,7 @@ log_error() {
 check_cluster_exists() {
     if ! kind get clusters | grep -q "^${CLUSTER_NAME}$"; then
         log_error "Cluster '${CLUSTER_NAME}' does not exist."
-        log_info "Create it first with: ./scripts/k8s-local-start.sh"
+        log_info "Create it first with: ./tests/scripts/k8s-local-start.sh"
         exit 1
     fi
     log_info "Cluster '${CLUSTER_NAME}' exists ✓"

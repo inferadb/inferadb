@@ -18,7 +18,7 @@ NC='\033[0m' # No Color
 # Configuration
 CLUSTER_NAME="${CLUSTER_NAME:-inferadb-local}"
 NAMESPACE="${NAMESPACE:-inferadb}"
-COMPOSE_FILE="docker-compose.integration.yml"
+COMPOSE_FILE="tests/docker-compose.integration.yml"
 LOG_DIR="./logs/integration"
 
 log_info() {
@@ -36,7 +36,7 @@ log_error() {
 check_cluster_exists() {
     if ! kind get clusters | grep -q "^${CLUSTER_NAME}$"; then
         log_error "Cluster '${CLUSTER_NAME}' does not exist."
-        log_info "Create it first with: ./scripts/k8s-local-start.sh"
+        log_info "Create it first with: ./tests/scripts/k8s-local-start.sh"
         exit 1
     fi
     log_info "Cluster '${CLUSTER_NAME}' exists ✓"
@@ -48,14 +48,14 @@ check_deployments_ready() {
     # Check management API
     if ! kubectl get deployment inferadb-management -n "${NAMESPACE}" &>/dev/null; then
         log_error "Management API deployment not found."
-        log_info "Deploy it first with: ./scripts/k8s-local-start.sh"
+        log_info "Deploy it first with: ./tests/scripts/k8s-local-start.sh"
         exit 1
     fi
 
     # Check server
     if ! kubectl get deployment inferadb-server -n "${NAMESPACE}" &>/dev/null; then
         log_error "Server deployment not found."
-        log_info "Deploy it first with: ./scripts/k8s-local-start.sh"
+        log_info "Deploy it first with: ./tests/scripts/k8s-local-start.sh"
         exit 1
     fi
 
@@ -73,7 +73,7 @@ run_integration_tests() {
     log_info "Running integration tests..."
 
     # Ensure we're in the project root
-    cd "$(dirname "$0")/.."
+    cd "$(dirname "$0")/../.."
 
     # Create log directory
     mkdir -p "${LOG_DIR}"

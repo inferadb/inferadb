@@ -560,13 +560,13 @@ show_status() {
     echo "  kubectl scale deployment/inferadb-management --replicas=4 -n ${NAMESPACE}"
     echo ""
     echo "  # Update deployment with new changes"
-    echo "  ./scripts/k8s-local-update.sh"
+    echo "  ./tests/scripts/k8s-local-update.sh"
     echo ""
     echo "  # Run integration tests"
-    echo "  ./scripts/k8s-local-run-integration-tests.sh"
+    echo "  ./tests/scripts/k8s-local-run-integration-tests.sh"
     echo ""
     echo "  # Stop and tear down cluster"
-    echo "  ./scripts/k8s-local-stop.sh"
+    echo "  ./tests/scripts/k8s-local-stop.sh"
 }
 
 main() {

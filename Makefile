@@ -99,21 +99,21 @@ k8s-start: ## Start local Kubernetes cluster
 	@echo "$(COLOR_BLUE)🚀 Starting local Kubernetes cluster...$(COLOR_RESET)"
 	@echo ""
 	@echo "$(COLOR_GREEN)Starting local Kubernetes cluster$(COLOR_RESET)"
-	@./scripts/k8s-local-start.sh
+	@./tests/scripts/k8s-local-start.sh
 	@echo ""
 	@echo "$(COLOR_GREEN)✅ Local Kubernetes cluster started!$(COLOR_RESET)"
 
 k8s-stop: ## Stop local Kubernetes cluster (can be restarted)
 	@echo "$(COLOR_BLUE)🛑 Stopping local Kubernetes cluster...$(COLOR_RESET)"
 	@echo ""
-	@./scripts/k8s-local-stop.sh
+	@./tests/scripts/k8s-local-stop.sh
 	@echo ""
 	@echo "$(COLOR_GREEN)✅ Local Kubernetes cluster stopped!$(COLOR_RESET)"
 
 k8s-purge: ## Completely destroy local Kubernetes cluster
 	@echo "$(COLOR_BLUE)🗑️  Purging local Kubernetes cluster...$(COLOR_RESET)"
 	@echo ""
-	@./scripts/k8s-local-purge.sh
+	@./tests/scripts/k8s-local-purge.sh
 	@echo ""
 	@echo "$(COLOR_GREEN)✅ Local Kubernetes cluster purged!$(COLOR_RESET)"
 
@@ -121,7 +121,7 @@ k8s-update: ## Update local Kubernetes cluster
 	@echo "$(COLOR_BLUE)🔄 Updating local Kubernetes cluster...$(COLOR_RESET)"
 	@echo ""
 	@echo "$(COLOR_GREEN)Updating local Kubernetes cluster$(COLOR_RESET)"
-	@./scripts/k8s-local-update.sh
+	@./tests/scripts/k8s-local-update.sh
 	@echo ""
 	@echo "$(COLOR_GREEN)✅ Local Kubernetes cluster updated!$(COLOR_RESET)"
 
@@ -129,12 +129,12 @@ k8s-test: ## Run integration tests in local Kubernetes cluster
 	@echo "$(COLOR_BLUE)🧪 Running integration tests in local Kubernetes cluster...$(COLOR_RESET)"
 	@echo ""
 	@echo "$(COLOR_GREEN)Running integration tests in local Kubernetes cluster$(COLOR_RESET)"
-	@./scripts/k8s-local-run-integration-tests.sh
+	@./tests/scripts/k8s-local-run-integration-tests.sh
 	@echo ""
 	@echo "$(COLOR_GREEN)✅ Integration tests in local Kubernetes cluster passed!$(COLOR_RESET)"
 
 k8s-status: ## Check status of local Kubernetes cluster
-	@./scripts/k8s-local-status.sh
+	@./tests/scripts/k8s-local-status.sh
 
 check: ## Run code quality checks in both projects
 	@echo "$(COLOR_BLUE)🔍 Running code quality checks...$(COLOR_RESET)"

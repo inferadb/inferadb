@@ -97,7 +97,7 @@ main() {
     log_info "Purge complete! 🎉"
     echo ""
     log_info "To recreate the cluster, run:"
-    echo "  ./scripts/k8s-local-start.sh"
+    echo "  ./tests/scripts/k8s-local-start.sh"
 }
 
 # Run main function

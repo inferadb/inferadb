@@ -79,10 +79,10 @@ main() {
     log_info "Stop complete! 🎉"
     echo ""
     log_info "To restart the cluster, run:"
-    echo "  ./scripts/k8s-local-start.sh"
+    echo "  ./tests/scripts/k8s-local-start.sh"
     echo ""
     log_info "To completely destroy the cluster, run:"
-    echo "  ./scripts/k8s-local-purge.sh"
+    echo "  ./tests/scripts/k8s-local-purge.sh"
 }
 
 # Run main function
