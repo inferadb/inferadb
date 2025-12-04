@@ -2,6 +2,7 @@
 name = "inferadb-integration-tests"
 version = "0.1.0"
 edition = "2021"
+rust-version = "1.78"
 
 [dependencies]
 # HTTP client for calling APIs
