@@ -10,16 +10,14 @@ InferaDB provides relationship-based access control (ReBAC) through a graph-base
 
 This is a **meta-repository** that orchestrates all InferaDB components via git submodules:
 
-| Component                                  | Status           | Description                                                            |
-| ------------------------------------------ | ---------------- | ---------------------------------------------------------------------- |
-| [server/](server/)                         | 🚧 Development   | Core policy engine - IPL parsing, graph traversal, decision evaluation |
-| [management/](management/)                 | 🚧 Development   | Management API - Tenant orchestration, RBAC, audit logs                |
-| [dashboard/](dashboard/)                   | 🚧 Development   | Web console for policy design, simulation, observability               |
-| [cli/](cli/)                               | 🚧 Development   | Developer tooling for schemas, policies, modules                       |
-| [docs/](docs/)                             | 📚 Documentation | Comprehensive guides and API references                                |
-| [terraform-provider/](terraform-provider/) | 🚧 Development   | Infrastructure as code for InferaDB deployment                         |
-
-**Legend**: ✅ Production-ready · 🚧 In development · 📚 Documentation
+| Component                                  | Description                                                            |
+| ------------------------------------------ | ---------------------------------------------------------------------- |
+| [server/](server/)                         | Core policy engine - IPL parsing, graph traversal, decision evaluation |
+| [management/](management/)                 | Management API - Tenant orchestration, RBAC, audit logs                |
+| [dashboard/](dashboard/)                   | Web console for policy design, simulation, observability               |
+| [cli/](cli/)                               | Developer tooling for schemas, policies, modules                       |
+| [docs/](docs/)                             | Comprehensive guides and API references                                |
+| [terraform-provider/](terraform-provider/) | Infrastructure as code for InferaDB deployment                         |
 
 ---
 
