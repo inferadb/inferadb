@@ -4,7 +4,7 @@ Distributed authorization engine implementing Zanzibar-inspired ReBAC with nativ
 
 ## Repository Structure
 
-Meta-repository with git submodules. Each component has its own `CLAUDE.md` with detailed guidance.
+Meta-repository with git submodules. Each component has its own `AGENTS.md` with detailed guidance.
 
 | Directory     | Language   | Purpose                                                     |
 | ------------- | ---------- | ----------------------------------------------------------- |
