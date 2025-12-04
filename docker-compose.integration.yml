@@ -20,6 +20,7 @@ services:
       # Connect to K8s NodePort endpoints (mapped to host ports via kind extraPortMappings)
       - MANAGEMENT_API_URL=http://localhost:3000
       - SERVER_URL=http://localhost:8080
+      - SERVER_INTERNAL_URL=http://localhost:9090
       - SERVER_GRPC_URL=http://localhost:50051
       - TEST_TIMEOUT=300
     volumes:

@@ -17,11 +17,11 @@ use uuid::Uuid;
 // Re-export test modules
 mod auth_jwt_tests;
 mod cache_tests;
+mod concurrency_tests;
 mod e2e_workflows_tests;
 mod management_integration_tests;
 mod resilience_tests;
 mod vault_isolation_tests;
-mod concurrency_tests;
 
 /// Generate a random Ed25519 signing key
 pub fn generate_signing_key() -> SigningKey {
@@ -78,12 +78,17 @@ pub fn server_grpc_url() -> String {
     std::env::var("SERVER_GRPC_URL").unwrap_or_else(|_| "http://server:50051".to_string())
 }
 
+pub fn server_internal_url() -> String {
+    std::env::var("SERVER_INTERNAL_URL").unwrap_or_else(|_| "http://server:9090".to_string())
+}
+
 /// Test context containing all necessary state for integration tests
 #[derive(Clone)]
 pub struct TestContext {
     pub client: Client,
     pub management_url: String,
     pub server_url: String,
+    pub server_internal_url: String,
 }
 
 impl TestContext {
@@ -96,6 +101,7 @@ impl TestContext {
                 .expect("Failed to create HTTP client"),
             management_url: management_api_url(),
             server_url: server_url(),
+            server_internal_url: server_internal_url(),
         }
     }
 }
@@ -303,7 +309,10 @@ impl TestFixture {
 
         let status = response.status();
         if !status.is_success() {
-            let error_body = response.text().await.unwrap_or_else(|_| "Unable to read error body".to_string());
+            let error_body = response
+                .text()
+                .await
+                .unwrap_or_else(|_| "Unable to read error body".to_string());
             anyhow::bail!("Registration failed with status {}: {}", status, error_body);
         }
 
@@ -330,7 +339,10 @@ impl TestFixture {
 
         let login_status = login_response.status();
         if !login_status.is_success() {
-            let error_body = login_response.text().await.unwrap_or_else(|_| "Unable to read error body".to_string());
+            let error_body = login_response
+                .text()
+                .await
+                .unwrap_or_else(|_| "Unable to read error body".to_string());
             anyhow::bail!("Login failed with status {}: {}", login_status, error_body);
         }
 
@@ -355,7 +367,9 @@ impl TestFixture {
             .await
             .context("Failed to parse organizations response")?;
 
-        let org_id = orgs_response.organizations.first()
+        let org_id = orgs_response
+            .organizations
+            .first()
             .context("No default organization found")?
             .id;
 
@@ -367,7 +381,10 @@ impl TestFixture {
 
         let create_vault_resp: CreateVaultResponse = ctx
             .client
-            .post(format!("{}/v1/organizations/{}/vaults", ctx.management_url, org_id))
+            .post(format!(
+                "{}/v1/organizations/{}/vaults",
+                ctx.management_url, org_id
+            ))
             .header("Authorization", format!("Bearer {}", session_id))
             .json(&vault_req)
             .send()
@@ -497,11 +514,10 @@ impl TestFixture {
         // Convert Ed25519 private key to PEM format for jsonwebtoken
         let secret_bytes = self.signing_key.to_bytes();
         let pem = ed25519_to_pem(&secret_bytes);
-        let encoding_key = EncodingKey::from_ed_pem(&pem)
-            .context("Failed to create encoding key")?;
+        let encoding_key =
+            EncodingKey::from_ed_pem(&pem).context("Failed to create encoding key")?;
 
-        encode(&header, &claims, &encoding_key)
-            .context("Failed to encode JWT")
+        encode(&header, &claims, &encoding_key).context("Failed to encode JWT")
     }
 
     /// Generate a JWT with a different signing key (for testing invalid signatures)
@@ -530,8 +546,7 @@ impl TestFixture {
         let encoding_key = EncodingKey::from_ed_pem(&pem)
             .context("Failed to create encoding key for invalid JWT")?;
 
-        encode(&header, &claims, &encoding_key)
-            .context("Failed to encode invalid JWT")
+        encode(&header, &claims, &encoding_key).context("Failed to encode invalid JWT")
     }
 
     /// Call server evaluate endpoint with JWT
@@ -632,7 +647,10 @@ impl Drop for TestFixture {
         tokio::spawn(async move {
             let _ = ctx
                 .client
-                .delete(format!("{}/v1/organizations/{}/vaults/{}", management_url, org_id, vault_id))
+                .delete(format!(
+                    "{}/v1/organizations/{}/vaults/{}",
+                    management_url, org_id, vault_id
+                ))
                 .header("Authorization", format!("Bearer {}", session_id))
                 .send()
                 .await;

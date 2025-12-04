@@ -7,7 +7,9 @@ use reqwest::StatusCode;
 
 #[tokio::test]
 async fn test_cached_data_allows_validation() {
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Generate JWT
     let jwt = fixture
@@ -21,7 +23,8 @@ async fn test_cached_data_allows_validation() {
         .expect("Failed to call server");
 
     assert!(
-        initial_response.status().is_success() || initial_response.status() == StatusCode::NOT_FOUND,
+        initial_response.status().is_success()
+            || initial_response.status() == StatusCode::NOT_FOUND,
         "Initial request failed"
     );
     println!("✓ Cache populated with successful request");
@@ -55,7 +58,9 @@ async fn test_cached_data_allows_validation() {
 
 #[tokio::test]
 async fn test_graceful_degradation_with_network_timeout() {
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Create a JWT with a non-existent kid (will cause management API lookup)
     let now = Utc::now();
@@ -102,7 +107,9 @@ async fn test_graceful_degradation_with_network_timeout() {
 
 #[tokio::test]
 async fn test_server_continues_with_cached_certificates() {
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Generate valid JWT
     let jwt = fixture
@@ -144,7 +151,9 @@ async fn test_server_continues_with_cached_certificates() {
 #[tokio::test]
 async fn test_partial_cache_coverage() {
     // Test scenario where some data is cached and some requires API calls
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Generate JWT with original vault (will be cached)
     let jwt1 = fixture
@@ -172,7 +181,10 @@ async fn test_partial_cache_coverage() {
     let vault2_response: CreateVaultResponse = fixture
         .ctx
         .client
-        .post(format!("{}/v1/organizations/{}/vaults", fixture.ctx.management_url, fixture.org_id))
+        .post(format!(
+            "{}/v1/organizations/{}/vaults",
+            fixture.ctx.management_url, fixture.org_id
+        ))
         .header("Authorization", format!("Bearer {}", fixture.session_id))
         .json(&vault2_req)
         .send()
@@ -220,7 +232,9 @@ async fn test_partial_cache_coverage() {
 
 #[tokio::test]
 async fn test_error_handling_for_invalid_responses() {
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Test with malformed JWT (no kid)
     let now = Utc::now();
@@ -263,7 +277,9 @@ async fn test_error_handling_for_invalid_responses() {
 
 #[tokio::test]
 async fn test_concurrent_requests_with_mixed_cache_states() {
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Generate JWT
     let jwt = fixture
@@ -308,10 +324,7 @@ async fn test_concurrent_requests_with_mixed_cache_states() {
         }
     }
 
-    assert_eq!(
-        success_count, 20,
-        "Not all concurrent requests succeeded"
-    );
+    assert_eq!(success_count, 20, "Not all concurrent requests succeeded");
     println!("✓ All 20 concurrent requests succeeded");
 
     fixture.cleanup().await.expect("Failed to cleanup");

@@ -66,7 +66,7 @@ Prefix commands with `server-` or `management-` to target a specific component.
 Scripts in `scripts/` allow running a local K8s cluster for integration testing.
 
 - `make k8s-start`: Start local cluster.
-- `make k8s-tests`: Run integration tests within the cluster.
+- `make k8s-test`: Run integration tests within the cluster.
 - `make k8s-stop`: Stop the cluster.
 
 ## Codebase Conventions

@@ -355,10 +355,7 @@ spec:
           value: "foundationdb"
         - name: INFERADB_MGMT__STORAGE__FDB_CLUSTER_FILE
           value: "/var/fdb/fdb.cluster"
-        - name: INFERADB_MGMT__CACHE_INVALIDATION__DISCOVERY__TYPE
-          value: "kubernetes"
-        - name: INFERADB_MGMT__CACHE_INVALIDATION__DISCOVERY__CACHE_TTL_SECONDS
-          value: "30"
+        # Kubernetes discovery enabled via config.integration.yaml
         - name: INFERADB_MGMT__SERVER_VERIFICATION__ENABLED
           value: "true"
         - name: INFERADB_MGMT__SERVER_VERIFICATION__SERVER_JWKS_URL

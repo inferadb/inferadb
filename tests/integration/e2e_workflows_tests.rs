@@ -70,7 +70,11 @@ async fn test_complete_user_journey() {
         .await
         .expect("Failed to parse response");
 
-    let org_id = orgs_response.organizations.first().expect("No org found").id;
+    let org_id = orgs_response
+        .organizations
+        .first()
+        .expect("No org found")
+        .id;
     println!("✓ Organization retrieved: {}", org_id);
 
     // 4. Create vault
@@ -81,7 +85,10 @@ async fn test_complete_user_journey() {
 
     let vault_resp: CreateVaultResponse = ctx
         .client
-        .post(format!("{}/v1/organizations/{}/vaults", ctx.management_url, org_id))
+        .post(format!(
+            "{}/v1/organizations/{}/vaults",
+            ctx.management_url, org_id
+        ))
         .header("Authorization", format!("Bearer {}", session_id))
         .json(&vault_req)
         .send()
@@ -236,9 +243,15 @@ async fn test_complete_user_journey() {
 #[tokio::test]
 async fn test_multi_tenant_isolation() {
     // Create 3 separate tenant environments
-    let fixture1 = TestFixture::create().await.expect("Failed to create fixture 1");
-    let fixture2 = TestFixture::create().await.expect("Failed to create fixture 2");
-    let fixture3 = TestFixture::create().await.expect("Failed to create fixture 3");
+    let fixture1 = TestFixture::create()
+        .await
+        .expect("Failed to create fixture 1");
+    let fixture2 = TestFixture::create()
+        .await
+        .expect("Failed to create fixture 2");
+    let fixture3 = TestFixture::create()
+        .await
+        .expect("Failed to create fixture 3");
 
     println!("✓ Created 3 isolated tenants");
 

@@ -8,7 +8,9 @@ use std::time::Instant;
 
 #[tokio::test]
 async fn test_certificate_cache_hit_rate() {
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Generate JWT
     let jwt = fixture
@@ -21,12 +23,7 @@ async fn test_certificate_cache_hit_rate() {
 
     for i in 0..iterations {
         let response = fixture
-            .call_server_evaluate(
-                &jwt,
-                &format!("document:{}", i),
-                "viewer",
-                "user:alice",
-            )
+            .call_server_evaluate(&jwt, &format!("document:{}", i), "viewer", "user:alice")
             .await
             .expect("Failed to call server");
 
@@ -55,11 +52,11 @@ async fn test_certificate_cache_hit_rate() {
         );
     }
 
-    // Check if we can get metrics from server (if metrics endpoint exists)
+    // Check if we can get metrics from server (metrics are on internal port 9090)
     let metrics_response = fixture
         .ctx
         .client
-        .get(format!("{}/metrics", fixture.ctx.server_url))
+        .get(format!("{}/metrics", fixture.ctx.server_internal_url))
         .send()
         .await;
 
@@ -114,7 +111,9 @@ async fn test_certificate_cache_hit_rate() {
 
 #[tokio::test]
 async fn test_vault_verification_cache() {
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Generate JWT
     let jwt = fixture
@@ -155,12 +154,17 @@ async fn test_vault_verification_cache() {
         );
     }
 
-    let avg_cached_latency =
-        cached_latencies.iter().sum::<std::time::Duration>().as_micros() as f64
-            / cached_latencies.len() as f64
-            / 1000.0; // Convert to ms
+    let avg_cached_latency = cached_latencies
+        .iter()
+        .sum::<std::time::Duration>()
+        .as_micros() as f64
+        / cached_latencies.len() as f64
+        / 1000.0; // Convert to ms
 
-    println!("✓ Average cached request latency: {:.2}ms", avg_cached_latency);
+    println!(
+        "✓ Average cached request latency: {:.2}ms",
+        avg_cached_latency
+    );
 
     // Cached requests should be significantly faster
     // This is a soft assertion as it depends on infrastructure
@@ -177,7 +181,9 @@ async fn test_vault_verification_cache() {
 
 #[tokio::test]
 async fn test_management_api_call_rate() {
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Get baseline metrics
     let initial_metrics = get_auth_metrics(&fixture.ctx).await;
@@ -205,7 +211,8 @@ async fn test_management_api_call_rate() {
     let final_metrics = get_auth_metrics(&fixture.ctx).await;
 
     if let (Some(initial), Some(final_metrics)) = (initial_metrics, final_metrics) {
-        let management_api_calls = final_metrics.management_api_calls - initial.management_api_calls;
+        let management_api_calls =
+            final_metrics.management_api_calls - initial.management_api_calls;
         let api_call_rate = (management_api_calls as f64 / num_requests as f64) * 100.0;
 
         println!(
@@ -229,7 +236,9 @@ async fn test_management_api_call_rate() {
 
 #[tokio::test]
 async fn test_cache_expiration_behavior() {
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Generate JWT
     let jwt = fixture
@@ -277,11 +286,11 @@ struct AuthMetrics {
     cache_misses: u64,
 }
 
-// Helper function to fetch and parse auth metrics
+// Helper function to fetch and parse auth metrics (from internal port)
 async fn get_auth_metrics(ctx: &TestContext) -> Option<AuthMetrics> {
     let response = ctx
         .client
-        .get(format!("{}/metrics", ctx.server_url))
+        .get(format!("{}/metrics", ctx.server_internal_url))
         .send()
         .await
         .ok()?;
@@ -292,7 +301,8 @@ async fn get_auth_metrics(ctx: &TestContext) -> Option<AuthMetrics> {
 
     let metrics_text = response.text().await.ok()?;
 
-    let management_api_calls = parse_metric(&metrics_text, "infera_auth_management_api_calls_total");
+    let management_api_calls =
+        parse_metric(&metrics_text, "infera_auth_management_api_calls_total");
     let cache_hits = parse_metric(&metrics_text, "infera_auth_cache_hits_total");
     let cache_misses = parse_metric(&metrics_text, "infera_auth_cache_misses_total");
 

@@ -9,7 +9,9 @@ use std::time::Instant;
 
 #[tokio::test]
 async fn test_concurrent_authentication_single_client() {
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Generate JWT
     let jwt = Arc::new(
@@ -69,7 +71,11 @@ async fn test_concurrent_authentication_single_client() {
         "Expected 100 successful requests, got {}",
         success_count
     );
-    assert_eq!(failure_count, 0, "Expected 0 failures, got {}", failure_count);
+    assert_eq!(
+        failure_count, 0,
+        "Expected 0 failures, got {}",
+        failure_count
+    );
 
     println!(
         "✓ 100 concurrent requests completed in {:?} (avg: {:.2}ms)",
@@ -106,7 +112,10 @@ async fn test_concurrent_authentication_multiple_clients() {
     // Generate JWTs for each fixture
     let jwts: Vec<String> = fixtures
         .iter()
-        .map(|f| f.generate_jwt(None, &["inferadb.check"]).expect("Failed to generate JWT"))
+        .map(|f| {
+            f.generate_jwt(None, &["inferadb.check"])
+                .expect("Failed to generate JWT")
+        })
         .collect();
 
     // Launch concurrent requests (one per client)
@@ -170,7 +179,9 @@ async fn test_concurrent_authentication_multiple_clients() {
 
 #[tokio::test]
 async fn test_concurrent_vault_operations() {
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Generate JWT with both check and write scopes
     let jwt = fixture
@@ -256,7 +267,9 @@ async fn test_concurrent_vault_operations() {
 
 #[tokio::test]
 async fn test_cache_under_concurrent_load() {
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Generate multiple JWTs from same client (different scopes)
     let jwt1 = fixture
@@ -337,7 +350,9 @@ async fn test_cache_under_concurrent_load() {
 
 #[tokio::test]
 async fn test_concurrent_first_time_authentication() {
-    let fixture = TestFixture::create().await.expect("Failed to create test fixture");
+    let fixture = TestFixture::create()
+        .await
+        .expect("Failed to create test fixture");
 
     // Generate a JWT that hasn't been used yet
     let jwt = fixture
