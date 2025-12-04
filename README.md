@@ -10,14 +10,15 @@ InferaDB provides relationship-based access control (ReBAC) through a graph-base
 
 This is a **meta-repository** that orchestrates all InferaDB components via git submodules:
 
-| Component                                  | Description                                                            |
-| ------------------------------------------ | ---------------------------------------------------------------------- |
-| [server/](server/)                         | Core policy engine - IPL parsing, graph traversal, decision evaluation |
-| [management/](management/)                 | Management API - Tenant orchestration, RBAC, audit logs                |
-| [dashboard/](dashboard/)                   | Web console for policy design, simulation, observability               |
-| [cli/](cli/)                               | Developer tooling for schemas, policies, modules                       |
-| [docs/](docs/)                             | Comprehensive guides and API references                                |
-| [terraform-provider/](terraform-provider/) | Infrastructure as code for InferaDB deployment                         |
+| Component                                                  | Description                                                            |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------- |
+| [server/](server/)                                         | Core policy engine - IPL parsing, graph traversal, decision evaluation |
+| [management/](management/)                                 | Management API - Tenant orchestration, RBAC, audit logs                |
+| [dashboard/](dashboard/)                                   | Web console for policy design, simulation, observability               |
+| [cli/](cli/)                                               | Developer tooling for schemas, policies, modules                       |
+| [docs/](docs/)                                             | Technical specifications, whitepapers, and deployment guides           |
+| [terraform-provider-inferadb/](terraform-provider-inferadb/) | Infrastructure as code for InferaDB deployment                         |
+| [tests/](tests/)                                           | E2E integration tests and Kubernetes scripts                           |
 
 ---
 
@@ -88,7 +89,7 @@ make server-test          # Run server tests
 make server-dev           # Start with auto-reload
 make server-build         # Build debug binary
 make server-release       # Build optimized release
-make server-benchmark     # Run benchmarks
+make server-test-fdb      # Run FoundationDB tests
 ```
 
 ### Management-Specific Commands
@@ -127,7 +128,8 @@ graph TD
     A --> D[dashboard/ - Web UI]
     A --> E[cli/ - Developer Tools]
     A --> F[docs/ - Documentation]
-    A --> G[terraform-provider/ - IaC]
+    A --> G[terraform-provider-inferadb/ - IaC]
+    A --> H[tests/ - E2E Tests]
 
     B --> B1[IPL Parser]
     B --> B2[Graph Traversal]
@@ -141,9 +143,11 @@ graph TD
 
     E --> E1[Schema/Policy Management]
 
-    F --> F1[Guides & API Refs]
+    F --> F1[Whitepapers & Deployment]
 
     G --> G1[Infrastructure Automation]
+
+    H --> H1[K8s Integration Tests]
 
     style A fill:#4A90E2,stroke:#2E5C8A,color:#fff
     style B fill:#50C878,stroke:#2E7D4E,color:#fff
@@ -173,7 +177,7 @@ Each submodule has its own detailed README:
 
 - [Server Development Guide](server/README.md) - Policy engine internals
 - [Management API Guide](management/README.md) - API architecture
-- [Integration Examples](examples/) - End-to-end usage examples
+- [E2E Integration Tests](tests/) - Kubernetes-based integration tests
 
 ### Running Integration Tests
 
@@ -220,8 +224,9 @@ make doc           # Generate and open Rust docs
 
 ## Resources
 
-- **Documentation**: [docs/](docs/) - Comprehensive guides and references
-- **Examples**: [examples/](examples/) - Integration examples and tutorials
+- **Documentation**: [docs/](docs/) - Technical specifications and deployment guides
+- **Server Docs**: [server/docs/](server/docs/) - Comprehensive API and architecture reference
+- **Management Docs**: [management/docs/](management/docs/) - Management API documentation
 - **Contributing**: See individual component READMEs for contribution guidelines
 - **Security**: Report vulnerabilities via GitHub Security Advisories
 
@@ -243,8 +248,8 @@ Please review each component's license individually.
 ## Need Help?
 
 1. **Getting Started Issues**: Check component-specific READMEs ([server/](server/), [management/](management/))
-2. **Integration Examples**: See [examples/](examples/) directory
-3. **API Documentation**: Run `make doc` to view generated documentation
+2. **E2E Testing**: See [tests/](tests/) for integration test examples
+3. **API Documentation**: Run `make doc` to view generated Rust documentation
 4. **Questions**: Open a discussion on GitHub
 
 For component-specific questions, refer to the respective submodule repositories.

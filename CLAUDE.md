@@ -6,13 +6,15 @@ Distributed authorization engine implementing Zanzibar-inspired ReBAC with nativ
 
 Meta-repository with git submodules. Each component has its own `CLAUDE.md` with detailed guidance.
 
-| Directory     | Language   | Purpose                                                     |
-| ------------- | ---------- | ----------------------------------------------------------- |
-| `server/`     | Rust       | Core policy engine (IPL parser, graph traversal, decisions) |
-| `management/` | Rust       | Control plane API (tenants, RBAC, audit, tokens)            |
-| `dashboard/`  | TypeScript | Web console (TanStack Start, React)                         |
-| `cli/`        | Rust       | Developer tooling (schema validation, testing)              |
-| `tests/`      | -          | E2E integration tests and K8s scripts                       |
+| Directory                      | Language   | Purpose                                                     |
+| ------------------------------ | ---------- | ----------------------------------------------------------- |
+| `server/`                      | Rust       | Core policy engine (IPL parser, graph traversal, decisions) |
+| `management/`                  | Rust       | Control plane API (tenants, RBAC, audit, tokens)            |
+| `dashboard/`                   | TypeScript | Web console (TanStack Start, React)                         |
+| `cli/`                         | Rust       | Developer tooling (schema validation, testing)              |
+| `tests/`                       | Rust       | E2E integration tests and K8s scripts                       |
+| `docs/`                        | -          | Whitepapers, deployment guides, RFC templates               |
+| `terraform-provider-inferadb/` | -          | IaC provider (in development)                               |
 
 ## Quick Start
 
