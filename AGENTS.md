@@ -36,24 +36,27 @@ make management-dev     # Management API with auto-reload
 make management-test    # Management tests only
 ```
 
-## Kubernetes (Local)
+## Kubernetes Environment
 
 ```bash
-make k8s-start          # Start local kind cluster
-make k8s-test           # Run E2E integration tests
-make k8s-status         # Check cluster status
-make k8s-stop           # Stop cluster (preserves state)
-make k8s-purge          # Destroy cluster completely
+make k8s-start          # Start local K8s environment
+make k8s-stop           # Stop environment (preserves state)
+make k8s-status         # Check deployment health
+make k8s-purge          # Remove all K8s resources
 ```
 
-## Testing Instructions
+## Testing
+
+```bash
+make test               # Unit tests (server + management)
+make test-fdb           # FDB integration tests (requires Docker)
+make test-e2e           # E2E tests in K8s
+```
 
 - Run `make test` before committing
 - Run `make check` for format/lint/audit
 - Component tests: `cargo test -p <crate-name>`
 - Single test: `cargo test <test_name>`
-- Integration tests require Docker: `make test-integration`
-- E2E tests require K8s: `make k8s-test`
 
 ## Key Conventions
 
@@ -72,6 +75,7 @@ make k8s-purge          # Destroy cluster completely
 
 - Read `server/AGENTS.md` when working in `server/`
 - Read `management/AGENTS.md` when working in `management/`
+- Read `tests/AGENTS.md` when working in `tests/`
 - Both components use layered architecture with strict dependency rules
 - All storage operations are vault-scoped (multi-tenancy)
 - Only asymmetric JWT algorithms allowed (EdDSA, RS256)
