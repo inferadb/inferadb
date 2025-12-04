@@ -11,8 +11,8 @@ services:
   # Test runner - Executes integration tests against K8s cluster
   test-runner:
     build:
-      context: .
-      dockerfile: Dockerfile.integration
+      context: ..
+      dockerfile: tests/Dockerfile.integration
     container_name: inferadb-k8s-test-runner
     network_mode: host
     environment:
@@ -24,6 +24,6 @@ services:
       - SERVER_GRPC_URL=http://localhost:50051
       - TEST_TIMEOUT=300
     volumes:
-      - ./tests:/workspace/tests
-      - ./target:/workspace/target
+      - ../tests:/workspace/tests
+      - ../target:/workspace/target
     command: cargo test --test integration --manifest-path tests/Cargo.toml -- --test-threads=1 --nocapture
