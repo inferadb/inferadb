@@ -30,9 +30,9 @@
 git clone https://github.com/inferadb/inferadb
 cd inferadb
 git submodule init && git submodule update --remote
-make setup                          # Install tools, fetch dependencies
-make test                           # Run all tests
-make server-dev                     # Start server with auto-reload
+make setup       # Install tools, fetch dependencies
+make test        # Run all tests
+make server-dev  # Start server with auto-reload
 ```
 
 ## Commands
@@ -66,8 +66,8 @@ Run `make help` for full list. Pattern: `make <component>-<command>` (e.g., `mak
 ### Component-Specific
 
 ```bash
-make server-dev       # Start server with auto-reload
-make management-dev   # Start management API with auto-reload
+make server-dev      # Start server with auto-reload
+make management-dev  # Start management API with auto-reload
 ```
 
 ## Architecture
