@@ -18,35 +18,59 @@ jobs:
         with:
           egress-policy: audit
 
-      - uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
+      - name: Mark stale issues awaiting user response
+        uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
         with:
-          # Issue configuration
+          # Only process issues where USER owes action (not maintainer)
+          only-issue-labels: "status/needs-info"
           stale-issue-message: >
-            This issue has been automatically marked as stale because it has not had
-            recent activity. It will be closed in 14 days if no further activity occurs.
-            If this issue is still relevant, please comment or remove the stale label.
+            This issue has been marked as stale because we haven't received the
+            requested information. It will be closed in 14 days if no response is provided.
+            Please provide the requested details to keep this issue open.
           close-issue-message: >
-            This issue was closed because it has been stale for 14 days with no activity.
-            Feel free to reopen if this is still relevant.
+            This issue was closed due to inactivity after requesting more information.
+            Feel free to reopen with the requested details if this is still relevant.
           stale-issue-label: "stale"
-          exempt-issue-labels: "priority/critical,priority/high,status/blocked,status/in-progress,help-wanted,good-first-issue"
-          days-before-issue-stale: 60
+          days-before-issue-stale: 14
           days-before-issue-close: 14
 
-          # PR configuration
+          # PRs with requested changes
+          only-pr-labels: "status/needs-info"
           stale-pr-message: >
-            This pull request has been automatically marked as stale because it has not had
-            recent activity. It will be closed in 14 days if no further activity occurs.
-            If this PR is still relevant, please comment, push changes, or remove the stale label.
+            This PR has been marked as stale because we haven't received a response
+            to the requested changes. It will be closed in 14 days if no updates are made.
           close-pr-message: >
-            This pull request was closed because it has been stale for 14 days with no activity.
-            Feel free to reopen if this is still relevant.
+            This PR was closed due to inactivity after requesting changes.
+            Feel free to reopen when ready to address the feedback.
           stale-pr-label: "stale"
-          exempt-pr-labels: "priority/critical,priority/high,status/blocked,status/in-progress"
-          days-before-pr-stale: 30
+          days-before-pr-stale: 14
           days-before-pr-close: 14
 
           # General configuration
+          operations-per-run: 100
+          remove-stale-when-updated: true
+          delete-branch: false
+
+      - name: Mark stale PRs with no activity
+        uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
+        with:
+          # Don't process issues in this step (handled above with stricter rules)
+          days-before-issue-stale: -1
+          days-before-issue-close: -1
+
+          # PRs without activity (more lenient than issues)
+          stale-pr-message: >
+            This PR has been marked as stale due to 60 days of inactivity.
+            It will be closed in 14 days if no activity occurs.
+            If this PR is still relevant, please push updates or comment.
+          close-pr-message: >
+            This PR was closed due to extended inactivity.
+            Feel free to reopen when ready to continue.
+          stale-pr-label: "stale"
+          exempt-pr-labels: "priority/critical,priority/high,status/blocked,status/in-progress,status/ready-for-review"
+          days-before-pr-stale: 60
+          days-before-pr-close: 14
+
           operations-per-run: 100
           remove-stale-when-updated: true
           delete-branch: false

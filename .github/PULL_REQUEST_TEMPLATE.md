@@ -1,32 +1,22 @@
+# Pull Request
+
 ## Summary
 
-<!-- Brief description of the changes -->
-
-## Type of Change
-
-<!-- Check the relevant option(s) -->
-
-- [ ] Bug fix (`kind/bug`)
-- [ ] New feature (`kind/feature`)
-- [ ] Enhancement (`kind/enhancement`)
-- [ ] Refactor (`kind/refactor`)
-- [ ] Documentation (`kind/documentation`)
-- [ ] Performance improvement (`kind/performance`)
-- [ ] Breaking change (`kind/breaking-change`)
+<!-- What does this PR do? Keep it brief (1-3 sentences) -->
 
 ## Related Issues
 
-<!-- Link any related issues: Fixes #123, Relates to #456 -->
+<!-- Link related issues: Fixes #123, Closes #456, Relates to #789 -->
 
 ## Changes
 
-<!-- Describe the changes in detail -->
+<!-- What changed? Bullet points work well -->
 
 -
 
 ## Testing
 
-<!-- How has this been tested? -->
+<!-- How was this tested? Check all that apply -->
 
 - [ ] Unit tests added/updated
 - [ ] Integration tests added/updated
@@ -34,21 +24,7 @@
 
 ## Checklist
 
-- [ ] My code follows the project's style guidelines
-- [ ] I have performed a self-review of my code
-- [ ] I have added tests that prove my fix/feature works
-- [ ] New and existing tests pass locally (`make test`)
-- [ ] I have run `make check` (format, lint, audit)
-- [ ] I have updated documentation as needed
-
-## Changelog
-
-<!-- Select the appropriate changelog label for release notes -->
-
-- [ ] `changelog/added` - New feature
-- [ ] `changelog/changed` - Changes to existing functionality
-- [ ] `changelog/fixed` - Bug fix
-- [ ] `changelog/security` - Security fix
-- [ ] `changelog/deprecated` - Deprecated functionality
-- [ ] `changelog/removed` - Removed functionality
-- [ ] `changelog/skip` - No changelog entry needed
+- [ ] Tests pass locally (`make test`)
+- [ ] Code quality checks pass (`make check`)
+- [ ] Documentation updated (if applicable)
+- [ ] No breaking changes (or clearly documented)

@@ -2,6 +2,14 @@ name: Feature Request
 description: Suggest a new feature or capability
 labels: ["kind/feature", "status/needs-triage"]
 body:
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Pre-flight Checklist
+      options:
+        - label: I have searched existing issues and discussions to ensure this hasn't been requested
+          required: true
+
   - type: markdown
     attributes:
       value: |

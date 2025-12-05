@@ -1,5 +1,6 @@
 # Configuration for actions/labeler
 # Auto-labels PRs based on changed files
+# Note: This is for the meta-repository. Component repos have their own configs.
 
 # Documentation
 area/docs:
@@ -9,11 +10,12 @@ area/docs:
           - "**/*.md"
           - "!.github/**/*.md"
 
-# CI/CD
+# CI/CD and GitHub configuration
 area/ci:
   - changed-files:
       - any-glob-to-any-file:
           - ".github/**"
+          - "!.github/maintenance/**"
 
 # Kubernetes/Helm
 area/k8s:
@@ -21,6 +23,8 @@ area/k8s:
       - any-glob-to-any-file:
           - "k8s/**"
           - "helm/**"
+          - "**/*k8s*"
+          - "**/*kubernetes*"
 
 # Docker
 area/docker:
@@ -29,33 +33,36 @@ area/docker:
           - "Dockerfile*"
           - "docker/**"
           - "docker-compose*.yml"
+          - ".dockerignore"
 
 # Terraform
 area/terraform:
   - changed-files:
       - any-glob-to-any-file:
           - "terraform/**"
-          - "*.tf"
+          - "terraform-provider-inferadb/**"
+          - "**/*.tf"
 
-# Configuration
+# Configuration files
 area/config:
   - changed-files:
       - any-glob-to-any-file:
           - "config*.yaml"
           - "config*.yml"
-          - "*.toml"
-          - "!Cargo.toml"
-          - "!rust-toolchain.toml"
+          - "**/*.toml"
+          - "!**/Cargo.toml"
+          - "!**/rust-toolchain.toml"
+          - "!**/deny.toml"
 
-# Dependencies (Rust)
+# Rust dependencies
 area/deps:
   - changed-files:
       - any-glob-to-any-file:
-          - "Cargo.toml"
-          - "Cargo.lock"
-          - "deny.toml"
+          - "**/Cargo.toml"
+          - "**/Cargo.lock"
+          - "**/deny.toml"
 
-# Testing
+# Testing infrastructure
 area/testing:
   - changed-files:
       - any-glob-to-any-file:
@@ -63,3 +70,45 @@ area/testing:
           - "**/tests/**"
           - "**/*_test.rs"
           - "**/*_tests.rs"
+          - "**/*test-fixtures*/**"
+
+# Observability (metrics, logging, tracing)
+area/observability:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "grafana/**"
+          - "prometheus/**"
+          - "**/*observe*/**"
+          - "**/*telemetry*/**"
+          - "**/*metrics*"
+          - "**/*tracing*"
+
+# Server component (when working in submodule)
+repo/server:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "server/**"
+
+# Management component (when working in submodule)
+repo/management:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "management/**"
+
+# Dashboard component (when working in submodule)
+repo/dashboard:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "dashboard/**"
+
+# CLI component (when working in submodule)
+repo/cli:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "cli/**"
+
+# Tests component (when working in submodule)
+repo/tests:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tests/**"
