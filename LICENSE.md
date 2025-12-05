@@ -4,25 +4,25 @@ This repository is organized into submodules, each with its own license.
 
 ## Component Licenses
 
-| Component                                                                              | License                     | SPDX Identifier |
-| -------------------------------------------------------------------------------------- | --------------------------- | --------------- |
-| [server](https://github.com/inferadb/server)                                           | Business Source License 1.1 | `BUSL-1.1`      |
-| [management](https://github.com/inferadb/management)                                   | Business Source License 1.1 | `BUSL-1.1`      |
-| [terraform-provider-inferadb](https://github.com/inferadb/terraform-provider-inferadb) | Apache License 2.0          | `Apache-2.0`    |
-| [tests](https://github.com/inferadb/tests)                                             | Apache License 2.0          | `Apache-2.0`    |
+| Component                                                                              | License                                    | SPDX Identifier              |
+| -------------------------------------------------------------------------------------- | ------------------------------------------ | ---------------------------- |
+| [server](https://github.com/inferadb/server)                                           | InferaDB Non‑Commercial Source License 1.0 | `LicenseRef-InferaDB-NC-1.0` |
+| [management](https://github.com/inferadb/management)                                   | InferaDB Non‑Commercial Source License 1.0 | `LicenseRef-InferaDB-NC-1.0` |
+| [terraform-provider-inferadb](https://github.com/inferadb/terraform-provider-inferadb) | Apache License 2.0                         | `Apache-2.0`                 |
+| [tests](https://github.com/inferadb/tests)                                             | Apache License 2.0                         | `Apache-2.0`                 |
 
 ## Summary
 
-### Server & Management (BUSL-1.1)
+### Server & Management (InferaDB Non-Commercial Source License 1.0)
 
 The core InferaDB components (`server/` and `management/`) are licensed under the
-[Business Source License 1.1](https://mariadb.com/bsl11/):
+**InferaDB Non-Commercial Source License 1.0**:
 
-- **Free** for non-production use, internal business operations, and development
-- **Restricted** from being offered as a competing hosted or embedded service
-- **Converts** to Apache License 2.0 on January 1, 2030
+- **Free** for personal, non-commercial, and educational use
+- **Permitted** to modify, fork, and privately deploy for non-commercial purposes
+- **Prohibited** for any commercial, production, or revenue-generating use (including SaaS and internal enterprise systems) without a separate commercial license
 
-For commercial licensing inquiries, contact [inferadb.com](https://inferadb.com)
+For commercial licensing inquiries, contact [inferadb.com](https://inferadb.com).
 
 ### Terraform Provider & Integration Tests (Apache-2.0)
 
