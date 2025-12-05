@@ -66,6 +66,7 @@ make check            # Format, lint, audit
 make test             # Unit tests
 make server-dev       # Server with hot-reload
 make management-dev   # Management API with hot-reload
+make dashboard-dev    # Dashboard on http://localhost:5173
 ```
 
 Kubernetes:

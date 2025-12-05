@@ -8,6 +8,7 @@ This repository is organized into submodules, each with its own license.
 | -------------------------------------------------------------------------------------- | ------------------------------------------ | ---------------------------- |
 | [server](https://github.com/inferadb/server)                                           | InferaDB Non‑Commercial Source License 1.0 | `LicenseRef-InferaDB-NC-1.0` |
 | [management](https://github.com/inferadb/management)                                   | InferaDB Non‑Commercial Source License 1.0 | `LicenseRef-InferaDB-NC-1.0` |
+| [dashboard](https://github.com/inferadb/dashboard)                                     | Apache License 2.0                         | `Apache-2.0`                 |
 | [terraform-provider-inferadb](https://github.com/inferadb/terraform-provider-inferadb) | Apache License 2.0                         | `Apache-2.0`                 |
 | [tests](https://github.com/inferadb/tests)                                             | Apache License 2.0                         | `Apache-2.0`                 |
 
@@ -24,10 +25,10 @@ The core InferaDB components (`server/` and `management/`) are licensed under th
 
 For commercial licensing inquiries, contact [inferadb.com](https://inferadb.com).
 
-### Terraform Provider & Integration Tests (Apache-2.0)
+### Dashboard, Terraform Provider & Integration Tests (Apache-2.0)
 
-The Terraform provider (`terraform-provider-inferadb/`) and integration tests (`tests/`)
-are licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0):
+The dashboard (`dashboard/`), Terraform provider (`terraform-provider-inferadb/`), and
+integration tests (`tests/`) are licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0):
 
 - **Free** for any use, including commercial
 - **Permissive** open-source license
