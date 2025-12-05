@@ -12,6 +12,7 @@
 .PHONY: help setup test test-fdb check format lint audit deny run build release clean reset dev doc coverage bench fix ci
 .PHONY: server-help server-setup server-test server-check server-format server-lint server-run server-build server-release server-clean server-reset server-dev server-doc
 .PHONY: management-help management-setup management-test management-check management-format management-lint management-run management-build management-release management-clean management-reset management-dev management-doc
+.PHONY: dashboard-setup dashboard-dev dashboard-build dashboard-check dashboard-lint dashboard-typecheck dashboard-test dashboard-clean
 .PHONY: k8s-start k8s-stop k8s-status k8s-update k8s-purge test-e2e
 
 # Default target - show help
@@ -44,6 +45,14 @@ help: ## Show available commands
 	@echo "  $(COLOR_BLUE)make management-<command>$(COLOR_RESET)  - Run <command> in management/ only"
 	@echo "  $(COLOR_BLUE)make management-help$(COLOR_RESET)       - Show management-specific help"
 	@echo ""
+	@echo "$(COLOR_GREEN)Dashboard Commands:$(COLOR_RESET)"
+	@echo "  $(COLOR_BLUE)make dashboard-dev$(COLOR_RESET)     - Run dashboard dev server (port 5173)"
+	@echo "  $(COLOR_BLUE)make dashboard-build$(COLOR_RESET)   - Build dashboard for production"
+	@echo "  $(COLOR_BLUE)make dashboard-setup$(COLOR_RESET)   - Install dashboard dependencies"
+	@echo "  $(COLOR_BLUE)make dashboard-check$(COLOR_RESET)   - Run lint and typecheck"
+	@echo "  $(COLOR_BLUE)make dashboard-test$(COLOR_RESET)    - Run dashboard tests"
+	@echo "  $(COLOR_BLUE)make dashboard-clean$(COLOR_RESET)   - Clean dashboard artifacts"
+	@echo ""
 	@echo "$(COLOR_GREEN)Kubernetes Environment:$(COLOR_RESET)"
 	@echo "  $(COLOR_BLUE)make k8s-start$(COLOR_RESET)         - Start local K8s environment"
 	@echo "  $(COLOR_BLUE)make k8s-stop$(COLOR_RESET)          - Stop K8s environment"
@@ -55,6 +64,7 @@ help: ## Show available commands
 	@echo "  make test-fdb              - Run FDB integration tests (requires Docker)"
 	@echo "  make test-e2e              - Run E2E tests in K8s"
 	@echo "  make k8s-start             - Start local K8s environment"
+	@echo "  make dashboard-dev         - Start dashboard on http://localhost:5173"
 	@echo ""
 
 # ============================================================================
@@ -255,6 +265,50 @@ management-reset: ## Reset management
 
 management-doc: ## Generate management documentation
 	@$(MAKE) -C management doc
+
+# ============================================================================
+# Dashboard Commands
+# ============================================================================
+
+dashboard-setup: ## Install dashboard dependencies
+	@echo "$(COLOR_BLUE)📦 Installing dashboard dependencies...$(COLOR_RESET)"
+	@cd dashboard && npm install
+	@echo "$(COLOR_GREEN)✅ Dashboard dependencies installed!$(COLOR_RESET)"
+
+dashboard-dev: ## Run dashboard dev server
+	@echo "$(COLOR_BLUE)🚀 Starting dashboard dev server on port 5173...$(COLOR_RESET)"
+	@cd dashboard && npm run dev
+
+dashboard-build: ## Build dashboard for production
+	@echo "$(COLOR_BLUE)🔨 Building dashboard...$(COLOR_RESET)"
+	@cd dashboard && npm run build
+	@echo "$(COLOR_GREEN)✅ Dashboard build complete!$(COLOR_RESET)"
+
+dashboard-check: ## Run lint and typecheck on dashboard
+	@echo "$(COLOR_BLUE)🔍 Running dashboard checks...$(COLOR_RESET)"
+	@cd dashboard && npm run lint
+	@cd dashboard && npm run typecheck
+	@echo "$(COLOR_GREEN)✅ Dashboard checks passed!$(COLOR_RESET)"
+
+dashboard-lint: ## Lint dashboard code
+	@echo "$(COLOR_BLUE)🔍 Linting dashboard...$(COLOR_RESET)"
+	@cd dashboard && npm run lint
+	@echo "$(COLOR_GREEN)✅ Dashboard linting complete!$(COLOR_RESET)"
+
+dashboard-typecheck: ## Type-check dashboard
+	@echo "$(COLOR_BLUE)🔍 Type-checking dashboard...$(COLOR_RESET)"
+	@cd dashboard && npm run typecheck
+	@echo "$(COLOR_GREEN)✅ Dashboard type-check complete!$(COLOR_RESET)"
+
+dashboard-test: ## Run dashboard tests
+	@echo "$(COLOR_BLUE)🧪 Running dashboard tests...$(COLOR_RESET)"
+	@cd dashboard && npm run test
+	@echo "$(COLOR_GREEN)✅ Dashboard tests complete!$(COLOR_RESET)"
+
+dashboard-clean: ## Clean dashboard build artifacts
+	@echo "$(COLOR_BLUE)🧹 Cleaning dashboard...$(COLOR_RESET)"
+	@cd dashboard && rm -rf node_modules .output .vinxi dist
+	@echo "$(COLOR_GREEN)✅ Dashboard cleaned!$(COLOR_RESET)"
 
 # ============================================================================
 # Kubernetes Environment

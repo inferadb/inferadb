@@ -60,7 +60,7 @@ delete_label() {
 }
 
 # Loop through our repositories
-for REPO in "inferadb/inferadb" "inferadb/server" "inferadb/management" "inferadb/dashboard" "inferadb/tests" "inferadb/cli"; do
+for REPO in "inferadb/inferadb" "inferadb/server" "inferadb/management" "inferadb/dashboard" "inferadb/tests" "inferadb/docs" "inferadb/cli"; do
     echo ""
     echo "Processing $REPO"
     echo "================"
@@ -86,12 +86,14 @@ for REPO in "inferadb/inferadb" "inferadb/server" "inferadb/management" "inferad
         ensure_label "$REPO" "repo/management" "1d76db" "Related to management component"
         ensure_label "$REPO" "repo/dashboard" "1d76db" "Related to dashboard component"
         ensure_label "$REPO" "repo/tests" "1d76db" "Related to tests component"
+        ensure_label "$REPO" "repo/docs" "1d76db" "Related to docs component"
         ensure_label "$REPO" "repo/cli" "1d76db" "Related to CLI component"
     else
         delete_label "$REPO" "repo/server"
         delete_label "$REPO" "repo/management"
         delete_label "$REPO" "repo/dashboard"
         delete_label "$REPO" "repo/tests"
+        delete_label "$REPO" "repo/docs"
         delete_label "$REPO" "repo/cli"
     fi
 
@@ -153,6 +155,23 @@ for REPO in "inferadb/inferadb" "inferadb/server" "inferadb/management" "inferad
         delete_label "$REPO" "area/passkey"
         delete_label "$REPO" "area/client"
         delete_label "$REPO" "area/team"
+    fi
+
+    # Docs-specific labels
+    if [ "$REPO" == "inferadb/docs" ]; then
+        ensure_label "$REPO" "area/architecture" "c9e4f6" "Architecture and design documents"
+        ensure_label "$REPO" "area/deployment" "c9e4f6" "Deployment guides and runbooks"
+        ensure_label "$REPO" "area/guides" "c9e4f6" "Tutorials and how-to guides"
+        ensure_label "$REPO" "area/rfcs" "c9e4f6" "RFC and design proposals"
+        ensure_label "$REPO" "area/whitepapers" "c9e4f6" "Technical whitepapers"
+        ensure_label "$REPO" "area/security" "c9e4f6" "Security documentation"
+    else
+        delete_label "$REPO" "area/architecture"
+        delete_label "$REPO" "area/deployment"
+        delete_label "$REPO" "area/guides"
+        delete_label "$REPO" "area/rfcs"
+        delete_label "$REPO" "area/whitepapers"
+        delete_label "$REPO" "area/security"
     fi
 
     # Core labels (all repositories)

@@ -260,6 +260,37 @@ process_tests() {
     remove_deprecated_topics "$repo"
 }
 
+# -----------------------------------------------------------------------------
+# Docs: inferadb/docs
+# -----------------------------------------------------------------------------
+process_docs() {
+    local repo="inferadb/docs"
+    echo ""
+    echo "Processing $repo"
+    echo "================"
+
+    CURRENT_TOPICS=$(get_topics "$repo")
+
+    # Pattern: [What it is] — [key differentiator], [second differentiator]
+    ensure_description "$repo" "InferaDB documentation — technical specifications, deployment guides, and design documents"
+
+    echo ""
+    echo "  Topics:"
+
+    # Common topics
+    for topic in "${COMMON_TOPICS[@]}"; do
+        ensure_topic "$repo" "$topic"
+    done
+
+    # Docs-specific topics
+    ensure_topic "$repo" "documentation"
+    ensure_topic "$repo" "deployment"
+    ensure_topic "$repo" "architecture"
+
+    # Cleanup deprecated topics
+    remove_deprecated_topics "$repo"
+}
+
 # =============================================================================
 # Main Execution
 # =============================================================================
@@ -276,6 +307,7 @@ process_server
 process_management
 process_dashboard
 process_tests
+process_docs
 
 echo ""
 echo "Done!"
