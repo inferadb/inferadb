@@ -1,100 +1,85 @@
 # InferaDB
 
-**The distributed inference engine for authorization** - fine-grained, low-latency permission checks at scale. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/), built on [AuthZEN](https://openid.net/wg/authzen/).
+**The distributed inference engine for authorization** — fine-grained, low-latency permission checks at scale.
 
-## Why InferaDB
-
-- **Relationship-Based Access Control (ReBAC)** — Model complex hierarchies, group memberships, and resource ownership as traversable graphs
-- **Declarative Policy Language (IPL)** — Define permissions with composable, version-controlled policies that are testable before deployment
-- **Microsecond Latency** — Co-located computation with FoundationDB-backed storage for consistent, low-latency decisions at scale
-- **Multi-Tenant by Design** — Isolated policy namespaces, per-tenant encryption, and auditable decision logs
-- **Extensible via WASM** — Embed custom logic (compliance rules, risk scoring, contextual checks) in sandboxed, deterministic modules
-
-## Components
-
-| Directory                                                    | Purpose                                     |
-| ------------------------------------------------------------ | ------------------------------------------- |
-| [server/](server/)                                           | Policy engine (IPL parser, graph traversal) |
-| [management/](management/)                                   | Control plane (tenants, RBAC, audit)        |
-| [tests/](tests/)                                             | E2E integration tests, K8s scripts          |
-| [docs/](docs/)                                               | Specifications and deployment guides        |
-| [dashboard/](dashboard/)                                     | Web console (planned)                       |
-| [cli/](cli/)                                                 | Developer CLI (planned)                     |
-| [terraform-provider-inferadb/](terraform-provider-inferadb/) | IaC provider (planned)                      |
+Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/). Built on [AuthZEN](https://openid.net/wg/authzen/).
 
 ## Quick Start
 
-**Prerequisites:** Make, Rust 1.85+ (or [Mise](https://mise.jdx.dev/) for version management)
+```bash
+git clone https://github.com/inferadb/inferadb && cd inferadb
+git submodule update --init --remote
+make setup && make server-dev
+```
+
+Verify with a permission check:
 
 ```bash
-git clone https://github.com/inferadb/inferadb
-cd inferadb
-git submodule init && git submodule update --remote
-make setup       # Install tools, fetch dependencies
-make test        # Run all tests
-make server-dev  # Start server with auto-reload
+curl -X POST http://localhost:8080/v1/evaluate \
+  -H "Content-Type: application/json" \
+  -d '{"evaluations": [{"subject": "user:alice", "resource": "doc:readme", "permission": "viewer"}]}'
 ```
+
+## Features
+
+- **ReBAC** — Model hierarchies, groups, and ownership as traversable graphs
+- **Declarative Policies (IPL)** — Composable, version-controlled, testable before deployment
+- **Sub-millisecond Latency** — FoundationDB-backed storage with co-located computation
+- **Multi-Tenant** — Isolated namespaces, per-tenant encryption, auditable logs
+- **WASM Extensible** — Embed custom logic in sandboxed modules
+
+## Components
+
+| Component                  | Purpose                          | Status  |
+| -------------------------- | -------------------------------- | ------- |
+| [server/](server/)         | Authorization engine (IPL, APIs) | Active  |
+| [management/](management/) | Control plane (tenants, auth)    | Active  |
+| [tests/](tests/)           | E2E integration tests            | Active  |
+| [docs/](docs/)             | Specifications, guides           | Active  |
+| dashboard/                 | Web console                      | Planned |
+| cli/                       | Developer CLI                    | Planned |
 
 ## Commands
 
-Run `make help` for full list. Pattern: `make <component>-<command>` (e.g., `make server-test`).
+```bash
+make help             # List all commands
+make build            # Debug build
+make check            # Format, lint, audit
+make test             # Unit tests
+make test-e2e         # E2E tests (requires K8s)
+make server-dev       # Server with hot-reload
+make management-dev   # Management API with hot-reload
+```
 
-| Command      | Purpose                    |
-| ------------ | -------------------------- |
-| `make build` | Build (debug)              |
-| `make check` | Format, lint, audit        |
-| `make clean` | Clean build artifacts      |
-| `make ci`    | Full CI pipeline locally   |
-
-### Kubernetes Environment
-
-| Command           | Purpose                           |
-| ----------------- | --------------------------------- |
-| `make k8s-start`  | Start local K8s environment       |
-| `make k8s-stop`   | Stop environment (preserves data) |
-| `make k8s-status` | Check deployment health           |
-| `make k8s-purge`  | Remove all resources and data     |
-
-### Test Execution
-
-| Command         | Purpose                          | Requires    |
-| --------------- | -------------------------------- | ----------- |
-| `make test`     | Unit tests (server + management) | Nothing     |
-| `make test-fdb` | FDB integration tests            | Docker      |
-| `make test-e2e` | E2E tests in K8s                 | K8s running |
-
-### Component-Specific
+### Kubernetes
 
 ```bash
-make server-dev      # Start server with auto-reload
-make management-dev  # Start management API with auto-reload
+make k8s-start    # Start local K8s stack
+make k8s-status   # Check deployment health
+make k8s-stop     # Stop (preserves data)
+make k8s-purge    # Remove all resources
 ```
 
 ## Architecture
 
 ```mermaid
 graph LR
-    A[InferaDB] --> B[server/]
-    A --> C[management/]
-    A --> D[tests/]
-    B --> B1[IPL Parser]
-    B --> B2[Graph Engine]
-    C --> C1[Tenants/RBAC]
-    C --> C2[Audit Logs]
-    D --> D1[K8s E2E Tests]
+    A[Client] --> B[Server]
+    A --> C[Management]
+    B --> D[(FoundationDB)]
+    C --> D
+    B -.->|JWT validation| C
 ```
 
-**Tech Stack:** Server (Rust, FoundationDB, gRPC) · Management (Rust, Axum, FoundationDB) · Tests (Rust, Kubernetes)
+**Stack:** Rust, FoundationDB, gRPC/REST, Kubernetes
 
-## Resources
+## Documentation
 
-| Resource                                     | Description                 |
-| -------------------------------------------- | --------------------------- |
-| [server/README.md](server/README.md)         | Policy engine development   |
-| [management/README.md](management/README.md) | Management API architecture |
-| [tests/README.md](tests/README.md)           | Integration test guide      |
-| [docs/](docs/)                               | Specifications, deployment  |
+- [server/README.md](server/README.md) — Authorization engine
+- [management/README.md](management/README.md) — Control plane API
+- [tests/README.md](tests/README.md) — Integration testing
+- [docs/](docs/) — Full specifications
 
 ## License
 
-Each component has its own license. See [server/LICENSE](server/LICENSE), [management/LICENSE](management/LICENSE), [tests/LICENSE](tests/LICENSE).
+Component-specific. See [server/LICENSE](server/LICENSE), [management/LICENSE](management/LICENSE).
