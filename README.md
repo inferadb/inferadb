@@ -1,8 +1,6 @@
 # InferaDB
 
-**Inference-driven authorization database for fine-grained access control.**
-
-InferaDB models authorization as a graph of relationships and logical inferences—not static roles or attributes. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/), it delivers sub-millisecond decisions with strong consistency across distributed, multi-tenant deployments.
+**The distributed inference engine for authorization** - fine-grained, low-latency permission checks at scale. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/), built on [AuthZEN](https://openid.net/wg/authzen/).
 
 ## Why InferaDB
 
