@@ -14,6 +14,10 @@ updates:
     commit-message:
       prefix: "ci"
       include: "scope"
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "area/ci"
     groups:
       # Group all GitHub Actions updates together
       actions:

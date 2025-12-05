@@ -1,0 +1,65 @@
+# Configuration for actions/labeler
+# Auto-labels PRs based on changed files
+
+# Documentation
+area/docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "**/*.md"
+          - "!.github/**/*.md"
+
+# CI/CD
+area/ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+
+# Kubernetes/Helm
+area/k8s:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "k8s/**"
+          - "helm/**"
+
+# Docker
+area/docker:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Dockerfile*"
+          - "docker/**"
+          - "docker-compose*.yml"
+
+# Terraform
+area/terraform:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "terraform/**"
+          - "*.tf"
+
+# Configuration
+area/config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "config*.yaml"
+          - "config*.yml"
+          - "*.toml"
+          - "!Cargo.toml"
+          - "!rust-toolchain.toml"
+
+# Dependencies (Rust)
+area/deps:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "Cargo.toml"
+          - "Cargo.lock"
+          - "deny.toml"
+
+# Testing
+area/testing:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tests/**"
+          - "**/tests/**"
+          - "**/*_test.rs"
+          - "**/*_tests.rs"
