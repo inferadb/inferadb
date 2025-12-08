@@ -6,17 +6,17 @@ This repository is organized into submodules, each with its own license.
 
 | Component                                                                              | License                                    | SPDX Identifier              |
 | -------------------------------------------------------------------------------------- | ------------------------------------------ | ---------------------------- |
-| [server](https://github.com/inferadb/server)                                           | InferaDB Non‑Commercial Source License 1.0 | `LicenseRef-InferaDB-NC-1.0` |
-| [management](https://github.com/inferadb/management)                                   | InferaDB Non‑Commercial Source License 1.0 | `LicenseRef-InferaDB-NC-1.0` |
+| [engine](https://github.com/inferadb/engine)                                           | InferaDB Non‑Commercial Source License 1.0 | `LicenseRef-InferaDB-NC-1.0` |
+| [control](https://github.com/inferadb/control)                                         | InferaDB Non‑Commercial Source License 1.0 | `LicenseRef-InferaDB-NC-1.0` |
 | [dashboard](https://github.com/inferadb/dashboard)                                     | Apache License 2.0                         | `Apache-2.0`                 |
 | [terraform-provider-inferadb](https://github.com/inferadb/terraform-provider-inferadb) | Apache License 2.0                         | `Apache-2.0`                 |
 | [tests](https://github.com/inferadb/tests)                                             | Apache License 2.0                         | `Apache-2.0`                 |
 
 ## Summary
 
-### Server & Management (InferaDB Non-Commercial Source License 1.0)
+### Engine & Control (InferaDB Non-Commercial Source License 1.0)
 
-The core InferaDB components (`server/` and `management/`) are licensed under the
+The core InferaDB components (`engine/` and `control/`) are licensed under the
 **InferaDB Non-Commercial Source License 1.0**:
 
 - **Free** for personal, non-commercial, and educational use

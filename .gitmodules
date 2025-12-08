@@ -1,10 +1,10 @@
-[submodule "server"]
-	path = server
-	url = https://github.com/inferadb/server
+[submodule "engine"]
+	path = engine
+	url = https://github.com/inferadb/engine
 	branch = main
-[submodule "management"]
-	path = management
-	url = https://github.com/inferadb/management
+[submodule "control"]
+	path = control
+	url = https://github.com/inferadb/control
 	branch = main
 [submodule "dashboard"]
 	path = dashboard

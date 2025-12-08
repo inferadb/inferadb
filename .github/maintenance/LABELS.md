@@ -7,8 +7,8 @@ Standardized label configuration for GitHub issues and pull requests across all 
 This labeling strategy provides consistency across:
 
 - `inferadb` (meta-repository)
-- `inferadb/server` (core policy engine)
-- `inferadb/management` (control plane API)
+- `inferadb/engine` (core policy engine)
+- `inferadb/control` (control plane API)
 - `inferadb/dashboard` (web console)
 - `inferadb/tests` (E2E integration tests)
 
@@ -49,7 +49,7 @@ Identifies which part of the system is affected. Apply multiple if cross-cutting
 | `area/deps`    | `#c5def5` | Dependencies and supply chain      |
 | `area/testing` | `#c5def5` | Test infrastructure and coverage   |
 
-#### Server-Specific Areas (`server/` repository)
+#### Engine-Specific Areas (`engine/` repository)
 
 | Label               | Color     | Description                      |
 | ------------------- | --------- | -------------------------------- |
@@ -61,7 +61,7 @@ Identifies which part of the system is affected. Apply multiple if cross-cutting
 | `area/wasm`         | `#bfdadc` | WebAssembly runtime              |
 | `area/repl`         | `#bfdadc` | Interactive REPL                 |
 
-#### Management-Specific Areas (`management/` repository)
+#### Control-Specific Areas (`control/` repository)
 
 | Label          | Color     | Description                          |
 | -------------- | --------- | ------------------------------------ |
@@ -176,13 +176,13 @@ For release notes categorization (PRs only).
 
 In addition to core labels, include:
 
-| Label             | Color     | Description                     |
-| ----------------- | --------- | ------------------------------- |
-| `repo/server`     | `#1d76db` | Related to server component     |
-| `repo/management` | `#1d76db` | Related to management component |
-| `repo/dashboard`  | `#1d76db` | Related to dashboard component  |
-| `repo/tests`      | `#1d76db` | Related to tests component      |
-| `repo/cli`        | `#1d76db` | Related to CLI component        |
+| Label            | Color     | Description                    |
+| ---------------- | --------- | ------------------------------ |
+| `repo/engine`    | `#1d76db` | Related to engine component    |
+| `repo/control`   | `#1d76db` | Related to control component   |
+| `repo/dashboard` | `#1d76db` | Related to dashboard component |
+| `repo/tests`     | `#1d76db` | Related to tests component     |
+| `repo/cli`       | `#1d76db` | Related to CLI component       |
 
 ---
 
@@ -231,8 +231,8 @@ New issues should be triaged within 48 hours:
 | Good First Issue  | Purple          | `#7057ff` |
 | Help Wanted       | Teal            | `#008672` |
 | Area (generic)    | Light Blue-Gray | `#c5def5` |
-| Area (server)     | Light Teal      | `#bfdadc` |
-| Area (management) | Light Sky Blue  | `#d4e5f7` |
+| Area (engine)     | Light Teal      | `#bfdadc` |
+| Area (control)    | Light Sky Blue  | `#d4e5f7` |
 | Area (dashboard)  | Light Purple    | `#e6ccf5` |
 | Area (deployment) | Light Salmon    | `#f9d0c4` |
 | Priority High     | Orange          | `#d93f0b` |
@@ -247,7 +247,7 @@ New issues should be triaged within 48 hours:
 
 ```bash
 # Set repository
-REPO="inferadb/server"
+REPO="inferadb/engine"
 
 # Kind labels
 gh label create "kind/bug" --repo $REPO --color "d73a4a" --description "Something isn't working as expected"
@@ -310,7 +310,7 @@ gh label create "changelog/skip" --repo $REPO --color "cfd3d7" --description "Do
 ### Delete default GitHub labels
 
 ```bash
-REPO="inferadb/server"
+REPO="inferadb/engine"
 
 gh label delete "bug" --repo $REPO --yes 2>/dev/null || true
 gh label delete "documentation" --repo $REPO --yes 2>/dev/null || true

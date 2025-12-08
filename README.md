@@ -17,7 +17,7 @@ Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-cons
 ```bash
 git clone https://github.com/inferadb/inferadb && cd inferadb
 git submodule update --init --remote
-make setup && make server-dev
+make setup && make engine-dev
 ```
 
 Check a permission:
@@ -36,20 +36,20 @@ Response:
 
 ## Components
 
-| Component                                              | Purpose                       |
-| ------------------------------------------------------ | ----------------------------- |
-| [server/](https://github.com/inferadb/server/)         | Authorization policy engine   |
-| [management/](https://github.com/inferadb/management/) | Control plane (tenants, auth) |
-| [dashboard/](https://github.com/inferadb/dashboard/)   | Management web dashboard      |
-| [tests/](https://github.com/inferadb/tests/)           | E2E integration tests         |
-| [docs/](https://github.com/inferadb/docs/)             | Specifications and guides     |
+| Component                                            | Purpose                       |
+| ---------------------------------------------------- | ----------------------------- |
+| [engine/](https://github.com/inferadb/engine/)       | Authorization policy engine   |
+| [control/](https://github.com/inferadb/control/)     | Control plane (tenants, auth) |
+| [dashboard/](https://github.com/inferadb/dashboard/) | Management web dashboard      |
+| [tests/](https://github.com/inferadb/tests/)         | E2E integration tests         |
+| [docs/](https://github.com/inferadb/docs/)           | Specifications and guides     |
 
 ## Architecture
 
 ```mermaid
 graph LR
-    A[Client] --> B[Server]
-    A --> C[Management]
+    A[Client] --> B[Engine]
+    A --> C[Control]
     B --> D[(FoundationDB)]
     C --> D
     B -.->|JWT validation| C
@@ -64,8 +64,8 @@ make help             # List all commands
 make build            # Debug build
 make check            # Format, lint, audit
 make test             # Unit tests
-make server-dev       # Server with hot-reload
-make management-dev   # Management API with hot-reload
+make engine-dev       # Engine with hot-reload
+make control-dev      # Control API with hot-reload
 make dashboard-dev    # Dashboard on http://localhost:5173
 ```
 
@@ -80,8 +80,8 @@ make k8s-purge        # Remove all resources
 
 ## Documentation
 
-- [server/README.md](https://github.com/inferadb/server/blob/main/README.md) — Authorization engine
-- [management/README.md](https://github.com/inferadb/management/blob/main/README.md) — Control plane API
+- [engine/README.md](https://github.com/inferadb/engine/blob/main/README.md) — Authorization engine
+- [control/README.md](https://github.com/inferadb/control/blob/main/README.md) — Control plane API
 - [tests/README.md](https://github.com/inferadb/tests/blob/main//README.md) — Integration testing
 - [docs/](https://github.com/inferadb/docs/) — Full specifications
 

@@ -83,17 +83,17 @@ area/observability:
           - "**/*metrics*"
           - "**/*tracing*"
 
-# Server component (when working in submodule)
-repo/server:
+# Engine component (when working in submodule)
+repo/engine:
   - changed-files:
       - any-glob-to-any-file:
-          - "server/**"
+          - "engine/**"
 
-# Management component (when working in submodule)
-repo/management:
+# Control component (when working in submodule)
+repo/control:
   - changed-files:
       - any-glob-to-any-file:
-          - "management/**"
+          - "control/**"
 
 # Dashboard component (when working in submodule)
 repo/dashboard:
