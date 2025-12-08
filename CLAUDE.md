@@ -9,7 +9,7 @@ Meta-repository with git submodules. Each component has its own `CLAUDE.md` with
 | Directory                      | Language   | Purpose                                                     |
 | ------------------------------ | ---------- | ----------------------------------------------------------- |
 | `server/`                      | Rust       | Core policy engine (IPL parser, graph traversal, decisions) |
-| `management/`                  | Rust       | Control plane API (tenants, RBAC, audit, tokens)            |
+| `control/`                     | Rust       | Control plane API (tenants, RBAC, audit, tokens)            |
 | `dashboard/`                   | TypeScript | Web console (TanStack Start, React)                         |
 | `cli/`                         | Rust       | Developer tooling (schema validation, testing)              |
 | `tests/`                       | Rust       | E2E integration tests and K8s scripts                       |
@@ -20,20 +20,20 @@ Meta-repository with git submodules. Each component has its own `CLAUDE.md` with
 
 ```bash
 make setup              # Install tools (mise), dependencies
-make build              # Debug build (both server + management)
+make build              # Debug build (both server + control)
 make test               # Unit tests (both)
 make check              # Format + lint + audit
 ```
 
 ## Component Commands
 
-Prefix with `server-` or `management-` for specific targets:
+Prefix with `server-` or `control-` for specific targets:
 
 ```bash
 make server-dev         # Server with auto-reload
 make server-test        # Server tests only
-make management-dev     # Management API with auto-reload
-make management-test    # Management tests only
+make control-dev        # Control with auto-reload
+make control-test       # Control tests only
 ```
 
 ## Kubernetes Environment
@@ -48,7 +48,7 @@ make k8s-purge          # Remove all K8s resources
 ## Testing
 
 ```bash
-make test               # Unit tests (server + management)
+make test               # Unit tests (server + control)
 make test-fdb           # FDB integration tests (requires Docker)
 make test-e2e           # E2E tests in K8s
 ```
@@ -68,13 +68,13 @@ make test-e2e           # E2E tests in K8s
 ## Configuration
 
 - Server env prefix: `INFERADB__` (double underscore separator)
-- Management env prefix: `INFERADB_MGMT__`
+- Control env prefix: `INFERADB_CONTROL__`
 - Config files: `config.yaml` in each component
 
 ## Important Notes
 
 - Read `server/CLAUDE.md` when working in `server/`
-- Read `management/CLAUDE.md` when working in `management/`
+- Read `control/CLAUDE.md` when working in `control/`
 - Read `tests/CLAUDE.md` when working in `tests/`
 - Both components use layered architecture with strict dependency rules
 - All storage operations are vault-scoped (multi-tenancy)

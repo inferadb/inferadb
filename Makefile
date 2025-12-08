@@ -1,17 +1,17 @@
-# Makefile for InferaDB meta-repository
-# Delegates commands to submodule Makefiles (server/ and management/)
+# Makefile for InferaDB
+# Delegates commands to submodule Makefiles (engine/ and control/)
 #
-# By default, commands run on BOTH server and management
-# Use server-<command> or management-<command> for specific targets
+# By default, commands run on BOTH the engine and control
+# Use engine-<command> or control-<command> for specific targets
 #
 # Examples:
-#   make test              - Run tests in both server and management
-#   make server-test       - Run tests in server only
-#   make management-test   - Run tests in management only
+#   make test              - Run tests in both engine and control
+#   make engine-test       - Run tests in engine only
+#   make control-test      - Run tests in control only
 
 .PHONY: help setup test test-fdb check format lint audit deny run build release clean reset dev doc coverage bench fix ci
-.PHONY: server-help server-setup server-test server-check server-format server-lint server-run server-build server-release server-clean server-reset server-dev server-doc
-.PHONY: management-help management-setup management-test management-check management-format management-lint management-run management-build management-release management-clean management-reset management-dev management-doc
+.PHONY: engine-help engine-setup engine-test engine-check engine-format engine-lint engine-run engine-build engine-release engine-clean engine-reset engine-dev engine-doc
+.PHONY: control-help control-setup control-test control-check control-format control-lint control-run control-build control-release control-clean control-reset control-dev control-doc
 .PHONY: dashboard-help dashboard-setup dashboard-test dashboard-check dashboard-format dashboard-lint dashboard-typecheck dashboard-run dashboard-dev dashboard-build dashboard-release dashboard-clean dashboard-reset
 .PHONY: k8s-start k8s-stop k8s-status k8s-update k8s-purge test-e2e
 
@@ -27,7 +27,7 @@ COLOR_RESET := \033[0m
 help: ## Show available commands
 	@echo "$(COLOR_BLUE)InferaDB Meta-Repository Commands$(COLOR_RESET)"
 	@echo ""
-	@echo "$(COLOR_GREEN)Combined Commands (run on both server/ and management/):$(COLOR_RESET)"
+	@echo "$(COLOR_GREEN)Combined Commands (run on both engine/ and control/):$(COLOR_RESET)"
 	@echo "  $(COLOR_BLUE)make setup$(COLOR_RESET)            - Setup development environment for both projects"
 	@echo "  $(COLOR_BLUE)make test$(COLOR_RESET)             - Run tests in both projects"
 	@echo "  $(COLOR_BLUE)make check$(COLOR_RESET)            - Run code quality checks in both projects"
@@ -37,13 +37,13 @@ help: ## Show available commands
 	@echo "  $(COLOR_BLUE)make clean$(COLOR_RESET)            - Clean both projects"
 	@echo "  $(COLOR_BLUE)make ci$(COLOR_RESET)               - Run CI checks on both projects"
 	@echo ""
-	@echo "$(COLOR_GREEN)Server-Specific Commands:$(COLOR_RESET)"
-	@echo "  $(COLOR_BLUE)make server-<command>$(COLOR_RESET)  - Run <command> in server/ only"
-	@echo "  $(COLOR_BLUE)make server-help$(COLOR_RESET)       - Show server-specific help"
+	@echo "$(COLOR_GREEN)Engine-Specific Commands:$(COLOR_RESET)"
+	@echo "  $(COLOR_BLUE)make engine-<command>$(COLOR_RESET)  - Run <command> in engine/ only"
+	@echo "  $(COLOR_BLUE)make engine-help$(COLOR_RESET)       - Show engine-specific help"
 	@echo ""
-	@echo "$(COLOR_GREEN)Management-Specific Commands:$(COLOR_RESET)"
-	@echo "  $(COLOR_BLUE)make management-<command>$(COLOR_RESET)  - Run <command> in management/ only"
-	@echo "  $(COLOR_BLUE)make management-help$(COLOR_RESET)       - Show management-specific help"
+	@echo "$(COLOR_GREEN)Control-Specific Commands:$(COLOR_RESET)"
+	@echo "  $(COLOR_BLUE)make control-<command>$(COLOR_RESET)  - Run <command> in control/ only"
+	@echo "  $(COLOR_BLUE)make control-help$(COLOR_RESET)       - Show control-specific help"
 	@echo ""
 	@echo "$(COLOR_GREEN)Dashboard Commands:$(COLOR_RESET)"
 	@echo "  $(COLOR_BLUE)make dashboard-<command>$(COLOR_RESET)  - Run <command> in dashboard/ only"
@@ -64,203 +64,203 @@ help: ## Show available commands
 	@echo ""
 
 # ============================================================================
-# Combined Commands (runs equivalent server, management and dashboard commands)
+# Combined Commands (runs equivalent engine, control and dashboard commands)
 # ============================================================================
 
 setup: ## Setup development environment for both projects
 	@echo "$(COLOR_BLUE)🔧 Setting up InferaDB development environment...$(COLOR_RESET)"
 	@echo ""
-	@echo "$(COLOR_GREEN)Setting up server/$(COLOR_RESET)"
-	@$(MAKE) -C server setup
+	@echo "$(COLOR_GREEN)Setting up engine/$(COLOR_RESET)"
+	@$(MAKE) -C engine setup
 	@echo ""
-	@echo "$(COLOR_GREEN)Setting up management/$(COLOR_RESET)"
-	@$(MAKE) -C management setup
+	@echo "$(COLOR_GREEN)Setting up control/$(COLOR_RESET)"
+	@$(MAKE) -C control setup
 	@echo ""
 	@echo "$(COLOR_GREEN)✅ Setup complete for both projects!$(COLOR_RESET)"
 
 test: ## Run tests in both projects
 	@echo "$(COLOR_BLUE)🧪 Running tests in both projects...$(COLOR_RESET)"
 	@echo ""
-	@echo "$(COLOR_GREEN)Testing server/$(COLOR_RESET)"
-	@$(MAKE) -C server test
+	@echo "$(COLOR_GREEN)Testing engine/$(COLOR_RESET)"
+	@$(MAKE) -C engine test
 	@echo ""
-	@echo "$(COLOR_GREEN)Testing management/$(COLOR_RESET)"
-	@$(MAKE) -C management test
+	@echo "$(COLOR_GREEN)Testing control/$(COLOR_RESET)"
+	@$(MAKE) -C control test
 	@echo ""
 	@echo "$(COLOR_GREEN)✅ All tests passed!$(COLOR_RESET)"
 
 test-fdb: ## Run FDB integration tests in both projects (requires Docker)
 	@echo "$(COLOR_BLUE)🧪 Running FDB integration tests...$(COLOR_RESET)"
 	@echo ""
-	@echo "$(COLOR_GREEN)Server FDB tests$(COLOR_RESET)"
-	@$(MAKE) -C server test-fdb
+	@echo "$(COLOR_GREEN)Engine FDB tests$(COLOR_RESET)"
+	@$(MAKE) -C engine test-fdb
 	@echo ""
-	@echo "$(COLOR_GREEN)Management FDB tests$(COLOR_RESET)"
-	@$(MAKE) -C management test-fdb
+	@echo "$(COLOR_GREEN)Control FDB tests$(COLOR_RESET)"
+	@$(MAKE) -C control test-fdb
 	@echo ""
 	@echo "$(COLOR_GREEN)✅ All FDB tests passed!$(COLOR_RESET)"
 
 check: ## Run code quality checks in both projects
 	@echo "$(COLOR_BLUE)🔍 Running code quality checks...$(COLOR_RESET)"
 	@echo ""
-	@echo "$(COLOR_GREEN)Checking server/$(COLOR_RESET)"
-	@$(MAKE) -C server check
+	@echo "$(COLOR_GREEN)Checking engine/$(COLOR_RESET)"
+	@$(MAKE) -C engine check
 	@echo ""
-	@echo "$(COLOR_GREEN)Checking management/$(COLOR_RESET)"
-	@$(MAKE) -C management check
+	@echo "$(COLOR_GREEN)Checking control/$(COLOR_RESET)"
+	@$(MAKE) -C control check
 	@echo ""
 	@echo "$(COLOR_GREEN)✅ All checks passed!$(COLOR_RESET)"
 
 format: ## Format code in both projects
 	@echo "$(COLOR_BLUE)📝 Formatting code...$(COLOR_RESET)"
-	@$(MAKE) -C server format
-	@$(MAKE) -C management format
+	@$(MAKE) -C engine format
+	@$(MAKE) -C control format
 	@echo "$(COLOR_GREEN)✅ Formatting complete!$(COLOR_RESET)"
 
 lint: ## Run linters in both projects
 	@echo "$(COLOR_BLUE)🔍 Running linters...$(COLOR_RESET)"
-	@$(MAKE) -C server lint
-	@$(MAKE) -C management lint
+	@$(MAKE) -C engine lint
+	@$(MAKE) -C control lint
 
 audit: ## Run security audit in both projects
 	@echo "$(COLOR_BLUE)🔒 Running security audit...$(COLOR_RESET)"
-	@$(MAKE) -C server audit
-	@$(MAKE) -C management audit
+	@$(MAKE) -C engine audit
+	@$(MAKE) -C control audit
 
 build: ## Build both projects
 	@echo "$(COLOR_BLUE)🔨 Building both projects...$(COLOR_RESET)"
 	@echo ""
-	@echo "$(COLOR_GREEN)Building server/$(COLOR_RESET)"
-	@$(MAKE) -C server build
+	@echo "$(COLOR_GREEN)Building engine/$(COLOR_RESET)"
+	@$(MAKE) -C engine build
 	@echo ""
-	@echo "$(COLOR_GREEN)Building management/$(COLOR_RESET)"
-	@$(MAKE) -C management build
+	@echo "$(COLOR_GREEN)Building control/$(COLOR_RESET)"
+	@$(MAKE) -C control build
 	@echo ""
 	@echo "$(COLOR_GREEN)✅ Build complete!$(COLOR_RESET)"
 
 release: ## Build release binaries for both projects
 	@echo "$(COLOR_BLUE)🚀 Building release binaries...$(COLOR_RESET)"
-	@$(MAKE) -C server release
-	@$(MAKE) -C management release
+	@$(MAKE) -C engine release
+	@$(MAKE) -C control release
 
 clean: ## Clean both projects
 	@echo "$(COLOR_BLUE)🧹 Cleaning both projects...$(COLOR_RESET)"
-	@$(MAKE) -C server clean
-	@$(MAKE) -C management clean
+	@$(MAKE) -C engine clean
+	@$(MAKE) -C control clean
 
 reset: ## Full reset of both projects
 	@echo "$(COLOR_BLUE)⚠️  Performing full reset...$(COLOR_RESET)"
-	@$(MAKE) -C server reset
-	@$(MAKE) -C management reset
+	@$(MAKE) -C engine reset
+	@$(MAKE) -C control reset
 	@echo "$(COLOR_GREEN)✅ Reset complete!$(COLOR_RESET)"
 
 doc: ## Generate documentation for both projects
 	@echo "$(COLOR_BLUE)📚 Generating documentation...$(COLOR_RESET)"
-	@$(MAKE) -C server doc
-	@$(MAKE) -C management doc
+	@$(MAKE) -C engine doc
+	@$(MAKE) -C control doc
 
 ci: ## Run CI checks on both projects
 	@echo "$(COLOR_BLUE)🤖 Running CI checks...$(COLOR_RESET)"
-	@$(MAKE) -C server ci
-	@$(MAKE) -C management ci
+	@$(MAKE) -C engine ci
+	@$(MAKE) -C control ci
 
 # ============================================================================
-# Server-Specific Commands
+# Engine-Specific Commands
 # ============================================================================
 
-server-help: ## Show server-specific help
-	@$(MAKE) -C server help
+engine-help: ## Show engine-specific help
+	@$(MAKE) -C engine help
 
-server-setup: ## Setup server development environment
-	@$(MAKE) -C server setup
+engine-setup: ## Setup engine development environment
+	@$(MAKE) -C engine setup
 
-server-test: ## Run server tests
-	@$(MAKE) -C server test
+engine-test: ## Run engine tests
+	@$(MAKE) -C engine test
 
-server-test-integration: ## Run server integration tests
-	@$(MAKE) -C server test-integration
+engine-test-integration: ## Run engine integration tests
+	@$(MAKE) -C engine test-integration
 
-server-test-fdb: ## Run server FDB tests
-	@$(MAKE) -C server test-fdb
+engine-test-fdb: ## Run engine FDB tests
+	@$(MAKE) -C engine test-fdb
 
-server-check: ## Run server code quality checks
-	@$(MAKE) -C server check
+engine-check: ## Run engine code quality checks
+	@$(MAKE) -C engine check
 
-server-format: ## Format server code
-	@$(MAKE) -C server format
+engine-format: ## Format engine code
+	@$(MAKE) -C engine format
 
-server-lint: ## Lint server code
-	@$(MAKE) -C server lint
+engine-lint: ## Lint engine code
+	@$(MAKE) -C engine lint
 
-server-run: ## Run server
-	@$(MAKE) -C server run
+engine-run: ## Run engine
+	@$(MAKE) -C engine run
 
-server-dev: ## Run server with auto-reload
-	@$(MAKE) -C server dev
+engine-dev: ## Run engine with auto-reload
+	@$(MAKE) -C engine dev
 
-server-build: ## Build server
-	@$(MAKE) -C server build
+engine-build: ## Build engine
+	@$(MAKE) -C engine build
 
-server-release: ## Build server release binary
-	@$(MAKE) -C server release
+engine-release: ## Build engine release binary
+	@$(MAKE) -C engine release
 
-server-clean: ## Clean server
-	@$(MAKE) -C server clean
+engine-clean: ## Clean engine
+	@$(MAKE) -C engine clean
 
-server-reset: ## Reset server
-	@$(MAKE) -C server reset
+engine-reset: ## Reset engine
+	@$(MAKE) -C engine reset
 
-server-doc: ## Generate server documentation
-	@$(MAKE) -C server doc
+engine-doc: ## Generate engine documentation
+	@$(MAKE) -C engine doc
 
 # ============================================================================
-# Management-Specific Commands
+# Control-Specific Commands
 # ============================================================================
 
-management-help: ## Show management-specific help
-	@$(MAKE) -C management help
+control-help: ## Show Control-specific help
+	@$(MAKE) -C control help
 
-management-setup: ## Setup management development environment
-	@$(MAKE) -C management setup
+control-setup: ## Setup Control development environment
+	@$(MAKE) -C control setup
 
-management-test: ## Run management tests
-	@$(MAKE) -C management test
+control-test: ## Run Control tests
+	@$(MAKE) -C control test
 
-management-test-integration: ## Run management integration tests
-	@$(MAKE) -C management test-integration
+control-test-integration: ## Run Control integration tests
+	@$(MAKE) -C control test-integration
 
-management-test-fdb: ## Run management FDB tests
-	@$(MAKE) -C management test-fdb
+control-test-fdb: ## Run Control FDB tests
+	@$(MAKE) -C control test-fdb
 
-management-check: ## Run management code quality checks
-	@$(MAKE) -C management check
+control-check: ## Run Control code quality checks
+	@$(MAKE) -C control check
 
-management-format: ## Format management code
-	@$(MAKE) -C management format
+control-format: ## Format Control code
+	@$(MAKE) -C control format
 
-management-lint: ## Lint management code
-	@$(MAKE) -C management lint
+control-lint: ## Lint Control code
+	@$(MAKE) -C control lint
 
-management-run: ## Run management API
-	@$(MAKE) -C management run
+control-run: ## Run Control
+	@$(MAKE) -C control run
 
-management-dev: ## Run management API with auto-reload
-	@$(MAKE) -C management dev
+control-dev: ## Run Control with auto-reload
+	@$(MAKE) -C control dev
 
-management-build: ## Build management API
-	@$(MAKE) -C management build
+control-build: ## Build Control binary
+	@$(MAKE) -C control build
 
-management-release: ## Build management API release binary
-	@$(MAKE) -C management release
+control-release: ## Build Control release binary
+	@$(MAKE) -C control release
 
-management-clean: ## Clean management
-	@$(MAKE) -C management clean
+control-clean: ## Clean Control
+	@$(MAKE) -C control clean
 
-management-reset: ## Reset management
-	@$(MAKE) -C management reset
+control-reset: ## Reset Control
+	@$(MAKE) -C control reset
 
-management-doc: ## Generate management documentation
-	@$(MAKE) -C management doc
+control-doc: ## Generate Control documentation
+	@$(MAKE) -C control doc
 
 # ============================================================================
 # Dashboard Commands

@@ -68,7 +68,7 @@ make test-e2e           # E2E tests in K8s
 ## Configuration
 
 - Server env prefix: `INFERADB__` (double underscore separator)
-- Management env prefix: `INFERADB_MGMT__`
+- Management env prefix: `INFERADB_CTRL__`
 - Config files: `config.yaml` in each component
 
 ## Important Notes
