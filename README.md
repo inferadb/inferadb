@@ -39,15 +39,15 @@ data: {"total":1,"complete":true}
 
 ## Components
 
-| Component                                                    | Purpose                                                            |
-| ------------------------------------------------------------ | ------------------------------------------------------------------ |
-| [engine/](engine/)                                           | Authorization Engine (Policy Decision Endpoint)                    |
-| [control/](control/)                                         | Control Plane (Policy Administration Endpoint)                     |
-| [dashboard/](dashboard/)                                     | Self-Service Management Interface                                  |
-| [cli/](cli/)                                                 | Administrative Command Line Tooling                                |
-| [tests/](tests/)                                             | End-to-end Integration Tests                                       |
-| [docs/](docs/)                                               | Technical specifications, design documents, and deployment guides. |
-| [terraform-provider-inferadb/](terraform-provider-inferadb/) | Terraform Provider                                                 |
+| Component                                                                                | Purpose                                                            |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| [engine/](https://github.com/inferadb/engine/)                                           | Authorization Engine (Policy Decision Endpoint)                    |
+| [control/](https://github.com/inferadb/control/)                                         | Control Plane (Policy Administration Endpoint)                     |
+| [dashboard/](https://github.com/inferadb/dashboard/)                                     | Self-Service Management Interface                                  |
+| [cli/](https://github.com/inferadb/cli/)                                                 | Administrative Command Line Tooling                                |
+| [tests/](https://github.com/inferadb/tests/)                                             | End-to-end Integration Tests                                       |
+| [docs/](https://github.com/inferadb/docs/)                                               | Technical specifications, design documents, and deployment guides. |
+| [terraform-provider-inferadb/](https://github.com/inferadb/terraform-provider-inferadb/) | Terraform Provider                                                 |
 
 ## Architecture
 
@@ -85,10 +85,10 @@ make k8s-purge        # Remove all resources
 
 ## Documentation
 
-- [engine/README.md](engine/README.md) — Authorization engine
-- [control/README.md](control/README.md) — Control plane
-- [tests/README.md](tests/README.md) — Integration tests
-- [docs/](docs/) — Full specifications
+- [engine/README.md](https://github.com/inferadb/engine/README.md) — Authorization engine
+- [control/README.md](https://github.com/inferadb/control/README.md) — Control plane
+- [tests/README.md](https://github.com/inferadb/tests/README.md) — Integration tests
+- [docs/](https://github.com/inferadb/docs/) — Full specifications
 
 ## License
 
