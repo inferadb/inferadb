@@ -1,48 +1,53 @@
 # InferaDB
 
-**The distributed inference engine for authorization** — fine-grained, low-latency permission checks at scale.
+Distributed fine-grained authorization engine with sub-millisecond latency at scale.
 
-Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/) and [AuthZEN](https://openid.net/wg/authzen/) compliant.
-
-## Why InferaDB?
-
-- **Sub-millisecond latency** — <1ms cached, 3-5ms uncached at 100K+ RPS
-- **Declarative policies (IPL)** — Version-controlled, testable, composable authorization logic
-- **WASM extensibility** — Embed custom logic in sandboxed modules
-- **Multi-tenant isolation** — Per-tenant encryption, namespaces, and audit logs
-- **Graph-native ReBAC** — Model hierarchies, groups, and ownership as traversable relationships
+Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/). [AuthZEN](https://openid.net/wg/authzen/) compliant.
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/inferadb/inferadb && cd inferadb
-git submodule update --init --remote
+git submodule update --init --recursive
 make setup && make engine-dev
 ```
 
 Check a permission:
 
 ```bash
-curl -X POST http://localhost:8080/v1/evaluate \
+curl -N -X POST http://localhost:8080/v1/evaluate \
   -H "Content-Type: application/json" \
   -d '{"evaluations": [{"subject": "user:alice", "resource": "doc:readme", "permission": "viewer"}]}'
 ```
 
-Response:
+Response (SSE stream):
 
-```json
-{ "results": [{ "decision": "allow" }] }
+```text
+data: {"decision":"allow","index":0}
+
+event: summary
+data: {"total":1,"complete":true}
 ```
+
+## Features
+
+- **Sub-millisecond latency** — <1ms cached, 3-5ms uncached at 100K+ RPS
+- **Declarative policies (IPL)** — Version-controlled, testable, composable
+- **WASM extensibility** — Custom logic in sandboxed modules
+- **Multi-tenant isolation** — Per-tenant encryption, namespaces, audit logs
+- **Graph-native ReBAC** — Hierarchies, groups, ownership as traversable relationships
 
 ## Components
 
-| Component                                            | Purpose                       |
-| ---------------------------------------------------- | ----------------------------- |
-| [engine/](https://github.com/inferadb/engine/)       | Authorization policy engine   |
-| [control/](https://github.com/inferadb/control/)     | Control plane (tenants, auth) |
-| [dashboard/](https://github.com/inferadb/dashboard/) | Management web dashboard      |
-| [tests/](https://github.com/inferadb/tests/)         | E2E integration tests         |
-| [docs/](https://github.com/inferadb/docs/)           | Specifications and guides     |
+| Component                                                    | Purpose                                                            |
+| ------------------------------------------------------------ | ------------------------------------------------------------------ |
+| [engine/](engine/)                                           | Authorization Engine (Policy Decision Endpoint)                    |
+| [control/](control/)                                         | Control Plane (Policy Administration Endpoint)                     |
+| [dashboard/](dashboard/)                                     | Self-Service Management Interface                                  |
+| [cli/](cli/)                                                 | Administrative Command Line Tooling                                |
+| [tests/](tests/)                                             | End-to-end Integration Tests                                       |
+| [docs/](docs/)                                               | Technical specifications, design documents, and deployment guides. |
+| [terraform-provider-inferadb/](terraform-provider-inferadb/) | Terraform Provider                                                 |
 
 ## Architecture
 
@@ -65,8 +70,8 @@ make build            # Debug build
 make check            # Format, lint, audit
 make test             # Unit tests
 make engine-dev       # Engine with hot-reload
-make control-dev      # Control API with hot-reload
-make dashboard-dev    # Dashboard on http://localhost:5173
+make control-dev      # Control plane with hot-reload
+make dashboard-dev    # Dashboard on localhost:5173
 ```
 
 Kubernetes:
@@ -80,10 +85,10 @@ make k8s-purge        # Remove all resources
 
 ## Documentation
 
-- [engine/README.md](https://github.com/inferadb/engine/blob/main/README.md) — Authorization engine
-- [control/README.md](https://github.com/inferadb/control/blob/main/README.md) — Control plane API
-- [tests/README.md](https://github.com/inferadb/tests/blob/main//README.md) — Integration testing
-- [docs/](https://github.com/inferadb/docs/) — Full specifications
+- [engine/README.md](engine/README.md) — Authorization engine
+- [control/README.md](control/README.md) — Control plane
+- [tests/README.md](tests/README.md) — Integration tests
+- [docs/](docs/) — Full specifications
 
 ## License
 
