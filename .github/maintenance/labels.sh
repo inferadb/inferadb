@@ -60,7 +60,7 @@ delete_label() {
 }
 
 # Loop through our repositories
-for REPO in "inferadb/inferadb" "inferadb/server" "inferadb/management" "inferadb/dashboard" "inferadb/tests" "inferadb/docs" "inferadb/cli"; do
+for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/dashboard" "inferadb/tests" "inferadb/docs" "inferadb/cli"; do
     echo ""
     echo "Processing $REPO"
     echo "================"
@@ -79,11 +79,13 @@ for REPO in "inferadb/inferadb" "inferadb/server" "inferadb/management" "inferad
     delete_label "$REPO" "invalid"
     delete_label "$REPO" "question"
     delete_label "$REPO" "wontfix"
+    delete_label "$REPO" "repo/server"
+    delete_label "$REPO" "repo/management"
 
     # Repository-specific labels for meta-repository
     if [ "$REPO" == "inferadb/inferadb" ]; then
-        ensure_label "$REPO" "repo/server" "1d76db" "Related to server component"
-        ensure_label "$REPO" "repo/management" "1d76db" "Related to management component"
+        ensure_label "$REPO" "repo/engine" "1d76db" "Related to authorizationengine component"
+        ensure_label "$REPO" "repo/control" "1d76db" "Related to control plane component"
         ensure_label "$REPO" "repo/dashboard" "1d76db" "Related to dashboard component"
         ensure_label "$REPO" "repo/tests" "1d76db" "Related to tests component"
         ensure_label "$REPO" "repo/docs" "1d76db" "Related to docs component"
