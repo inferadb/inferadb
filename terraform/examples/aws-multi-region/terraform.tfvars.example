@@ -1,0 +1,97 @@
+# InferaDB AWS Multi-Region - Example Variables
+# ==============================================
+# Copy this file to terraform.tfvars and fill in your values
+
+# =============================================================================
+# Region Configuration
+# =============================================================================
+
+primary_region   = "us-west-2"
+dr_region        = "eu-west-1"
+primary_vpc_cidr = "10.0.0.0/16"
+dr_vpc_cidr      = "10.1.0.0/16"
+
+# =============================================================================
+# Cluster Configuration
+# =============================================================================
+
+cluster_name = "inferadb"
+namespace    = "inferadb"
+eks_version  = "1.28"
+
+# =============================================================================
+# Node Group Configuration
+# =============================================================================
+
+# General workload nodes
+general_instance_types = ["m6i.xlarge", "m6i.2xlarge"]
+general_min_size       = 2
+general_max_size       = 10
+general_desired_size   = 3
+
+# FDB dedicated nodes (recommend NVMe-backed instances for best performance)
+fdb_instance_types = ["i3.xlarge", "i3.2xlarge"]
+fdb_node_count     = 3
+
+# =============================================================================
+# FoundationDB Configuration
+# =============================================================================
+
+fdb_version         = "7.3.43"
+fdb_storage_count   = 3
+fdb_log_count       = 3
+fdb_stateless_count = 3
+fdb_redundancy_mode = "double"
+fdb_satellite_logs  = 4
+
+# =============================================================================
+# InferaDB Configuration
+# =============================================================================
+
+engine_replicas = 3
+engine_image    = "your-registry/inferadb-engine:v1.0.0"
+
+control_replicas = 2
+control_image    = "your-registry/inferadb-control:v1.0.0"
+
+# =============================================================================
+# Tailscale Configuration (REQUIRED)
+# =============================================================================
+
+# Get from https://login.tailscale.com/admin/settings/keys
+tailscale_tailnet = "your-org.ts.net"
+
+# API key for managing ACLs
+# Get from https://login.tailscale.com/admin/settings/keys
+tailscale_api_key = "tskey-api-xxx"
+
+# Auth key for registering devices
+# Create at https://login.tailscale.com/admin/settings/keys
+# Make it reusable and add appropriate tags
+tailscale_auth_key = "tskey-auth-xxx"
+
+# =============================================================================
+# Security Configuration
+# =============================================================================
+
+# Enable SSH for debugging (disable in production)
+enable_ssh        = false
+ssh_allowed_users = ["autogroup:admin"]
+
+# =============================================================================
+# Monitoring Configuration
+# =============================================================================
+
+enable_monitoring       = true
+create_service_monitors = false  # Set to true if using Prometheus Operator
+
+# =============================================================================
+# Tags
+# =============================================================================
+
+tags = {
+  Project     = "InferaDB"
+  Environment = "production"
+  ManagedBy   = "terraform"
+  Team        = "platform"
+}

@@ -1,0 +1,121 @@
+# InferaDB Multi-Cloud - Example Configuration
+# =============================================
+# Copy this file to terraform.tfvars and fill in your values
+
+# =============================================================================
+# GCP Configuration (REQUIRED)
+# =============================================================================
+
+gcp_project_id = "your-gcp-project-id"
+
+# =============================================================================
+# Region Configuration
+# =============================================================================
+
+# AWS region (default: us-west-2)
+aws_region = "us-west-2"
+
+# GCP region (default: europe-west1)
+gcp_region = "europe-west1"
+
+# =============================================================================
+# Cluster Configuration
+# =============================================================================
+
+cluster_name = "inferadb"
+namespace    = "inferadb"
+
+# =============================================================================
+# AWS Node Configuration
+# =============================================================================
+
+# General workload nodes
+aws_general_instance_types = ["m6i.xlarge", "m6i.2xlarge"]
+
+# FDB dedicated nodes
+# Recommended: i3.xlarge or larger for NVMe storage
+aws_fdb_instance_types = ["i3.xlarge", "i3.2xlarge"]
+
+# =============================================================================
+# GCP Node Configuration
+# =============================================================================
+
+# General workload nodes
+gcp_general_machine_type = "e2-standard-4"
+
+# FDB dedicated nodes
+# Recommended: n2-standard-4 or larger with local SSDs
+gcp_fdb_machine_type    = "n2-standard-4"
+gcp_fdb_local_ssd_count = 1
+
+# =============================================================================
+# Common Node Configuration
+# =============================================================================
+
+general_min_size     = 2
+general_max_size     = 10
+general_desired_size = 3
+fdb_node_count       = 3
+
+# =============================================================================
+# FoundationDB Configuration
+# =============================================================================
+
+fdb_version         = "7.3.43"
+fdb_storage_count   = 3
+fdb_log_count       = 3
+fdb_stateless_count = 3
+fdb_redundancy_mode = "double"
+fdb_satellite_logs  = 4
+
+# =============================================================================
+# InferaDB Configuration
+# =============================================================================
+
+engine_replicas = 3
+engine_image    = "inferadb-engine:latest"
+
+control_replicas = 2
+control_image    = "inferadb-control:latest"
+
+# =============================================================================
+# Tailscale Configuration (REQUIRED)
+# =============================================================================
+
+# Your Tailscale tailnet name (e.g., "your-org.ts.net")
+tailscale_tailnet = "your-org.ts.net"
+
+# Tailscale API key for ACL management
+# Create at: https://login.tailscale.com/admin/settings/keys
+tailscale_api_key = "tskey-api-..."
+
+# Tailscale auth key for device registration
+# Create at: https://login.tailscale.com/admin/settings/keys
+# Settings: Reusable, tags: tag:fdb, tag:inferadb-engine
+tailscale_auth_key = "tskey-auth-..."
+
+# =============================================================================
+# Security Configuration
+# =============================================================================
+
+# Enable SSH access for debugging (disable in production)
+enable_ssh = false
+ssh_allowed_users = ["autogroup:admin"]
+
+# =============================================================================
+# Monitoring Configuration
+# =============================================================================
+
+enable_monitoring       = true
+create_service_monitors = false  # Enable if using Prometheus Operator
+
+# =============================================================================
+# AWS Tags
+# =============================================================================
+
+aws_tags = {
+  Project     = "InferaDB"
+  Environment = "production"
+  ManagedBy   = "terraform"
+  Cloud       = "aws"
+}

@@ -1,0 +1,104 @@
+# InferaDB GCP Multi-Region - Example Configuration
+# ==================================================
+# Copy this file to terraform.tfvars and fill in your values
+
+# =============================================================================
+# Project Configuration (REQUIRED)
+# =============================================================================
+
+project_id = "your-gcp-project-id"
+
+# =============================================================================
+# Region Configuration
+# =============================================================================
+
+# Primary region (default: us-west1)
+primary_region = "us-west1"
+
+# DR region (default: europe-west1)
+dr_region = "europe-west1"
+
+# =============================================================================
+# Cluster Configuration
+# =============================================================================
+
+cluster_name = "inferadb"
+namespace    = "inferadb"
+
+# =============================================================================
+# Node Pool Configuration
+# =============================================================================
+
+# General workload nodes
+general_machine_type = "e2-standard-4"
+general_min_size     = 2
+general_max_size     = 10
+general_desired_size = 3
+
+# FDB dedicated nodes
+# Recommended: n2-standard-4 or larger with local SSDs for best performance
+fdb_machine_type    = "n2-standard-4"
+fdb_node_count      = 3
+fdb_local_ssd_count = 1
+
+# =============================================================================
+# FoundationDB Configuration
+# =============================================================================
+
+fdb_version        = "7.3.43"
+fdb_storage_count  = 3
+fdb_log_count      = 3
+fdb_stateless_count = 3
+fdb_redundancy_mode = "double"
+fdb_satellite_logs  = 4
+
+# =============================================================================
+# InferaDB Configuration
+# =============================================================================
+
+engine_replicas = 3
+engine_image    = "gcr.io/your-project/inferadb-engine:latest"
+
+control_replicas = 2
+control_image    = "gcr.io/your-project/inferadb-control:latest"
+
+# =============================================================================
+# Tailscale Configuration (REQUIRED)
+# =============================================================================
+
+# Your Tailscale tailnet name (e.g., "your-org.ts.net")
+tailscale_tailnet = "your-org.ts.net"
+
+# Tailscale API key for ACL management
+# Create at: https://login.tailscale.com/admin/settings/keys
+tailscale_api_key = "tskey-api-..."
+
+# Tailscale auth key for device registration
+# Create at: https://login.tailscale.com/admin/settings/keys
+# Settings: Reusable, tags: tag:fdb, tag:inferadb-engine
+tailscale_auth_key = "tskey-auth-..."
+
+# =============================================================================
+# Security Configuration
+# =============================================================================
+
+# Enable SSH access for debugging (disable in production)
+enable_ssh = false
+ssh_allowed_users = ["autogroup:admin"]
+
+# =============================================================================
+# Monitoring Configuration
+# =============================================================================
+
+enable_monitoring       = true
+create_service_monitors = false  # Enable if using Prometheus Operator
+
+# =============================================================================
+# Labels
+# =============================================================================
+
+labels = {
+  project     = "inferadb"
+  environment = "production"
+  managed_by  = "terraform"
+}
