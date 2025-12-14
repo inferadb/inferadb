@@ -26,3 +26,6 @@
 	path = terraform-provider-inferadb
 	url = https://github.com/inferadb/terraform-provider-inferadb
 	branch = main
+[submodule "deploy"]
+	path = deploy
+	url = https://github.com/inferadb/deploy

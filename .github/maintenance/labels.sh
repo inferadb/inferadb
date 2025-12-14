@@ -60,7 +60,7 @@ delete_label() {
 }
 
 # Loop through our repositories
-for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/dashboard" "inferadb/tests" "inferadb/docs" "inferadb/cli"; do
+for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/dashboard" "inferadb/tests" "inferadb/docs" "inferadb/cli" "inferadb/terraform-provider-inferadb"; do
     echo ""
     echo "Processing $REPO"
     echo "================"

@@ -121,10 +121,10 @@ process_inferadb() {
 }
 
 # -----------------------------------------------------------------------------
-# Server: inferadb/server
+# Engine: inferadb/engine
 # -----------------------------------------------------------------------------
-process_server() {
-    local repo="inferadb/server"
+process_engine() {
+    local repo="inferadb/engine"
     echo ""
     echo "Processing $repo"
     echo "================"
@@ -142,7 +142,7 @@ process_server() {
         ensure_topic "$repo" "$topic"
     done
 
-    # Server-specific topics
+    # Engine-specific topics
     ensure_topic "$repo" "rust"
     ensure_topic "$repo" "policy-engine"
     ensure_topic "$repo" "graph-database"
@@ -156,10 +156,10 @@ process_server() {
 }
 
 # -----------------------------------------------------------------------------
-# Management: inferadb/management
+# Control: inferadb/control
 # -----------------------------------------------------------------------------
-process_management() {
-    local repo="inferadb/management"
+process_control() {
+    local repo="inferadb/control"
     echo ""
     echo "Processing $repo"
     echo "================"
@@ -177,7 +177,7 @@ process_management() {
         ensure_topic "$repo" "$topic"
     done
 
-    # Management-specific topics
+    # Control-specific topics
     ensure_topic "$repo" "rust"
     ensure_topic "$repo" "multi-tenant"
     ensure_topic "$repo" "rbac"
@@ -291,6 +291,72 @@ process_docs() {
     remove_deprecated_topics "$repo"
 }
 
+# -----------------------------------------------------------------------------
+# CLI: inferadb/cli
+# -----------------------------------------------------------------------------
+process_cli() {
+    local repo="inferadb/cli"
+    echo ""
+    echo "Processing $repo"
+    echo "================"
+
+    CURRENT_TOPICS=$(get_topics "$repo")
+
+    # Pattern: [What it is] — [key differentiator], [second differentiator]
+    ensure_description "$repo" "InferaDB CLI — command line tooling for InferaDB authorization"
+
+    echo ""
+    echo "  Topics:"
+
+    # Common topics
+    for topic in "${COMMON_TOPICS[@]}"; do
+        ensure_topic "$repo" "$topic"
+    done
+
+    # CLI-specific topics
+    ensure_topic "$repo" "rust"
+    ensure_topic "$repo" "cli"
+    ensure_topic "$repo" "grpc"
+    ensure_topic "$repo" "rest-api"
+    ensure_topic "$repo" "jwt"
+
+    # Cleanup deprecated topics
+    remove_deprecated_topics "$repo"
+}
+
+# -----------------------------------------------------------------------------
+# Terraform Provider: inferadb/terraform-provider-inferadb
+# -----------------------------------------------------------------------------
+process_terraform_provider_inferadb() {
+    local repo="inferadb/terraform-provider-inferadb"
+    echo ""
+    echo "Processing $repo"
+    echo "================"
+
+    CURRENT_TOPICS=$(get_topics "$repo")
+
+    # Pattern: [What it is] — [key differentiator], [second differentiator]
+    ensure_description "$repo" "InferaDB Terraform provider — manage resources including organizations, vaults, clients, teams, and access grants."
+
+    echo ""
+    echo "  Topics:"
+
+    # Common topics
+    for topic in "${COMMON_TOPICS[@]}"; do
+        ensure_topic "$repo" "$topic"
+    done
+
+    # Terraform Provider-specific topics
+    ensure_topic "$repo" "terraform"
+    ensure_topic "$repo" "provider"
+    ensure_topic "$repo" "grpc"
+    ensure_topic "$repo" "rest-api"
+    ensure_topic "$repo" "jwt"
+
+    # Cleanup deprecated topics
+    remove_deprecated_topics "$repo"
+}
+
 # =============================================================================
 # Main Execution
 # =============================================================================
@@ -303,11 +369,13 @@ echo "Requires: gh CLI authenticated with repo permissions"
 
 # Process all repositories
 process_inferadb
-process_server
-process_management
+process_engine
+process_control
 process_dashboard
 process_tests
 process_docs
+process_cli
+process_terraform_provider_inferadb
 
 echo ""
 echo "Done!"
