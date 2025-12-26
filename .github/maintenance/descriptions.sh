@@ -461,6 +461,38 @@ process_deploy() {
     remove_deprecated_topics "$repo"
 }
 
+# -----------------------------------------------------------------------------
+# Ferment: inferadb/ferment
+# -----------------------------------------------------------------------------
+process_ferment() {
+    local repo="inferadb/ferment"
+    echo ""
+    echo "Processing $repo"
+    echo "================"
+
+    CURRENT_TOPICS=$(get_topics "$repo")
+
+    # Pattern: [What it is] — [key differentiator], [second differentiator]
+    ensure_description "$repo" "Ferment — a Rust-native terminal UI framework inspired by Bubble Tea."
+
+    echo ""
+    echo "  Topics:"
+
+    # Ferment-specific topics (not using COMMON_TOPICS as it's a general-purpose TUI library)
+    ensure_topic "$repo" "rust"
+    ensure_topic "$repo" "tui"
+    ensure_topic "$repo" "terminal"
+    ensure_topic "$repo" "elm-architecture"
+    ensure_topic "$repo" "bubble-tea"
+    ensure_topic "$repo" "cli"
+    ensure_topic "$repo" "forms"
+    ensure_topic "$repo" "components"
+    ensure_topic "$repo" "crossterm"
+
+    # Cleanup deprecated topics
+    remove_deprecated_topics "$repo"
+}
+
 # =============================================================================
 # Main Execution
 # =============================================================================
@@ -479,6 +511,7 @@ process_dashboard
 process_tests
 process_docs
 process_cli
+process_ferment
 process_terraform_provider_inferadb
 process_rust
 process_proto

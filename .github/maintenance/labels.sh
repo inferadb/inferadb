@@ -60,7 +60,7 @@ delete_label() {
 }
 
 # Loop through our repositories
-for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/dashboard" "inferadb/tests" "inferadb/docs" "inferadb/cli" "inferadb/terraform-provider-inferadb" "inferadb/rust" "inferadb/proto" "inferadb/deploy"; do
+for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/dashboard" "inferadb/tests" "inferadb/docs" "inferadb/cli" "inferadb/ferment" "inferadb/terraform-provider-inferadb" "inferadb/rust" "inferadb/proto" "inferadb/deploy"; do
     echo ""
     echo "Processing $REPO"
     echo "================"
@@ -89,12 +89,13 @@ for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/d
 
     # Repository-specific labels for meta-repository
     if [ "$REPO" == "inferadb/inferadb" ]; then
-        ensure_label "$REPO" "repo/engine" "1d76db" "Related to authorizationengine component"
+        ensure_label "$REPO" "repo/engine" "1d76db" "Related to authorization engine component"
         ensure_label "$REPO" "repo/control" "1d76db" "Related to control plane component"
         ensure_label "$REPO" "repo/dashboard" "1d76db" "Related to dashboard component"
         ensure_label "$REPO" "repo/tests" "1d76db" "Related to tests component"
         ensure_label "$REPO" "repo/docs" "1d76db" "Related to docs component"
         ensure_label "$REPO" "repo/cli" "1d76db" "Related to CLI component"
+        ensure_label "$REPO" "repo/ferment" "1d76db" "Related to Ferment TUI framework"
         ensure_label "$REPO" "repo/sdk-rust" "1d76db" "Related to Rust SDK component"
     else
         delete_label "$REPO" "repo/server"
@@ -103,6 +104,7 @@ for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/d
         delete_label "$REPO" "repo/tests"
         delete_label "$REPO" "repo/docs"
         delete_label "$REPO" "repo/cli"
+        delete_label "$REPO" "repo/ferment"
         delete_label "$REPO" "repo/sdk-rust"
     fi
 
@@ -216,6 +218,21 @@ for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/d
             delete_label "$REPO" "area/engine"
             delete_label "$REPO" "area/control"
         fi
+    fi
+
+    # Ferment TUI framework-specific labels
+    if [ "$REPO" == "inferadb/ferment" ]; then
+        ensure_label "$REPO" "area/runtime" "e6d4f5" "Core runtime and event loop"
+        ensure_label "$REPO" "area/components" "e6d4f5" "UI components (spinner, input, select, etc.)"
+        ensure_label "$REPO" "area/forms" "e6d4f5" "Form system and validation"
+        ensure_label "$REPO" "area/style" "e6d4f5" "Styling and theming"
+        ensure_label "$REPO" "area/terminal" "e6d4f5" "Terminal abstraction layer"
+    else
+        delete_label "$REPO" "area/runtime"
+        delete_label "$REPO" "area/components"
+        delete_label "$REPO" "area/forms"
+        delete_label "$REPO" "area/style"
+        delete_label "$REPO" "area/terminal"
     fi
 
     # Core labels (all repositories)
