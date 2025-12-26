@@ -60,7 +60,7 @@ delete_label() {
 }
 
 # Loop through our repositories
-for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/dashboard" "inferadb/tests" "inferadb/docs" "inferadb/cli" "inferadb/terraform-provider-inferadb"; do
+for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/dashboard" "inferadb/tests" "inferadb/docs" "inferadb/cli" "inferadb/terraform-provider-inferadb" "inferadb/rust" "inferadb/proto" "inferadb/deploy"; do
     echo ""
     echo "Processing $REPO"
     echo "================"
@@ -82,6 +82,11 @@ for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/d
     delete_label "$REPO" "repo/server"
     delete_label "$REPO" "repo/management"
 
+    # Delete deprecated automation labels
+    delete_label "$REPO" "dependencies"
+    delete_label "$REPO" "github-actions"
+    delete_label "$REPO" "stale"
+
     # Repository-specific labels for meta-repository
     if [ "$REPO" == "inferadb/inferadb" ]; then
         ensure_label "$REPO" "repo/engine" "1d76db" "Related to authorizationengine component"
@@ -90,6 +95,7 @@ for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/d
         ensure_label "$REPO" "repo/tests" "1d76db" "Related to tests component"
         ensure_label "$REPO" "repo/docs" "1d76db" "Related to docs component"
         ensure_label "$REPO" "repo/cli" "1d76db" "Related to CLI component"
+        ensure_label "$REPO" "repo/sdk-rust" "1d76db" "Related to Rust SDK component"
     else
         delete_label "$REPO" "repo/server"
         delete_label "$REPO" "repo/management"
@@ -97,10 +103,11 @@ for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/d
         delete_label "$REPO" "repo/tests"
         delete_label "$REPO" "repo/docs"
         delete_label "$REPO" "repo/cli"
+        delete_label "$REPO" "repo/sdk-rust"
     fi
 
-    # Deployment area labels (meta-repository and tests only)
-    if [ "$REPO" == "inferadb/inferadb" ] || [ "$REPO" == "inferadb/tests" ]; then
+    # Deployment area labels (meta-repository, tests, and deploy)
+    if [ "$REPO" == "inferadb/inferadb" ] || [ "$REPO" == "inferadb/tests" ] || [ "$REPO" == "inferadb/deploy" ]; then
         ensure_label "$REPO" "area/k8s" "f9d0c4" "Kubernetes manifests and Helm"
         ensure_label "$REPO" "area/docker" "f9d0c4" "Docker images and compose"
         ensure_label "$REPO" "area/terraform" "f9d0c4" "Terraform provider"
@@ -155,7 +162,10 @@ for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/d
         delete_label "$REPO" "area/vault"
         delete_label "$REPO" "area/session"
         delete_label "$REPO" "area/passkey"
-        delete_label "$REPO" "area/client"
+        # area/client is also used by inferadb/rust SDK
+        if [ "$REPO" != "inferadb/rust" ]; then
+            delete_label "$REPO" "area/client"
+        fi
         delete_label "$REPO" "area/team"
     fi
 
@@ -174,6 +184,38 @@ for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/d
         delete_label "$REPO" "area/rfcs"
         delete_label "$REPO" "area/whitepapers"
         delete_label "$REPO" "area/security"
+    fi
+
+    # Rust SDK-specific labels
+    if [ "$REPO" == "inferadb/rust" ]; then
+        ensure_label "$REPO" "area/client" "d4c5f9" "Client implementation"
+        ensure_label "$REPO" "area/proto" "d4c5f9" "Protocol buffers and gRPC"
+        ensure_label "$REPO" "area/models" "d4c5f9" "Data models and types"
+        ensure_label "$REPO" "area/examples" "d4c5f9" "Example code and usage"
+        ensure_label "$REPO" "area/derive" "d4c5f9" "Derive macros"
+    else
+        delete_label "$REPO" "area/models"
+        delete_label "$REPO" "area/examples"
+        delete_label "$REPO" "area/derive"
+        # area/proto is also used by inferadb/proto
+        if [ "$REPO" != "inferadb/proto" ]; then
+            delete_label "$REPO" "area/proto"
+        fi
+    fi
+
+    # Proto repository-specific labels
+    if [ "$REPO" == "inferadb/proto" ]; then
+        ensure_label "$REPO" "area/proto" "d4c5f9" "Protocol buffer definitions"
+        ensure_label "$REPO" "area/grpc" "d4c5f9" "gRPC service definitions"
+        ensure_label "$REPO" "area/engine" "d4c5f9" "Engine API definitions"
+        ensure_label "$REPO" "area/control" "d4c5f9" "Control plane API definitions"
+    else
+        delete_label "$REPO" "area/grpc"
+        # area/engine and area/control only for proto repo
+        if [ "$REPO" != "inferadb/engine" ] && [ "$REPO" != "inferadb/control" ]; then
+            delete_label "$REPO" "area/engine"
+            delete_label "$REPO" "area/control"
+        fi
     fi
 
     # Core labels (all repositories)
@@ -220,18 +262,13 @@ for REPO in "inferadb/inferadb" "inferadb/engine" "inferadb/control" "inferadb/d
     ensure_label "$REPO" "help-wanted" "008672" "Extra attention needed"
     ensure_label "$REPO" "hacktoberfest" "ff7518" "Hacktoberfest eligible"
 
-    # Automation labels (created for consistency, though bots may also create them)
-    ensure_label "$REPO" "dependencies" "0366d6" "Dependency updates (Dependabot)"
-    ensure_label "$REPO" "github-actions" "000000" "GitHub Actions workflow changes"
-    ensure_label "$REPO" "stale" "cfd3d7" "Marked stale by automation"
-
     # Core area labels
     ensure_label "$REPO" "area/api" "c5def5" "REST/gRPC API layer"
     ensure_label "$REPO" "area/auth" "c5def5" "Authentication and authorization"
     ensure_label "$REPO" "area/config" "c5def5" "Configuration handling"
     ensure_label "$REPO" "area/docs" "c5def5" "Documentation"
     ensure_label "$REPO" "area/ci" "c5def5" "CI/CD pipelines and GitHub Actions"
-    ensure_label "$REPO" "area/deps" "c5def5" "Dependencies and supply chain"
+    ensure_label "$REPO" "area/deps" "c5def5" "Dependencies and Dependabot updates"
     ensure_label "$REPO" "area/testing" "c5def5" "Test infrastructure and coverage"
 
     # Changelog labels

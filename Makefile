@@ -13,7 +13,6 @@
 .PHONY: engine-help engine-setup engine-test engine-check engine-format engine-lint engine-run engine-build engine-release engine-clean engine-reset engine-dev engine-doc
 .PHONY: control-help control-setup control-test control-check control-format control-lint control-run control-build control-release control-clean control-reset control-dev control-doc
 .PHONY: dashboard-help dashboard-setup dashboard-test dashboard-check dashboard-format dashboard-lint dashboard-typecheck dashboard-run dashboard-dev dashboard-build dashboard-release dashboard-clean dashboard-reset
-.PHONY: k8s-start k8s-stop k8s-status k8s-update k8s-purge test-e2e
 
 # Default target - show help
 .DEFAULT_GOAL := help
@@ -49,17 +48,9 @@ help: ## Show available commands
 	@echo "  $(COLOR_BLUE)make dashboard-<command>$(COLOR_RESET)  - Run <command> in dashboard/ only"
 	@echo "  $(COLOR_BLUE)make dashboard-help$(COLOR_RESET)       - Show dashboard-specific help"
 	@echo ""
-	@echo "$(COLOR_GREEN)Kubernetes Environment:$(COLOR_RESET)"
-	@echo "  $(COLOR_BLUE)make k8s-start$(COLOR_RESET)         - Start local K8s environment"
-	@echo "  $(COLOR_BLUE)make k8s-stop$(COLOR_RESET)          - Stop K8s environment"
-	@echo "  $(COLOR_BLUE)make k8s-status$(COLOR_RESET)        - Check K8s environment health"
-	@echo "  $(COLOR_BLUE)make k8s-purge$(COLOR_RESET)         - Remove all K8s resources"
-	@echo ""
 	@echo "$(COLOR_YELLOW)Examples:$(COLOR_RESET)"
 	@echo "  make test                  - Run unit tests in both projects"
 	@echo "  make test-fdb              - Run FDB integration tests (requires Docker)"
-	@echo "  make test-e2e              - Run E2E tests in K8s"
-	@echo "  make k8s-start             - Start local K8s environment"
 	@echo "  make dashboard-dev         - Start dashboard on http://localhost:5173"
 	@echo ""
 
@@ -305,28 +296,3 @@ dashboard-clean: ## Clean dashboard build artifacts
 dashboard-reset: ## Reset dashboard
 	@$(MAKE) -C dashboard reset
 
-# ============================================================================
-# Kubernetes Environment
-# ============================================================================
-
-k8s-start: ## Start local K8s environment
-	@$(MAKE) -C tests start
-
-k8s-stop: ## Stop K8s environment
-	@$(MAKE) -C tests stop
-
-k8s-status: ## Check K8s environment health
-	@$(MAKE) -C tests status
-
-k8s-update: ## Rebuild and redeploy K8s images
-	@$(MAKE) -C tests update
-
-k8s-purge: ## Remove all K8s resources and data
-	@$(MAKE) -C tests purge
-
-# ============================================================================
-# E2E Tests
-# ============================================================================
-
-test-e2e: ## Run E2E integration tests in K8s
-	@$(MAKE) -C tests test

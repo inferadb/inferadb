@@ -29,3 +29,9 @@
 [submodule "deploy"]
 	path = deploy
 	url = https://github.com/inferadb/deploy
+[submodule "sdks/rust"]
+	path = sdks/rust
+	url = https://github.com/inferadb/rust
+[submodule "ferment"]
+	path = ferment
+	url = https://github.com/inferadb/ferment

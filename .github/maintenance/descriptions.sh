@@ -303,7 +303,7 @@ process_cli() {
     CURRENT_TOPICS=$(get_topics "$repo")
 
     # Pattern: [What it is] — [key differentiator], [second differentiator]
-    ensure_description "$repo" "InferaDB CLI — command line tooling for InferaDB authorization"
+    ensure_description "$repo" "InferaDB CLI — debug authorization decisions, test policies, and manage tenants from your terminal."
 
     echo ""
     echo "  Topics:"
@@ -357,6 +357,110 @@ process_terraform_provider_inferadb() {
     remove_deprecated_topics "$repo"
 }
 
+# -----------------------------------------------------------------------------
+# Rust SDK: inferadb/rust
+# -----------------------------------------------------------------------------
+process_rust() {
+    local repo="inferadb/rust"
+    echo ""
+    echo "Processing $repo"
+    echo "================"
+
+    CURRENT_TOPICS=$(get_topics "$repo")
+
+    # Pattern: [What it is] — [key differentiator], [second differentiator]
+    ensure_description "$repo" "InferaDB Rust SDK — type-safe, ergonomic access to distributed ReBAC authorization APIs, designed for low-latency permission checks in modern SaaS and AI workloads."
+
+    echo ""
+    echo "  Topics:"
+
+    # Common topics
+    for topic in "${COMMON_TOPICS[@]}"; do
+        ensure_topic "$repo" "$topic"
+    done
+
+    # Rust SDK-specific topics
+    ensure_topic "$repo" "rust"
+    ensure_topic "$repo" "sdk"
+    ensure_topic "$repo" "client-library"
+    ensure_topic "$repo" "async"
+    ensure_topic "$repo" "grpc"
+    ensure_topic "$repo" "tonic"
+    ensure_topic "$repo" "tokio"
+    ensure_topic "$repo" "derive-macro"
+
+    # Cleanup deprecated topics
+    remove_deprecated_topics "$repo"
+}
+
+# -----------------------------------------------------------------------------
+# Proto: inferadb/proto
+# -----------------------------------------------------------------------------
+process_proto() {
+    local repo="inferadb/proto"
+    echo ""
+    echo "Processing $repo"
+    echo "================"
+
+    CURRENT_TOPICS=$(get_topics "$repo")
+
+    # Pattern: [What it is] — [key differentiator], [second differentiator]
+    ensure_description "$repo" "InferaDB protocol definitions — Protocol Buffer schemas and gRPC service definitions for engine and control plane APIs."
+
+    echo ""
+    echo "  Topics:"
+
+    # Common topics
+    for topic in "${COMMON_TOPICS[@]}"; do
+        ensure_topic "$repo" "$topic"
+    done
+
+    # Proto-specific topics
+    ensure_topic "$repo" "protobuf"
+    ensure_topic "$repo" "grpc"
+    ensure_topic "$repo" "protocol-buffers"
+    ensure_topic "$repo" "api-definition"
+    ensure_topic "$repo" "buf"
+
+    # Cleanup deprecated topics
+    remove_deprecated_topics "$repo"
+}
+
+# -----------------------------------------------------------------------------
+# Deploy: inferadb/deploy
+# -----------------------------------------------------------------------------
+process_deploy() {
+    local repo="inferadb/deploy"
+    echo ""
+    echo "Processing $repo"
+    echo "================"
+
+    CURRENT_TOPICS=$(get_topics "$repo")
+
+    # Pattern: [What it is] — [key differentiator], [second differentiator]
+    ensure_description "$repo" "InferaDB deployment — Kubernetes manifests, Helm charts, Terraform modules, and infrastructure automation."
+
+    echo ""
+    echo "  Topics:"
+
+    # Common topics
+    for topic in "${COMMON_TOPICS[@]}"; do
+        ensure_topic "$repo" "$topic"
+    done
+
+    # Deploy-specific topics
+    ensure_topic "$repo" "kubernetes"
+    ensure_topic "$repo" "helm"
+    ensure_topic "$repo" "terraform"
+    ensure_topic "$repo" "docker"
+    ensure_topic "$repo" "infrastructure-as-code"
+    ensure_topic "$repo" "devops"
+    ensure_topic "$repo" "deployment"
+
+    # Cleanup deprecated topics
+    remove_deprecated_topics "$repo"
+}
+
 # =============================================================================
 # Main Execution
 # =============================================================================
@@ -376,6 +480,9 @@ process_tests
 process_docs
 process_cli
 process_terraform_provider_inferadb
+process_rust
+process_proto
+process_deploy
 
 echo ""
 echo "Done!"

@@ -36,13 +36,10 @@ make control-dev        # Control with auto-reload
 make control-test       # Control tests only
 ```
 
-## Kubernetes Environment
+## Dev Environment
 
 ```bash
-make k8s-start          # Start local K8s environment
-make k8s-stop           # Stop environment (preserves state)
-make k8s-status         # Check deployment health
-make k8s-purge          # Remove all K8s resources
+./deploy/scripts/dev-up.sh    # Start dev environment (Talos + Tailscale)
 ```
 
 ## Testing
@@ -50,7 +47,6 @@ make k8s-purge          # Remove all K8s resources
 ```bash
 make test               # Unit tests (engine + control)
 make test-fdb           # FDB integration tests (requires Docker)
-make test-e2e           # E2E tests in K8s
 ```
 
 - Run `make test` before committing
