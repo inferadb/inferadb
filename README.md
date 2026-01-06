@@ -2,7 +2,8 @@
     <p><a href="https://inferadb.com"><img src=".github/inferadb.png" width="100" alt="InferaDB Logo" /></a></p>
     <h1>InferaDB</h1>
     <p>
-        <a href="#license"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg"></a>
+        <a href="https://discord.gg/inferadb"><img src="https://img.shields.io/badge/Discord-Join%20us-5865F2?logo=discord&logoColor=white" alt="Discord" /></a>
+        <a href="#license"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg" alt="License" /></a>
     </p>
     <p>Distributed fine-grained authorization engine with sub-millisecond latency at scale</p>
 </div>
@@ -97,6 +98,10 @@ make k8s-purge        # Remove all resources
 - [control/README.md](https://github.com/inferadb/control/README.md) — Control plane
 - [tests/README.md](https://github.com/inferadb/tests/README.md) — Integration tests
 - [docs/](https://github.com/inferadb/docs/) — Full specifications
+
+## Community
+
+Join us on [Discord](https://discord.gg/inferadb) to discuss InferaDB, get help with your projects, and connect with other developers. Whether you have questions, want to share what you're building, or are interested in contributing, we'd love to have you!
 
 ## License
 
