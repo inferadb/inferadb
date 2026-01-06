@@ -35,3 +35,6 @@
 [submodule "teapot"]
 	path = teapot
 	url = https://github.com/inferadb/teapot
+[submodule "github"]
+	path = github
+	url = https://github.com/inferadb/.github
