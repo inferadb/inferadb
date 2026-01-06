@@ -1,25 +1,28 @@
-# yaml-language-server: $schema=https://www.schemastore.org/dependabot-2.0.json
+# yaml-language-server: $schema=https://json.schemastore.org/dependabot-2.0.json
+#
+# Dependabot configuration for inferadb/inferadb
+# Managed by github/tools/repos.sh - manual edits will be overwritten
+#
+# To customize: update repos.json and run ./repos.sh --dependabot
 
 version: 2
 updates:
-  # GitHub Actions workflow dependencies
+
   - package-ecosystem: "github-actions"
-    directory: "/"
+    directory: "/.github/workflows"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "09:00"
       timezone: "Etc/UTC"
     open-pull-requests-limit: 5
+    labels:
+      - "area/deps"
+      - "area/ci"
     commit-message:
       prefix: "ci"
       include: "scope"
-    labels:
-      - "dependencies"
-      - "github-actions"
-      - "area/ci"
     groups:
-      # Group all GitHub Actions updates together
-      actions:
+      github-actions:
         patterns:
           - "*"
