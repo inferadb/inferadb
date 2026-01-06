@@ -14,7 +14,7 @@
 # The first language is the default language and the respective language server will be used as a fallback.
 # Note that when using the JetBrains backend, language servers are not used and this list is correspondingly ignored.
 languages:
-- rust
+  - rust
 
 # the encoding used by text files in the project
 # For a list of possible encodings, see https://docs.python.org/3.11/library/codecs.html#standard-encodings
@@ -37,7 +37,7 @@ read_only: false
 
 # list of tool names to exclude. We recommend not excluding any tools, see the readme for more details.
 # Below is the complete list of tools for convenience.
-# To make sure you have the latest list of tools, and to view their descriptions, 
+# To make sure you have the latest list of tools, and to view their descriptions,
 # execute `uv run scripts/print_tool_overview.py`.
 #
 #  * `activate_project`: Activates a project by name.
@@ -78,7 +78,21 @@ excluded_tools: []
 
 # initial prompt for the project. It will always be given to the LLM upon activating the project
 # (contrary to the memories, which are loaded on demand).
-initial_prompt: ""
+initial_prompt: |
+  This is the InferaDB meta-repository containing submodules for all InferaDB components.
+  InferaDB is a distributed, Google Zanzibar-inspired authorization engine.
 
-project_name: "inferadb"
+  Key submodules:
+  - engine/ - High-performance ReBAC authorization engine (Rust)
+  - control/ - Multi-tenant control plane with WebAuthn auth (Rust)
+  - dashboard/ - Web console for policy design and simulation (TypeScript/React)
+  - cli/ - Command-line interface for authorization management (Rust)
+  - sdks/rust/ - Rust SDK for InferaDB APIs
+  - tests/ - E2E integration test suite (Rust)
+  - deploy/ - Kubernetes deployment infrastructure (Terraform/Flux)
+  - docs/ - Technical documentation and RFCs
+  - ferment/ - Rust TUI framework used by the CLI
+  - terraform-provider-inferadb/ - Terraform provider (Go)
+
+project_name: "InferaDB Meta-Repository"
 included_optional_tools: []

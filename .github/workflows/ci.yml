@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=https://www.schemastore.org/github-workflow.json
+#
+# CI workflow for inferadb meta-repository
+# This repository manages submodules; actual CI runs in each submodule's repository.
+# This workflow provides a consistent CI Success job for branch protection rules.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel in-progress runs for PRs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  # Placeholder job - meta-repository CI is handled by submodule repos
+  # This exists to maintain consistent workflow structure across repos
+  submodule-ci:
+    name: Submodule CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
+      - name: Skip CI
+        run: |
+          echo "This is a meta-repository that manages submodules."
+          echo "CI for each component runs in its respective submodule repository."
+          echo ""
+          echo "Submodules:"
+          echo "  - engine: Core database engine"
+          echo "  - cli: Command-line interface"
+          echo "  - control: Control plane"
+          echo "  - dashboard: Web dashboard"
+          echo "  - deploy: Deployment configurations"
+          echo "  - docs: Documentation"
+          echo "  - tests: Integration tests"
+          echo "  - sdks/rust: Rust SDK"
+          echo "  - teapot: Supporting library"
+
+  # Overall status check - required for branch protection
+  ci-success:
+    name: CI Success
+    needs: [submodule-ci]
+    runs-on: ubuntu-latest
+    if: always()
+    permissions:
+      contents: read
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
+      - name: Check CI results
+        env:
+          SUBMODULE_CI_RESULT: ${{ needs.submodule-ci.result }}
+        run: |
+          echo "## CI Results"
+          echo ""
+          echo "| Check | Status |"
+          echo "|-------|--------|"
+          echo "| Submodule CI | $SUBMODULE_CI_RESULT (delegated to submodules) |"
+          echo ""
+          echo "This is a meta-repository. CI for each component runs in its submodule."
+          echo ""
+
+          # Fail if the placeholder job failed (shouldn't happen)
+          if [[ "$SUBMODULE_CI_RESULT" != "success" && "$SUBMODULE_CI_RESULT" != "skipped" ]]; then
+            echo "Unexpected failure in CI workflow"
+            exit 1
+          fi
+
+          echo "CI checks passed!"

@@ -32,6 +32,6 @@
 [submodule "sdks/rust"]
 	path = sdks/rust
 	url = https://github.com/inferadb/rust
-[submodule "ferment"]
-	path = ferment
-	url = https://github.com/inferadb/ferment
+[submodule "teapot"]
+	path = teapot
+	url = https://github.com/inferadb/teapot

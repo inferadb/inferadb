@@ -1,6 +1,14 @@
-# InferaDB
+<div align="center">
+    <p><a href="https://inferadb.com"><img src=".github/inferadb.png" width="100" alt="InferaDB Logo" /></a></p>
+    <h1>InferaDB</h1>
+    <p>
+        <a href="#license"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg"></a>
+    </p>
+    <p>Distributed fine-grained authorization engine with sub-millisecond latency at scale</p>
+</div>
 
-Distributed fine-grained authorization engine with sub-millisecond latency at scale.
+> [!IMPORTANT]
+> Under active development. Not production-ready.
 
 Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/). [AuthZEN](https://openid.net/wg/authzen/) compliant.
 
@@ -92,4 +100,9 @@ make k8s-purge        # Remove all resources
 
 ## License
 
-Component-specific. See [LICENSE.md](LICENSE.md).
+Licensed under either of:
+
+- [Apache License, Version 2.0](LICENSE-APACHE)
+- [MIT License](LICENSE-MIT)
+
+at your option.

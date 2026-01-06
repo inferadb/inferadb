@@ -1,0 +1,882 @@
+{
+  "$schema": "./repos.schema.json",
+  "common": {
+    "labels": [
+      {
+        "name": "kind/bug",
+        "color": "d73a4a",
+        "description": "Something isn't working as expected"
+      },
+      {
+        "name": "kind/feature",
+        "color": "a2eeef",
+        "description": "New capability or functionality"
+      },
+      {
+        "name": "kind/enhancement",
+        "color": "84b6eb",
+        "description": "Improvement to existing functionality"
+      },
+      {
+        "name": "kind/refactor",
+        "color": "fbca04",
+        "description": "Code restructuring without behavior change"
+      },
+      {
+        "name": "kind/documentation",
+        "color": "0075ca",
+        "description": "Documentation improvements"
+      },
+      {
+        "name": "kind/security",
+        "color": "b60205",
+        "description": "Security-related issue or fix"
+      },
+      {
+        "name": "kind/performance",
+        "color": "d4c5f9",
+        "description": "Performance improvements or issues"
+      },
+      {
+        "name": "kind/breaking-change",
+        "color": "e99695",
+        "description": "Introduces breaking changes"
+      },
+
+      {
+        "name": "priority/critical",
+        "color": "b60205",
+        "description": "Requires immediate attention"
+      },
+      {
+        "name": "priority/high",
+        "color": "d93f0b",
+        "description": "Should be addressed soon"
+      },
+      {
+        "name": "priority/medium",
+        "color": "fbca04",
+        "description": "Normal priority"
+      },
+      {
+        "name": "priority/low",
+        "color": "0e8a16",
+        "description": "Nice to have, no urgency"
+      },
+
+      {
+        "name": "effort/small",
+        "color": "c2e0c6",
+        "description": "Quick fix, hours of work"
+      },
+      {
+        "name": "effort/medium",
+        "color": "fef2c0",
+        "description": "Few days of work"
+      },
+      {
+        "name": "effort/large",
+        "color": "f9d0c4",
+        "description": "Week+ of work, may need breakdown"
+      },
+
+      {
+        "name": "status/blocked",
+        "color": "d73a4a",
+        "description": "Cannot proceed due to external dependency"
+      },
+      {
+        "name": "status/needs-triage",
+        "color": "fbca04",
+        "description": "Requires maintainer review and categorization"
+      },
+      {
+        "name": "status/needs-info",
+        "color": "fbca04",
+        "description": "Waiting for more information from reporter"
+      },
+      {
+        "name": "status/needs-design",
+        "color": "c5def5",
+        "description": "Requires design/architecture discussion"
+      },
+      {
+        "name": "status/in-progress",
+        "color": "0e8a16",
+        "description": "Actively being worked on"
+      },
+      {
+        "name": "status/ready-for-review",
+        "color": "6f42c1",
+        "description": "PR ready for code review"
+      },
+
+      {
+        "name": "resolution/duplicate",
+        "color": "cfd3d7",
+        "description": "Duplicate of another issue"
+      },
+      {
+        "name": "resolution/wontfix",
+        "color": "cfd3d7",
+        "description": "Will not be addressed"
+      },
+      {
+        "name": "resolution/invalid",
+        "color": "cfd3d7",
+        "description": "Not a valid issue"
+      },
+      {
+        "name": "resolution/by-design",
+        "color": "cfd3d7",
+        "description": "Working as intended"
+      },
+
+      {
+        "name": "good-first-issue",
+        "color": "7057ff",
+        "description": "Good for newcomers"
+      },
+      {
+        "name": "help-wanted",
+        "color": "008672",
+        "description": "Extra attention needed"
+      },
+      {
+        "name": "hacktoberfest",
+        "color": "ff7518",
+        "description": "Hacktoberfest eligible"
+      },
+
+      {
+        "name": "area/api",
+        "color": "c5def5",
+        "description": "REST/gRPC API layer"
+      },
+      {
+        "name": "area/auth",
+        "color": "c5def5",
+        "description": "Authentication and authorization"
+      },
+      {
+        "name": "area/config",
+        "color": "c5def5",
+        "description": "Configuration handling"
+      },
+      {
+        "name": "area/docs",
+        "color": "c5def5",
+        "description": "Documentation"
+      },
+      {
+        "name": "area/ci",
+        "color": "c5def5",
+        "description": "CI/CD pipelines and GitHub Actions"
+      },
+      {
+        "name": "area/deps",
+        "color": "c5def5",
+        "description": "Dependencies and Dependabot updates"
+      },
+      {
+        "name": "area/testing",
+        "color": "c5def5",
+        "description": "Test infrastructure and coverage"
+      },
+
+      {
+        "name": "changelog/added",
+        "color": "0e8a16",
+        "description": "New features for release notes"
+      },
+      {
+        "name": "changelog/changed",
+        "color": "fbca04",
+        "description": "Changes in existing functionality"
+      },
+      {
+        "name": "changelog/deprecated",
+        "color": "fef2c0",
+        "description": "Soon-to-be removed features"
+      },
+      {
+        "name": "changelog/removed",
+        "color": "d73a4a",
+        "description": "Removed features"
+      },
+      {
+        "name": "changelog/fixed",
+        "color": "c5def5",
+        "description": "Bug fixes"
+      },
+      {
+        "name": "changelog/security",
+        "color": "b60205",
+        "description": "Security fixes"
+      },
+      {
+        "name": "changelog/skip",
+        "color": "cfd3d7",
+        "description": "Do not include in changelog"
+      }
+    ],
+    "topics": [
+      "inferadb",
+      "authorization",
+      "access-control",
+      "permissions",
+      "rebac",
+      "zanzibar",
+      "fine-grained-access-control"
+    ],
+    "settings": {
+      "delete_branch_on_merge": true,
+      "allow_merge_commit": false,
+      "allow_rebase_merge": true,
+      "allow_squash_merge": true,
+      "allow_auto_merge": true,
+      "allow_forking": true,
+      "allow_update_branch": true,
+      "enable_issues": true,
+      "enable_wiki": false,
+      "enable_projects": false,
+      "enable_discussions": false,
+      "enable_secret_scanning": true,
+      "enable_secret_scanning_push_protection": true,
+      "enable_secret_scanning_validity_checks": true,
+      "enable_secret_scanning_non_provider_patterns": true,
+      "enable_secret_scanning_ai_detection": true,
+      "web_commit_signoff_required": true,
+      "enable_vulnerability_alerts": true,
+      "enable_automated_security_fixes": true,
+      "enable_private_vulnerability_reporting": true,
+      "squash_merge_commit_title": "PR_TITLE",
+      "squash_merge_commit_message": "BLANK"
+    },
+    "dependabot": {
+      "schedule": {
+        "interval": "weekly",
+        "day": "monday",
+        "time": "09:00",
+        "timezone": "Etc/UTC"
+      },
+      "open_pull_requests_limit": 5,
+      "commit_message": {
+        "prefix": "deps",
+        "include": "scope"
+      },
+      "labels": ["area/deps"],
+      "groups": {
+        "all-dependencies": {
+          "patterns": ["*"]
+        }
+      }
+    }
+  },
+
+  "repositories": {
+    "inferadb/inferadb": {
+      "description": "The distributed inference engine for authorization — high performance fine-grained permission checks at scale. Inspired by Google Zanzibar and AuthZEN compliant.",
+      "labels": [
+        {
+          "name": "repo/engine",
+          "color": "1d76db",
+          "description": "Related to authorization engine component"
+        },
+        {
+          "name": "repo/control",
+          "color": "1d76db",
+          "description": "Related to control plane component"
+        },
+        {
+          "name": "repo/dashboard",
+          "color": "1d76db",
+          "description": "Related to dashboard component"
+        },
+        {
+          "name": "repo/tests",
+          "color": "1d76db",
+          "description": "Related to tests component"
+        },
+        {
+          "name": "repo/docs",
+          "color": "1d76db",
+          "description": "Related to docs component"
+        },
+        {
+          "name": "repo/cli",
+          "color": "1d76db",
+          "description": "Related to CLI component"
+        },
+        {
+          "name": "repo/teapot",
+          "color": "1d76db",
+          "description": "Related to Teapot TUI framework"
+        },
+        {
+          "name": "repo/sdk-rust",
+          "color": "1d76db",
+          "description": "Related to Rust SDK component"
+        },
+        {
+          "name": "repo/terraform",
+          "color": "1d76db",
+          "description": "Related to Terraform modules"
+        },
+        {
+          "name": "area/k8s",
+          "color": "f9d0c4",
+          "description": "Kubernetes manifests and Helm"
+        },
+        {
+          "name": "area/docker",
+          "color": "f9d0c4",
+          "description": "Docker images and compose"
+        },
+        {
+          "name": "area/terraform",
+          "color": "f9d0c4",
+          "description": "Terraform provider"
+        },
+        {
+          "name": "area/observability",
+          "color": "f9d0c4",
+          "description": "Metrics, logging, tracing"
+        }
+      ],
+      "topics": ["policy-engine", "rust"],
+      "ecosystems": ["github-actions"]
+    },
+
+    "inferadb/engine": {
+      "description": "InferaDB authorization engine — high-performance ReBAC with declarative policies, graph evaluation, and sub-millisecond latency. Inspired by Google Zanzibar and AuthZEN compliant.",
+      "labels": [
+        {
+          "name": "area/policy",
+          "color": "d4c5f9",
+          "description": "Policy language, parser, and evaluator"
+        },
+        {
+          "name": "area/storage",
+          "color": "d4c5f9",
+          "description": "Storage layer and FoundationDB integration"
+        },
+        {
+          "name": "area/cache",
+          "color": "d4c5f9",
+          "description": "Caching system and invalidation"
+        },
+        {
+          "name": "area/reachability",
+          "color": "d4c5f9",
+          "description": "Graph reachability and traversal"
+        },
+        {
+          "name": "area/types",
+          "color": "d4c5f9",
+          "description": "Type system and schema definitions"
+        },
+        {
+          "name": "area/wasm",
+          "color": "d4c5f9",
+          "description": "WebAssembly runtime and bindings"
+        },
+        {
+          "name": "area/repl",
+          "color": "d4c5f9",
+          "description": "REPL and interactive debugging"
+        }
+      ],
+      "topics": [
+        "rust",
+        "policy-engine",
+        "graph-database",
+        "grpc",
+        "rest-api",
+        "wasm",
+        "caching"
+      ],
+      "ecosystems": ["cargo", "github-actions"]
+    },
+
+    "inferadb/control": {
+      "description": "InferaDB control plane — multi-tenant orchestration with headless APIs, Kubernetes-native deployment, and WebAuthn authentication.",
+      "labels": [
+        {
+          "name": "area/tenancy",
+          "color": "c5def5",
+          "description": "Multi-tenancy and tenant management"
+        },
+        {
+          "name": "area/vault",
+          "color": "c5def5",
+          "description": "Vault management and isolation"
+        },
+        {
+          "name": "area/session",
+          "color": "c5def5",
+          "description": "Session management and tokens"
+        },
+        {
+          "name": "area/passkey",
+          "color": "c5def5",
+          "description": "Passkey and WebAuthn authentication"
+        },
+        {
+          "name": "area/client",
+          "color": "c5def5",
+          "description": "Client registration and credentials"
+        },
+        {
+          "name": "area/team",
+          "color": "c5def5",
+          "description": "Team management and membership"
+        }
+      ],
+      "topics": [
+        "rust",
+        "multi-tenant",
+        "rbac",
+        "webauthn",
+        "passkeys",
+        "audit-logging",
+        "grpc",
+        "rest-api",
+        "jwt"
+      ],
+      "ecosystems": ["cargo", "github-actions"]
+    },
+
+    "inferadb/dashboard": {
+      "description": "InferaDB management dashboard — web console for self-service user, organization, team and vault management, with policy design, decision simulation, and relationship visualization.",
+      "labels": [
+        {
+          "name": "area/ui",
+          "color": "e6ccf5",
+          "description": "User interface components"
+        },
+        {
+          "name": "area/ux",
+          "color": "e6ccf5",
+          "description": "User experience and flows"
+        },
+        {
+          "name": "area/a11y",
+          "color": "e6ccf5",
+          "description": "Accessibility"
+        }
+      ],
+      "topics": [
+        "typescript",
+        "react",
+        "vite",
+        "tanstack",
+        "dashboard",
+        "web-ui"
+      ],
+      "ecosystems": ["npm", "github-actions"]
+    },
+
+    "inferadb/tests": {
+      "description": "InferaDB E2E test suite — Kubernetes deployment scripts and integration tests for InferaDB authorization",
+      "labels": [
+        {
+          "name": "area/k8s",
+          "color": "f9d0c4",
+          "description": "Kubernetes manifests and Helm"
+        },
+        {
+          "name": "area/docker",
+          "color": "f9d0c4",
+          "description": "Docker images and compose"
+        },
+        {
+          "name": "area/terraform",
+          "color": "f9d0c4",
+          "description": "Terraform provider"
+        },
+        {
+          "name": "area/observability",
+          "color": "f9d0c4",
+          "description": "Metrics, logging, tracing"
+        }
+      ],
+      "topics": [
+        "rust",
+        "integration-testing",
+        "e2e-testing",
+        "kubernetes",
+        "helm",
+        "docker"
+      ],
+      "ecosystems": ["cargo", "github-actions"]
+    },
+
+    "inferadb/docs": {
+      "description": "InferaDB documentation — technical specifications, deployment guides, and design documents",
+      "labels": [
+        {
+          "name": "area/architecture",
+          "color": "c9e4f6",
+          "description": "Architecture and design documents"
+        },
+        {
+          "name": "area/deployment",
+          "color": "c9e4f6",
+          "description": "Deployment guides and runbooks"
+        },
+        {
+          "name": "area/guides",
+          "color": "c9e4f6",
+          "description": "Tutorials and how-to guides"
+        },
+        {
+          "name": "area/rfcs",
+          "color": "c9e4f6",
+          "description": "RFC and design proposals"
+        },
+        {
+          "name": "area/whitepapers",
+          "color": "c9e4f6",
+          "description": "Technical whitepapers"
+        },
+        {
+          "name": "area/security",
+          "color": "c9e4f6",
+          "description": "Security documentation"
+        }
+      ],
+      "topics": ["documentation", "deployment", "architecture"],
+      "ecosystems": ["github-actions"]
+    },
+
+    "inferadb/cli": {
+      "description": "InferaDB CLI — debug authorization decisions, test policies, and manage tenants from your terminal.",
+      "labels": [],
+      "topics": ["rust", "cli", "grpc", "rest-api", "jwt"],
+      "ecosystems": ["cargo", "github-actions"]
+    },
+
+    "inferadb/teapot": {
+      "description": "Teapot — a Rust-native terminal UI framework with Elm-inspired architecture.",
+      "labels": [
+        {
+          "name": "area/runtime",
+          "color": "e6d4f5",
+          "description": "Core runtime and event loop"
+        },
+        {
+          "name": "area/components",
+          "color": "e6d4f5",
+          "description": "UI components (spinner, input, select, etc.)"
+        },
+        {
+          "name": "area/forms",
+          "color": "e6d4f5",
+          "description": "Form system and validation"
+        },
+        {
+          "name": "area/style",
+          "color": "e6d4f5",
+          "description": "Styling and theming"
+        },
+        {
+          "name": "area/terminal",
+          "color": "e6d4f5",
+          "description": "Terminal abstraction layer"
+        }
+      ],
+      "topics": [
+        "rust",
+        "tui",
+        "terminal",
+        "elm-architecture",
+        "async",
+        "cli",
+        "forms",
+        "components",
+        "crossterm"
+      ],
+      "skip_common_topics": true,
+      "ecosystems": ["cargo", "github-actions"]
+    },
+
+    "inferadb/terraform-provider-inferadb": {
+      "description": "InferaDB Terraform provider — manage resources including organizations, vaults, clients, teams, and access grants.",
+      "labels": [],
+      "topics": ["terraform", "provider", "grpc", "rest-api", "jwt"],
+      "ecosystems": ["gomod", "github-actions"]
+    },
+
+    "inferadb/rust": {
+      "description": "InferaDB Rust SDK — type-safe, ergonomic access to distributed ReBAC authorization APIs, designed for low-latency permission checks in modern SaaS and AI workloads.",
+      "labels": [
+        {
+          "name": "area/client",
+          "color": "d4c5f9",
+          "description": "Client implementation"
+        },
+        {
+          "name": "area/proto",
+          "color": "d4c5f9",
+          "description": "Protocol buffers and gRPC"
+        },
+        {
+          "name": "area/models",
+          "color": "d4c5f9",
+          "description": "Data models and types"
+        },
+        {
+          "name": "area/examples",
+          "color": "d4c5f9",
+          "description": "Example code and usage"
+        },
+        {
+          "name": "area/derive",
+          "color": "d4c5f9",
+          "description": "Derive macros"
+        }
+      ],
+      "topics": [
+        "rust",
+        "sdk",
+        "client-library",
+        "async",
+        "grpc",
+        "tonic",
+        "tokio",
+        "derive-macro"
+      ],
+      "ecosystems": ["cargo", "github-actions"]
+    },
+
+    "inferadb/proto": {
+      "description": "InferaDB protocol definitions — Protocol Buffer schemas and gRPC service definitions for engine and control plane APIs.",
+      "labels": [
+        {
+          "name": "area/proto",
+          "color": "d4c5f9",
+          "description": "Protocol buffer definitions"
+        },
+        {
+          "name": "area/grpc",
+          "color": "d4c5f9",
+          "description": "gRPC service definitions"
+        },
+        {
+          "name": "area/engine",
+          "color": "d4c5f9",
+          "description": "Engine API definitions"
+        },
+        {
+          "name": "area/control",
+          "color": "d4c5f9",
+          "description": "Control plane API definitions"
+        }
+      ],
+      "topics": [
+        "protobuf",
+        "grpc",
+        "protocol-buffers",
+        "api-definition",
+        "buf"
+      ],
+      "ecosystems": ["github-actions"]
+    },
+
+    "inferadb/deploy": {
+      "description": "InferaDB deployment — Kubernetes manifests, Helm charts, Terraform modules, and infrastructure automation.",
+      "labels": [
+        {
+          "name": "area/k8s",
+          "color": "f9d0c4",
+          "description": "Kubernetes manifests and Helm"
+        },
+        {
+          "name": "area/docker",
+          "color": "f9d0c4",
+          "description": "Docker images and compose"
+        },
+        {
+          "name": "area/terraform",
+          "color": "f9d0c4",
+          "description": "Terraform provider"
+        },
+        {
+          "name": "area/observability",
+          "color": "f9d0c4",
+          "description": "Metrics, logging, tracing"
+        },
+        {
+          "name": "area/talos",
+          "color": "f9d0c4",
+          "description": "Talos Linux configuration"
+        },
+        {
+          "name": "area/policies",
+          "color": "f9d0c4",
+          "description": "OPA/Kyverno policies"
+        },
+        {
+          "name": "area/scripts",
+          "color": "f9d0c4",
+          "description": "Utility and automation scripts"
+        },
+        {
+          "name": "area/alerts",
+          "color": "f9d0c4",
+          "description": "Alerting rules and configurations"
+        },
+        {
+          "name": "area/slos",
+          "color": "f9d0c4",
+          "description": "Service level objectives"
+        },
+        {
+          "name": "area/runbooks",
+          "color": "f9d0c4",
+          "description": "Operational runbooks"
+        },
+        {
+          "name": "area/load-tests",
+          "color": "f9d0c4",
+          "description": "Load testing configurations"
+        }
+      ],
+      "topics": [
+        "kubernetes",
+        "helm",
+        "terraform",
+        "docker",
+        "infrastructure-as-code",
+        "devops",
+        "deployment"
+      ],
+      "ecosystems": ["github-actions", "docker"]
+    },
+
+    "inferadb/terraform": {
+      "description": "InferaDB Terraform modules — multi-cloud, multi-region FoundationDB deployment with Fearless DR, Tailscale mesh networking, and Kubernetes-native orchestration.",
+      "labels": [
+        {
+          "name": "area/k8s",
+          "color": "f9d0c4",
+          "description": "Kubernetes manifests and Helm"
+        },
+        {
+          "name": "area/docker",
+          "color": "f9d0c4",
+          "description": "Docker images and compose"
+        },
+        {
+          "name": "area/terraform",
+          "color": "f9d0c4",
+          "description": "Terraform provider"
+        },
+        {
+          "name": "area/observability",
+          "color": "f9d0c4",
+          "description": "Metrics, logging, tracing"
+        },
+        {
+          "name": "area/fdb",
+          "color": "d4e5c9",
+          "description": "FoundationDB cluster and operator modules"
+        },
+        {
+          "name": "area/tailscale",
+          "color": "d4e5c9",
+          "description": "Tailscale networking and ACLs"
+        },
+        {
+          "name": "area/multi-region",
+          "color": "d4e5c9",
+          "description": "Multi-region deployment"
+        },
+        {
+          "name": "area/multi-cloud",
+          "color": "d4e5c9",
+          "description": "Multi-cloud deployment"
+        }
+      ],
+      "topics": [
+        "terraform",
+        "terraform-module",
+        "kubernetes",
+        "helm",
+        "multi-cloud",
+        "multi-region",
+        "disaster-recovery",
+        "tailscale",
+        "infrastructure-as-code"
+      ],
+      "ecosystems": ["terraform", "github-actions"]
+    },
+
+    "inferadb/.github": {
+      "description": "InferaDB shared GitHub configuration — reusable workflows, issue templates, and organization-wide automation.",
+      "labels": [
+        {
+          "name": "area/workflows",
+          "color": "c5def5",
+          "description": "Reusable GitHub Actions workflows"
+        },
+        {
+          "name": "area/templates",
+          "color": "c5def5",
+          "description": "Issue and PR templates"
+        },
+        {
+          "name": "area/actions",
+          "color": "c5def5",
+          "description": "Custom GitHub Actions"
+        }
+      ],
+      "topics": [
+        "github",
+        "github-actions",
+        "workflows",
+        "automation",
+        "ci-cd",
+        "devops"
+      ],
+      "skip_common_topics": true,
+      "ecosystems": ["github-actions"]
+    },
+
+    "inferadb/wasm": {
+      "description": "InferaDB WebAssembly — portable policy evaluation engine for edge, browser, and embedded environments.",
+      "labels": [
+        {
+          "name": "area/runtime",
+          "color": "bfdadc",
+          "description": "WASM runtime and execution"
+        },
+        {
+          "name": "area/bindings",
+          "color": "bfdadc",
+          "description": "Language bindings (JS, Python, etc.)"
+        },
+        {
+          "name": "area/browser",
+          "color": "bfdadc",
+          "description": "Browser integration"
+        },
+        {
+          "name": "area/edge",
+          "color": "bfdadc",
+          "description": "Edge/serverless deployment"
+        }
+      ],
+      "topics": [
+        "webassembly",
+        "wasm",
+        "wasi",
+        "rust",
+        "policy-engine",
+        "edge-computing"
+      ],
+      "ecosystems": ["cargo", "github-actions"]
+    }
+  }
+}

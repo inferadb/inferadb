@@ -1,0 +1,37 @@
+# Labeler configuration
+# See: https://github.com/actions/labeler
+# Labels must match those defined in .github/maintenance/labels.sh
+
+# Documentation
+area/docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+
+# CI/CD
+area/ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**/*"
+
+# Configuration
+area/config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.tf"
+          - "**/*.tfvars"
+          - "**/.terraform*"
+
+# Testing
+area/testing:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/tests/**/*"
+          - "**/*_test.go"
+
+# Terraform modules
+area/terraform:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "modules/**/*"
+          - "examples/**/*"
