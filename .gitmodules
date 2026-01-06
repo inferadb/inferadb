@@ -38,3 +38,6 @@
 [submodule "github"]
 	path = github
 	url = https://github.com/inferadb/.github
+[submodule "terraform"]
+	path = terraform
+	url = https://github.com/inferadb/terraform
