@@ -49,6 +49,7 @@ jobs:
           echo "  - teapot: Supporting library"
 
   # Overall status check - required for branch protection
+  # This job ALWAYS runs to provide a consistent status check for branch protection
   ci-success:
     name: CI Success
     needs: [submodule-ci]
@@ -77,8 +78,8 @@ jobs:
 
           # Fail if the placeholder job failed (shouldn't happen)
           if [[ "$SUBMODULE_CI_RESULT" != "success" && "$SUBMODULE_CI_RESULT" != "skipped" ]]; then
-            echo "Unexpected failure in CI workflow"
+            echo "❌ Unexpected failure in CI workflow"
             exit 1
           fi
 
-          echo "CI checks passed!"
+          echo "✅ CI checks passed!"

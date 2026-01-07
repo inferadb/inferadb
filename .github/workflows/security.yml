@@ -1,16 +1,14 @@
 # yaml-language-server: $schema=https://www.schemastore.org/github-workflow.json
 #
 # Security workflow for inferadb meta-repository
-# Scans for vulnerabilities in any direct dependencies of the meta-repository.
+# This is a meta-repository with no direct dependencies to scan.
+# The workflow provides a consistent Security Summary status check for branch protection.
 
 name: Security
 
 on:
   pull_request:
     branches: [main]
-    paths:
-      - ".github/workflows/security.yml"
-      - ".github/workflows/dependency-review.yml"
 
 permissions:
   contents: read
@@ -20,6 +18,7 @@ jobs:
   dependency-review:
     name: Dependency Review
     runs-on: ubuntu-latest
+    # Skip for Dependabot PRs (it reviews its own changes)
     if: github.actor != 'dependabot[bot]'
     permissions:
       contents: read
@@ -40,6 +39,7 @@ jobs:
           comment-summary-in-pr: always
 
   # Security scan summary - aggregates all security job results
+  # This job ALWAYS runs to satisfy required status checks
   security-summary:
     name: Security Summary
     needs: [dependency-review]
