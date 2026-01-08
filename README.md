@@ -5,7 +5,7 @@
         <a href="https://discord.gg/inferadb"><img src="https://img.shields.io/badge/Discord-Join%20us-5865F2?logo=discord&logoColor=white" alt="Discord" /></a>
         <a href="#license"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg" alt="License" /></a>
     </p>
-    <p>High-performance, fine-grained access control at scale</p>
+    <p>High-performance, fine-grained authorizationat scale</p>
 </div>
 
 > [!IMPORTANT]
