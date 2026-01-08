@@ -41,8 +41,8 @@ InferaDB comprises four server components:
 
 Administration tools:
 
-- [Dashboard](https://github.com/inferadb/dashboard), management web frontend
-- [CLI](https://github.com/inferadb/cli), command line service management
+- [Dashboard](https://github.com/inferadb/dashboard), web management frontend
+- [CLI](https://github.com/inferadb/cli), command-line management
 
 SDKs for application integration:
 
@@ -52,7 +52,7 @@ Additional SDKs planned.
 
 # Pricing
 
-InferaDB is open source and free to use for all purposes. We provide managed hosting offerings and professional services for deployment, integration and support. Learn more at [https://inferadb.com/pricing](https://inferadb.com/pricing).
+InferaDB is open source and free for any use. We offer managed hosting and professional services for deployment, integration, and support. [Learn more](https://inferadb.com/pricing).
 
 ## Community
 
