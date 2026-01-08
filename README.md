@@ -5,13 +5,13 @@
         <a href="https://discord.gg/inferadb"><img src="https://img.shields.io/badge/Discord-Join%20us-5865F2?logo=discord&logoColor=white" alt="Discord" /></a>
         <a href="#license"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg" alt="License" /></a>
     </p>
-    <p>High-Performance Authorization Database</p>
+    <p>High-performance, fine-grained access control at scale</p>
 </div>
 
 > [!IMPORTANT]
 > Under active development. Not production-ready.
 
-InferaDB delivers high-performance, fine-grained authorization at scale. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/) and built on the [AuthZEN](https://openid.net/wg/authzen/) standard, it achieves sub-millisecond latency with broad interoperability. Its distributed architecture scales horizontally across decentralized networks.
+Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/) and built on the [AuthZEN](https://openid.net/wg/authzen/) standard, InferaDB achieves sub-millisecond latency with broad interoperability. Its distributed architecture scales horizontally across decentralized networks.
 
 This repository aggregates InferaDB components as git submodules.
 
