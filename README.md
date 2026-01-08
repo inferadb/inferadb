@@ -13,7 +13,7 @@
 
 InferaDB delivers high-performance, fine-grained authorization at scale. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/) and built on the [AuthZEN](https://openid.net/wg/authzen/) standard, it offers industry-leading interoperability with sub-millisecond latency. Its architecture enables infinite scalability through distributed computing and decentralized networking.
 
-This meta-repository aggregates the core InferaDB components as git submodules.
+This repository aggregates InferaDB components as git submodules.
 
 # Features
 
@@ -32,23 +32,27 @@ This meta-repository aggregates the core InferaDB components as git submodules.
 
 InferaDB comprises four server components:
 
-- [Engine](https://github.com/inferadb/engine), the authorization decision engine
-- [Control](https://github.com/inferadb/control), the administration plane
-- [Ledger](https://github.com/inferadb/ledger), the blockchain database ledger
-- [Indexer](https://github.com/inferadb/indexer), the intelligent database query and indexer
+- [Engine](https://github.com/inferadb/engine), authorization decision engine
+- [Control](https://github.com/inferadb/control), administration plane
+- [Ledger](https://github.com/inferadb/ledger), blockchain database
+- [Indexer](https://github.com/inferadb/indexer), query optimizer and indexer
 
 # Clients
 
 Administration tools:
 
-- [Dashboard](https://github.com/inferadb/dashboard), a web-based frontend
-- [CLI](https://github.com/inferadb/cli), for complete terminal-based management
+- [Dashboard](https://github.com/inferadb/dashboard), management web frontend
+- [CLI](https://github.com/inferadb/cli), command line service management
 
 SDKs for application integration:
 
 - [Rust](https://github.com/inferadb/rust)
 
 Additional SDKs planned.
+
+# Pricing
+
+InferaDB is open source and free to use for all purposes. We provide managed hosting offerings and professional services for deployment, integration and support. Learn more at [https://inferadb.com/pricing](https://inferadb.com/pricing).
 
 ## Community
 
