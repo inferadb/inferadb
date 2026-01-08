@@ -2,12 +2,13 @@
 # https://mise.jdx.dev/
 #
 # This is the parent repository containing all InferaDB submodules.
-# Run `mise run setup` after cloning to configure git hooks.
+# Run `mise run setup` after cloning to configure git for submodule auto-updates.
 
 [tasks.setup]
-description = "Configure git hooks and initialize submodules"
+description = "Configure git for automatic submodule updates"
 run = [
-  "git config core.hooksPath .githooks",
-  "git submodule update --init --recursive",
-  "echo '\n✅ Setup complete! Submodules initialized and git hooks configured.'",
+  "git config submodule.recurse true",
+  "git config fetch.recurseSubmodules on-demand",
+  "git submodule update --init --recursive --remote",
+  "echo '\n✅ Setup complete! Git configured for automatic submodule updates.'",
 ]
