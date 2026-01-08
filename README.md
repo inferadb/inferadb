@@ -17,7 +17,7 @@ This repository aggregates InferaDB components as git submodules.
 
 # Features
 
-- ReBAC, RBAC and ABAC support
+- ReBAC, RBAC, and ABAC support
 - No-code human-first policy design
 - Extensible PBAC/RuBAC policy logic using WebAssembly
 - Distributed graph traversal computation
@@ -54,10 +54,10 @@ Additional SDKs planned.
 
 InferaDB is open source and free for any use. We offer managed hosting and professional services for deployment, integration, and support. [Learn more](https://inferadb.com/pricing).
 
-## Community
+# Community
 
 Join us on [Discord](https://discord.gg/inferadb) for questions, discussions, and contributions.
 
-## License
+# License
 
 Dual-licensed under [MIT](LICENSE-MIT) or [Apache 2.0](LICENSE-APACHE).
