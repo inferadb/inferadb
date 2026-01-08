@@ -11,7 +11,7 @@
 > [!IMPORTANT]
 > Under active development. Not production-ready.
 
-InferaDB delivers sub-millisecond authorization decisions using GPU-accelerated graph traversal and distributed computing. Supports ReBAC, RBAC, and ABAC — design policies visually or extend them with WebAssembly. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/) and built on the [AuthZEN](https://openid.net/wg/authzen/) standard for broad interoperability. Every authorization decision is cryptographically traceable.
+InferaDB delivers sub-millisecond authorization decisions using hardware-accelerated graph traversal and distributed computing. Supports ReBAC, RBAC, and ABAC — design policies visually or extend them with WebAssembly. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/) and built on the [AuthZEN](https://openid.net/wg/authzen/) standard for broad interoperability. Every authorization decision is cryptographically traceable.
 
 This repository aggregates InferaDB components as git submodules.
 
