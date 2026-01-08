@@ -1,0 +1,13 @@
+# Mise configuration for InferaDB monorepo
+# https://mise.jdx.dev/
+#
+# This is the parent repository containing all InferaDB submodules.
+# Run `mise run setup` after cloning to configure git hooks.
+
+[tasks.setup]
+description = "Configure git hooks and initialize submodules"
+run = [
+  "git config core.hooksPath .githooks",
+  "git submodule update --init --recursive",
+  "echo '\n✅ Setup complete! Submodules initialized and git hooks configured.'",
+]
