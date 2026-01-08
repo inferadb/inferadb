@@ -5,103 +5,50 @@
         <a href="https://discord.gg/inferadb"><img src="https://img.shields.io/badge/Discord-Join%20us-5865F2?logo=discord&logoColor=white" alt="Discord" /></a>
         <a href="#license"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg" alt="License" /></a>
     </p>
-    <p>Distributed fine-grained authorization engine with sub-millisecond latency at scale</p>
+    <p>High Performance Authorization Database</p>
 </div>
 
 > [!IMPORTANT]
 > Under active development. Not production-ready.
 
-Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/). [AuthZEN](https://openid.net/wg/authzen/) compliant.
+InferaDB delivers high-performance, fine-grained authorization at scale. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/) and built on the [AuthZEN](https://openid.net/wg/authzen/) standard, it offers industry-leading interoperability with sub-millisecond latency. Its architecture enables infinite scalability through distributed computing and decentralized networking.
 
-## Quick Start
+This meta-repository aggregates the core InferaDB components as git submodules.
 
-```bash
-git clone https://github.com/inferadb/inferadb && cd inferadb
-mise run setup
-```
+# Features
 
-> Requires [mise](https://mise.jdx.dev/). Alternatively: `git submodule update --init --recursive`
+- ReBAC, RBAC and ABAC support
+- No-code human-first policy design
+- Extensible PBAC/RuBAC policy logic using WebAssembly
+- Distributed graph traversal computation
+- GPU acceleration for high-complexity workloads
+- Decentralized service architecture for infinite scalability
+- Immutable blockchain for persistent storage
+- Built for observability and auditing
+- Intelligent self-optimizing queries and indexes
+- Self-healing and fault-tolerant
 
-Check a permission:
+# Services
 
-```bash
-curl -N -X POST http://localhost:8080/v1/evaluate \
-  -H "Content-Type: application/json" \
-  -d '{"evaluations": [{"subject": "user:alice", "resource": "doc:readme", "permission": "viewer"}]}'
-```
+InferaDB comprises four server components:
 
-Response (SSE stream):
+- [Engine](https://github.com/inferadb/engine), the authorization decision engine
+- [Control](https://github.com/inferadb/control), the administration plane
+- [Ledger](https://github.com/inferadb/ledger), the blockchain database ledger
+- [Indexer](https://github.com/inferadb/indexer), the intelligent database query and indexer
 
-```text
-data: {"decision":"allow","index":0}
+# Clients
 
-event: summary
-data: {"total":1,"complete":true}
-```
+Administration tools:
 
-## Features
+- [Dashboard](https://github.com/inferadb/dashboard), a web-based frontend
+- [CLI](https://github.com/inferadb/cli), for complete terminal-based management
 
-- **Sub-millisecond latency** — <1ms cached, 3-5ms uncached at 100K+ RPS
-- **Declarative policies (IPL)** — Version-controlled, testable, composable
-- **WASM extensibility** — Custom logic in sandboxed modules
-- **Multi-tenant isolation** — Per-tenant encryption, namespaces, audit logs
-- **Graph-native ReBAC** — Hierarchies, groups, ownership as traversable relationships
+SDKs for application integration:
 
-## Repository Structure
+- [Rust](https://github.com/inferadb/rust)
 
-This meta-repository aggregates all InferaDB components as git submodules.
-
-### Core Services
-
-| Component                                        | Purpose           |
-| ------------------------------------------------ | ----------------- |
-| [engine/](https://github.com/inferadb/engine/)   | Authorization Engine |
-| [control/](https://github.com/inferadb/control/) | Control Plane     |
-| [dashboard/](https://github.com/inferadb/dashboard/) | Management UI |
-
-### Developer Tools
-
-| Component                                                                                | Purpose            |
-| ---------------------------------------------------------------------------------------- | ------------------ |
-| [cli/](https://github.com/inferadb/cli/)                                                 | CLI                |
-| [sdks/rust](https://github.com/inferadb/rust/)                                           | Rust SDK           |
-| [terraform-provider-inferadb/](https://github.com/inferadb/terraform-provider-inferadb/) | Terraform Provider |
-
-### Infrastructure
-
-| Component                                            | Purpose                        |
-| ---------------------------------------------------- | ------------------------------ |
-| [deploy/](https://github.com/inferadb/deploy/)       | Deployment (GitOps, Talos, Flux) |
-| [terraform/](https://github.com/inferadb/terraform/) | Terraform modules              |
-
-### Internal
-
-| Component                                        | Purpose                 |
-| ------------------------------------------------ | ----------------------- |
-| [tests/](https://github.com/inferadb/tests/)     | Integration tests       |
-| [docs/](https://github.com/inferadb/docs/)       | Specifications          |
-| [teapot/](https://github.com/inferadb/teapot/)   | TUI framework           |
-| [github/](https://github.com/inferadb/.github/)  | Organization config     |
-
-## Architecture
-
-```mermaid
-graph LR
-    A[Client] --> B[Engine]
-    A --> C[Control]
-    B --> D[(FoundationDB)]
-    C --> D
-    B -.->|JWT validation| C
-```
-
-**Stack:** Rust, FoundationDB, gRPC/REST, Kubernetes
-
-## Documentation
-
-- [docs/](https://github.com/inferadb/docs/) — Specifications and design docs
-- [deploy/](https://github.com/inferadb/deploy/) — Deployment guides and runbooks
-
-Each submodule contains its own README with component-specific documentation.
+Additional SDKs planned.
 
 ## Community
 
