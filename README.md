@@ -32,27 +32,30 @@ This repository aggregates InferaDB components as git submodules.
 
 InferaDB comprises four server components:
 
-- [Engine](https://github.com/inferadb/engine), authorization decision engine
-- [Control](https://github.com/inferadb/control), administration plane
-- [Ledger](https://github.com/inferadb/ledger), blockchain database
-- [Indexer](https://github.com/inferadb/indexer), query optimizer and indexer
+- [Engine](https://github.com/inferadb/engine): authorization decision engine
+- [Control](https://github.com/inferadb/control): administration plane
+- [Ledger](https://github.com/inferadb/ledger): blockchain database
+- [Indexer](https://github.com/inferadb/indexer): query optimizer and indexer
 
 # Clients
 
 Administration tools:
 
-- [Dashboard](https://github.com/inferadb/dashboard), web management frontend
-- [CLI](https://github.com/inferadb/cli), command-line management
+- [Dashboard](https://github.com/inferadb/dashboard): web management frontend
+- [CLI](https://github.com/inferadb/cli): command-line management
 
-SDKs for application integration:
+SDKs for integration:
 
 - [Rust](https://github.com/inferadb/rust)
 
-Additional SDKs planned.
+API definitions:
+
+- [REST (OpenAPI)](https://github.com/inferadb/api)
+- [gRPC (Protobuf)](https://github.com/inferadb/proto)
 
 # Pricing
 
-InferaDB is open source and free for any use. We offer managed hosting and professional services for deployment, integration, and support. [Learn more](https://inferadb.com/pricing).
+InferaDB is [open source](#license). The software is free for any use. We offer managed hosting and professional services for deployment, integration, and support. [Learn more](https://inferadb.com/pricing).
 
 # Community
 
