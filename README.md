@@ -5,13 +5,13 @@
         <a href="https://discord.gg/inferadb"><img src="https://img.shields.io/badge/Discord-Join%20us-5865F2?logo=discord&logoColor=white" alt="Discord" /></a>
         <a href="#license"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg" alt="License" /></a>
     </p>
-    <p>High-performance, fine-grained authorizationat scale</p>
+    <p>High-performance, fine-grained authorization at scale</p>
 </div>
 
 > [!IMPORTANT]
 > Under active development. Not production-ready.
 
-Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/) and built on the [AuthZEN](https://openid.net/wg/authzen/) standard, InferaDB achieves sub-millisecond latency with broad interoperability. Its distributed architecture scales horizontally across decentralized networks.
+InferaDB delivers sub-millisecond authorization decisions using GPU-accelerated graph traversal and distributed computing. Supports ReBAC, RBAC, and ABAC — design policies visually or extend them with WebAssembly. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/) and built on the [AuthZEN](https://openid.net/wg/authzen/) standard for broad interoperability. Every authorization decision is cryptographically traceable.
 
 This repository aggregates InferaDB components as git submodules.
 
@@ -23,8 +23,8 @@ This repository aggregates InferaDB components as git submodules.
 - Distributed graph traversal computation
 - GPU acceleration for high-complexity workloads
 - Decentralized architecture for horizontal scaling
-- Blockchain for persistent storage
-- Native observability and auditing
+- Cryptographically verifiable audit trails
+- Native observability and tracing
 - Self-optimizing queries and indexes
 - Self-healing and fault-tolerant
 
