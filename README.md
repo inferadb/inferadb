@@ -11,7 +11,7 @@
 > [!IMPORTANT]
 > Under active development. Not production-ready.
 
-Authorization **shouldn't be the hardest part** of your system. Forget brittle permission code. InferaDB delivers fine-grained authorization at scale using hardware-accelerated graph traversal and distributed computing. Model access visually and extend with WebAssembly when you need more. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/), the system behind Google Drive, Docs, and YouTube. Built on the emerging [AuthZEN](https://openid.net/wg/authzen/) standard so you're **never locked in**. Every decision is cryptographically traceable. Ready to rethink authorization?
+Authorization shouldn't be the hardest part of your system. Forget brittle permission code. InferaDB delivers fine-grained authorization at scale using hardware-accelerated graph traversal and distributed computing. Model access visually and extend with WebAssembly when you need more. Every decision is inferred from your policies, logic, and context, and is cryptographically traceable and replayable. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/), the system behind Google Drive, Docs, and YouTube. Built on the emerging [AuthZEN](https://openid.net/wg/authzen/) standard so you're never locked in. Ready to rethink authorization?
 
 # Features
 
