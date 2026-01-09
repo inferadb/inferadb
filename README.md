@@ -15,14 +15,21 @@ Authorization shouldn't be the hardest part of your system. Forget brittle permi
 
 # Features
 
+**Flexibility**
 - ReBAC, RBAC, and ABAC support
 - No-code visual policy design
 - Extensible PBAC/RuBAC policy logic via WebAssembly
-- Distributed graph traversal computation
+
+**Performance**
 - Hardware acceleration for high-complexity workloads
+- Graph-based permission resolution
 - Decentralized architecture for horizontal scaling
+
+**Operations**
 - Cryptographically verifiable audit trails
 - Native observability and tracing
+
+**Reliability**
 - Self-optimizing queries and indexes
 - Self-healing and fault-tolerant
 
