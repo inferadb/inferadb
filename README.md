@@ -17,7 +17,7 @@ Authorization shouldn't be the hardest part of your system. Forget brittle permi
 
 - ReBAC, RBAC, and ABAC support
 - No-code visual policy design
-- Extensible PBAC/RuBAC policy logic using WebAssembly
+- Extensible PBAC/RuBAC policy logic via WebAssembly
 - Distributed graph traversal computation
 - Hardware acceleration for high-complexity workloads
 - Decentralized architecture for horizontal scaling
@@ -30,7 +30,7 @@ Authorization shouldn't be the hardest part of your system. Forget brittle permi
 
 InferaDB has four server components:
 
-- [Engine](https://github.com/inferadb/engine) — Authorization decision engine
+- [Engine](https://github.com/inferadb/engine) — Authorization engine
 - [Control](https://github.com/inferadb/control) — Administration plane
 - [Ledger](https://github.com/inferadb/ledger) — Blockchain persistence layer
 - [Indexer](https://github.com/inferadb/indexer) — Query optimizer and index manager
@@ -39,7 +39,7 @@ InferaDB has four server components:
 
 Administration tools:
 
-- [Dashboard](https://github.com/inferadb/dashboard) — Web management frontend
+- [Dashboard](https://github.com/inferadb/dashboard) — Web frontend
 - [CLI](https://github.com/inferadb/cli) — Command-line interface
 
 SDKs:
