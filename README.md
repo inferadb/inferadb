@@ -5,15 +5,13 @@
         <a href="https://discord.gg/inferadb"><img src="https://img.shields.io/badge/Discord-Join%20us-5865F2?logo=discord&logoColor=white" alt="Discord" /></a>
         <a href="#license"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg" alt="License" /></a>
     </p>
-    <p>High-performance, fine-grained authorization at scale</p>
+    <p><i>in·fer·uh·db</i> (n.) — Authorization, solved.</p>
 </div>
 
 > [!IMPORTANT]
 > Under active development. Not production-ready.
 
-InferaDB delivers sub-millisecond authorization decisions using hardware-accelerated graph traversal and distributed computing. Supports ReBAC, RBAC, and ABAC — design policies visually or extend them with WebAssembly. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/) and built on the [AuthZEN](https://openid.net/wg/authzen/) standard for broad interoperability. Every authorization decision is cryptographically traceable.
-
-This repository aggregates InferaDB components as git submodules.
+InferaDB delivers high-performance, fine-grained authorization decisions at scale using hardware-accelerated graph traversal and distributed computing. Supports ReBAC, RBAC, and ABAC — design policies visually or extend them with WebAssembly. Inspired by [Google Zanzibar](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/) and built on the [AuthZEN](https://openid.net/wg/authzen/) standard for broad interoperability. Every authorization decision is cryptographically traceable.
 
 # Features
 
@@ -21,7 +19,7 @@ This repository aggregates InferaDB components as git submodules.
 - No-code visual policy design
 - Extensible PBAC/RuBAC policy logic using WebAssembly
 - Distributed graph traversal computation
-- GPU acceleration for high-complexity workloads
+- Hardware acceleration for high-complexity workloads
 - Decentralized architecture for horizontal scaling
 - Cryptographically verifiable audit trails
 - Native observability and tracing
@@ -30,7 +28,7 @@ This repository aggregates InferaDB components as git submodules.
 
 # Services
 
-InferaDB comprises four server components:
+InferaDB has four server components:
 
 - [Engine](https://github.com/inferadb/engine) — Authorization decision engine
 - [Control](https://github.com/inferadb/control) — Administration plane
