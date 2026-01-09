@@ -41,3 +41,6 @@
 [submodule "terraform"]
 	path = terraform
 	url = https://github.com/inferadb/terraform
+[submodule "ledger"]
+	path = ledger
+	url = https://github.com/inferadb/ledger.git
