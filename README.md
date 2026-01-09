@@ -5,7 +5,7 @@
         <a href="https://discord.gg/inferadb"><img src="https://img.shields.io/badge/Discord-Join%20us-5865F2?logo=discord&logoColor=white" alt="Discord" /></a>
         <a href="#license"><img src="https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg" alt="License" /></a>
     </p>
-    <p><i>in·fer·uh·db</i> (n.) — Authorization, solved.</p>
+    <p><i>in·fer·uh·dee·bee</i> (n.) — Authorization, solved.</p>
 </div>
 
 > [!IMPORTANT]
