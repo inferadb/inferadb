@@ -23,6 +23,7 @@ Authorization shouldn't be the hardest part of your system. Forget brittle permi
 **Performance**
 - Hardware acceleration for high-complexity workloads
 - Graph-based permission resolution
+- Parallel computation across distributed nodes
 - Decentralized architecture for horizontal scaling
 
 **Operations**
