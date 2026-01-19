@@ -36,12 +36,13 @@ Authorization shouldn't be fragile. InferaDB makes fine-grained access control f
 
 # Services
 
-InferaDB has four server components:
+InferaDB has three server components:
 
 - [Engine](https://github.com/inferadb/engine) — Authorization engine
 - [Control](https://github.com/inferadb/control) — Administration plane
 - [Ledger](https://github.com/inferadb/ledger) — Blockchain persistence layer
-- [Indexer](https://github.com/inferadb/indexer) — Query optimizer and index manager
+
+Both Engine and Control share a unified storage abstraction (`inferadb-storage`) that enables consistent backend implementations across services.
 
 # Clients
 

@@ -77,7 +77,7 @@ body:
         - InferaDB Version: [e.g., 0.1.0]
         - OS: [e.g., Ubuntu 22.04, macOS 14]
         - Deployment: [e.g., Docker, Kubernetes, Binary]
-        - Storage Backend: [e.g., Memory, FoundationDB]
+        - Storage Backend: [e.g., Memory, Ledger]
     validations:
       required: false
 
