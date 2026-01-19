@@ -44,3 +44,6 @@
 [submodule "ledger"]
 	path = ledger
 	url = https://github.com/inferadb/ledger.git
+[submodule "common"]
+	path = common
+	url = https://github.com/inferadb/common
