@@ -27,65 +27,6 @@ This project and everyone participating in it is governed by the [Contributor Co
 
 Each repository has its own development setup and workflow. See the repository's [README.md](README.md) for prerequisites, build commands, and development workflow.
 
-### Running Integration Tests
-
-InferaDB includes integration tests that run against real infrastructure. These tests are optional and are skipped by default.
-
-#### Ledger Integration Tests
-
-Tests for the unified `LedgerBackend` storage implementation:
-
-```bash
-# Using Docker Compose (recommended)
-cd common/crates/inferadb-storage-ledger/docker
-./run-integration-tests.sh
-
-# Or manually with a running Ledger server
-RUN_LEDGER_INTEGRATION_TESTS=1 \
-LEDGER_ENDPOINT=http://localhost:50051 \
-cargo test --package inferadb-storage-ledger --test real_ledger_integration
-```
-
-#### Engine + Ledger Integration Tests
-
-Tests for the Engine service with Ledger backend:
-
-```bash
-cd engine/docker/ledger-integration-tests
-./run-tests.sh
-
-# Or manually
-RUN_LEDGER_INTEGRATION_TESTS=1 \
-LEDGER_ENDPOINT=http://localhost:50051 \
-cargo test --package inferadb-engine-api --test ledger_integration --features ledger
-```
-
-#### Control + Ledger Integration Tests
-
-Tests for the Control service with Ledger backend:
-
-```bash
-cd control/docker/ledger-integration-tests
-./run-tests.sh
-
-# Or manually
-RUN_LEDGER_INTEGRATION_TESTS=1 \
-LEDGER_ENDPOINT=http://localhost:50051 \
-cargo test --package inferadb-control-storage --test ledger_integration_tests --features ledger
-```
-
-#### Test Script Options
-
-All integration test scripts support these options:
-
-- `--clean`: Clean up Docker volumes and containers
-- `--shell`: Start an interactive shell in the test runner container
-
-Environment variables:
-
-- `LEDGER_BUILD=1`: Force rebuild of Ledger Docker image
-- `KEEP_RUNNING=1`: Keep Ledger running after tests complete
-
 ## Review Process
 
 1. **Automated Checks**: CI will run tests, linters, and formatters

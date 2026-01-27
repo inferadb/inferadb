@@ -42,7 +42,7 @@ InferaDB has three server components:
 - [Control](https://github.com/inferadb/control) — Administration plane
 - [Ledger](https://github.com/inferadb/ledger) — Blockchain persistence layer
 
-Both Engine and Control share a unified storage abstraction (`inferadb-storage`) that enables consistent backend implementations across services.
+Components shared between these servers are stored in [Common](https://github.com/inferadb/common).
 
 # Clients
 
